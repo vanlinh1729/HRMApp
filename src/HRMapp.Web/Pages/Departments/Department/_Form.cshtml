@@ -1,0 +1,90 @@
+﻿@inject IHtmlLocalizer<HRMappResource> L
+@using HRMapp.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@model HRMapp.Web.Pages.Departments.Department.CreateOrEditModalModel
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-4">
+                    <abp-input asp-for="ViewModel.Name" size="Small" ></abp-input>
+                </div>
+                <div class="col-md-4">
+                    <abp-select asp-for="ViewModel.OwnerId" class="auto-complete-select" asp-items="@Model.Owners" label="@L["OwnerName"].Value"
+                                data-autocomplete-api-url="/api/app/employee"
+                                data-autocomplete-display-property="name"
+                                data-autocomplete-value-property="id"
+                                data-autocomplete-items-property="items"
+                                data-autocomplete-filter-param-name="name"
+                                data-autocomplete-allow-clear="true">
+                        @if (Model.ViewModel.OwnerId != null || Model.ViewModel.OwnerId == Guid.Empty)
+                        {
+
+                            <option value="@Model.ViewModel.OwnerId">@Model.ViewModel.OwnerName</option>
+                        }
+                        else
+                        {
+                            <option value="" selected="selected">@L["NoOption"]</option>
+                        }
+
+                    </abp-select>
+                </div>
+                <div class="col-md-4">
+                    <abp-select asp-for="ViewModel.ParentId" class="auto-complete-select"  asp-items="@Model.Parents" label="@L["ParentName"].Value"
+                                data-autocomplete-api-url="/api/app/department"
+                                data-autocomplete-display-property="name"
+                                data-autocomplete-value-property="id"
+                                data-autocomplete-items-property="items"
+                                data-autocomplete-filter-param-name="name"
+                                data-autocomplete-allow-clear="true">
+                        @if (Model.ViewModel.ParentId != null || Model.ViewModel.ParentId == Guid.Empty)
+                        {
+
+                            <option value="@Model.ViewModel.ParentId">@Model.ViewModel.ParentName</option>
+                        }
+                          else
+                        {
+                            <option value="" selected="selected">@L["NoOption"]</option>
+                        }
+                    </abp-select>
+
+                </div>
+</div>
+<div class="row">
+
+    <div class="col-md-8">
+        <abp-table hoverable-rows="true" id="DepartmentUser1" responsive-sm="true" class="table table-bordered"/>
+    </div>
+    <div class="col-md-4">
+        <abp-table id="employeelistview" hoverable-rows="true" responsive-sm="true" class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="Column">@L["EmployeeName"]</th>
+                <th scope="Column">@L["Action"]</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.ViewEmployeeNameDepartmentModels)
+            {
+                <tr id=@item.Id>
+                    <td>@item.Name</td>
+                    <td style="text-align: center; width:1%">
+                        <a class="deleteemployeebtn" href='javascript:void(0);' data-name=@item.Name data-id=@item.Id>
+                            <i class="text-danger fa fa-trash"></i>
+                        </a>
+                    </td>
+                    @*
+                    <abp-input asp-for="@Model.ViewModel.employeeId" suppress-label="true" type="text" name="ViewModel.employeeId" value="@item.Id" hidden="hidden"></abp-input>
+*@
+                    <input type="text" id="ViewModel_employeeId+@item.Id" name="ViewModel.employeeId" value="@item.Id" class="form-control form-control-sm" hidden="hidden">
+                </tr>
+
+            }
+            </tbody>
+
+        </abp-table>
+    </div>
+</div>

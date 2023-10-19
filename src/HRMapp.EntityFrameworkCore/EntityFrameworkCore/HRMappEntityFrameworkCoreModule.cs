@@ -1,4 +1,11 @@
-﻿using System;
+using HRMapp.Attendents;
+using HRMapp.Salarys;
+using HRMapp.Contracts;
+using HRMapp.Contacts;
+using HRMapp.Shifts;
+using HRMapp.Departments;
+using HRMapp.Employees;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Uow;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -41,6 +48,16 @@ public class HRMappEntityFrameworkCoreModule : AbpModule
                 /* Remove "includeAllEntities: true" to create
                  * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
+            options.AddRepository<Employee, EmployeeRepository>();
+            options.AddRepository<Department, DepartmentRepository>();
+            options.AddRepository<Shift, ShiftRepository>();
+            options.AddRepository<Contact, ContactRepository>();
+            options.AddRepository<Contract, ContractRepository>();
+            options.AddRepository<Salary, SalaryRepository>();
+            options.AddRepository<Attendent, AttendentRepository>();
+            options.AddRepository<AttendentLine, AttendentLineRepository>();
+            options.AddRepository<AttendentForMonth, AttendentForMonthRepository>();
+            options.AddRepository<EmployeeHistory, EmployeeHistoryRepository>();
         });
 
         Configure<AbpDbContextOptions>(options =>

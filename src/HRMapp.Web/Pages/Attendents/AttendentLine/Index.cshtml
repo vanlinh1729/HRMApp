@@ -1,0 +1,57 @@
+@page
+@using HRMapp.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using HRMapp.Web.Pages.Attendents.AttendentLine
+@using HRMapp.Localization
+@using HRMapp.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<HRMappResource> L
+@inject IAuthorizationService Authorization
+@{
+    PageLayout.Content.Title = L["AttendentLine"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:AttendentLine"].Value);
+    PageLayout.Content.MenuItemName = HRMappMenus.AttendentLine;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/Attendents/AttendentLine/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/Attendents/AttendentLine/index.css"/>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["AttendentLine"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+			    @if (await Authorization.IsGrantedAsync(HRMappPermissions.AttendentLine.Create))
+                {
+                <abp-button id="NewAttendentLineButton"
+                            text="@L["CreateAttendentLine"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="AttendentLineCollapse" class="text-secondary">@L["TableFilter"] </a>
+        </abp-row>
+        <abp-dynamic-form abp-model="AttendentLineFilter" id="AttendentLineFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="AttendentLineCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="AttendentLineTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

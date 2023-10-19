@@ -1,0 +1,19 @@
+@page
+@using HRMapp.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Departments.Department.EditModalModel
+@{
+    Layout = null;
+}
+ <form  asp-page="/Departments/Department/EditModal">
+    <abp-modal size="ExtraLarge">
+        <abp-modal-header title="@L["EditDepartment"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="Id" />
+            @await Html.PartialAsync("_Form")
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

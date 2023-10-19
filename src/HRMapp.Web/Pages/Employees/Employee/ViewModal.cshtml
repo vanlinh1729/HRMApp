@@ -1,0 +1,59 @@
+@page
+@using HRMapp.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Employees.Employee.ViewModalModel
+@{
+    Layout = null;
+}
+<abp-modal>
+    <abp-modal-header title="@L["Employee"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-table>
+            <tbody>
+            <tr>
+                <th>@L["EmployeeName"].Value</th>
+                <td>@Model.ViewModel.Name</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeOtherName"].Value</th>
+                <td>@Model.ViewModel.OtherName</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeHrmUserName"].Value</th>
+                <td>@Model.ViewModel.UserName</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeHrmContactName"].Value</th>
+                <td>@Model.ViewModel.ContactName</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeDepartmentName"].Value</th>
+                <td>@Model.ViewModel.DepartmentName</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeContactBirthDay"].Value</th>
+                <td>@Model.ViewModel.BirthDay</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeContactGender"].Value</th>
+                <td>@Model.ViewModel.Gender</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeContactEmail"].Value</th>
+                <td>@Model.ViewModel.Email</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeContactPhoneNumber"].Value</th>
+                <td>@Model.ViewModel.PhoneNumber</td>
+            </tr>
+            <tr>
+                <th>@L["EmployeeStatus"].Value</th>
+                <td>@Model.ViewModel.Status</td>
+            </tr>
+            </tbody>
+        </abp-table>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+</abp-modal>

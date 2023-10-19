@@ -1,0 +1,17 @@
+﻿@page
+@inject IHtmlLocalizer<HRMappResource> L
+
+@using HRMapp.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@model HRMapp.Web.Pages.Departments.Department.CreateOrEditModalModel
+
+@{
+    Layout = null;
+}
+
+<abp-input asp-for="ViewModel.Name" readonly="true"></abp-input>
+<abp-select  asp-for="ViewModel.OwnerId" asp-items="@Model.Owners" label="@L["newOwnerName"].Value">
+    <option value="" >@L["NoOption"]</option>
+</abp-select>
+<select hidden="hidden" asp-for="ViewModel.ParentId" asp-items="@Model.Parents" >
+</select>

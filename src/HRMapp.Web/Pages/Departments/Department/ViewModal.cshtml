@@ -1,0 +1,68 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using HRMapp.Localization
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Departments.Department.ViewModalModel
+@section scripts
+{
+    <abp-script src="/Pages/Departments/Department/index.js"/>
+}
+    <abp-modal centered="true" scrollable="true" size="ExtraLarge">
+        <abp-modal-header title="@L["Department Information"].Value"></abp-modal-header>
+        <input hidden="true" id="departmenId" value="@Model.ViewModel.Id"/>
+        <abp-modal-body>
+            <abp-tabs>
+                <abp-tab title="Thông tin chung" class="mt-3">
+                    <h4>THÔNG TIN PHÒNG BAN</h4>
+                    <abp-table hoverable-rows="true" responsive-sm="true" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>@L["DepartmentName"].Value</th>
+                            <th>@L["DepartmentOwnerId"].Value</th>
+                            <th>@L["DepartmentParentId"].Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <td>@Model.ViewModel.Name</td>
+                            <td>@Model.ViewModel.OwnerName</td>
+                            <td>@Model.ViewModel.ParentName</td>
+                        </tr>
+                        </tbody>
+                    </abp-table>
+                    <h4>DANH SÁCH NHÂN VIÊN</h4>
+
+                    @*<abp-table hoverable-rows="true" responsive-sm="true" class="table table-bordered">
+
+                    </abp-table>*@
+
+                    <abp-table striped-rows="true" id="DepartmentUser" class="table table-bordered"/>
+                </abp-tab>
+                <abp-tab title=@L["EditOwnerHistory"].Value>
+                    <abp-table hoverable-rows="true" responsive-sm="true" class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="Column">@L["Username"]</th>
+                            <th scope="Column">@L["Change"]</th>
+                            <th scope="Column">@L["ChangeTime"]</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in @Model.ViewDepartmentChangeModels)
+                        {
+                            <tr>
+                                <td>@item.UserName</td>
+                                <td>
+                                    @item.OriginalValue<i class="fa fa-fw fa-arrow-right" aria-hidden="true"></i> @item.NewValue
+                                </td>
+                                <td>@item.ChangeTime</td>
+                            </tr>
+                        }
+                    </abp-table>
+                </abp-tab>
+            </abp-tabs>
+        </abp-modal-body>
+    </abp-modal>

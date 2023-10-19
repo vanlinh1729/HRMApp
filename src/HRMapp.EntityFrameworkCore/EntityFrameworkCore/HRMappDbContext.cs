@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -12,6 +12,16 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using HRMapp.Employees;
+using Volo.Abp.EntityFrameworkCore.Modeling;
+using HRMapp.Departments;
+using HRMapp.Shifts;
+using HRMapp.Contacts;
+using HRMapp.Contracts;
+using HRMapp.Salarys;
+using HRMapp.Attendents;
+using HRMapp.Users;
+using Volo.Abp.Identity.Settings;
 
 namespace HRMapp.EntityFrameworkCore;
 
@@ -52,6 +62,17 @@ public class HRMappDbContext :
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
 
     #endregion
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<Department> Departments { get; set; }
+    public DbSet<Shift> Shifts { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
+    public DbSet<Contract> Contracts { get; set; }
+    public DbSet<Salary> Salaries { get; set; }
+    public DbSet<Attendent> Attendents { get; set; }
+    public DbSet<AttendentLine> AttendentLines { get; set; }
+    public DbSet<AttendentForMonth> AttendentForMonths { get; set; }
+    public DbSet<EmployeeHistory> EmployeeHistories { get; set; }
+    public DbSet<HrmUser> HrmUsers { get; set; }
 
     public HRMappDbContext(DbContextOptions<HRMappDbContext> options)
         : base(options)
@@ -82,5 +103,111 @@ public class HRMappDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
+
+        builder.Entity<Employee>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "Employees", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<Department>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "Departments", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<Shift>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "Shifts", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<Contact>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "Contacts", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<Contract>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "Contracts", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<Salary>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "Salaries", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<Attendent>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "Attendents", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<AttendentLine>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "AttendentLines", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<AttendentForMonth>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "AttendentForMonths", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+
+
+        builder.Entity<EmployeeHistory>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "EmployeeHistories", HRMappConsts.DbSchema);
+            b.ConfigureByConvention(); 
+            
+
+            /* Configure more properties here */
+        });
+        builder.Entity<HrmUser>(b =>
+        {
+            b.ToTable(HRMappConsts.DbTablePrefix + "HrmUsers", HRMappConsts.DbSchema);
+            b.ConfigureByConvention();
+
+        });
     }
 }

@@ -1,0 +1,81 @@
+@page
+@using HRMapp.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using HRMapp.Web.Pages.Departments.Department
+@using HRMapp.Localization
+@using HRMapp.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<HRMappResource> L
+@inject IAuthorizationService Authorization
+@{
+    PageLayout.Content.Title = L["Department"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Department"].Value);
+    PageLayout.Content.MenuItemName = HRMappMenus.Department;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/Departments/Department/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/Departments/Department/index.css"/>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Department"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                @if (await Authorization.IsGrantedAsync(HRMappPermissions.Department.Create))
+                {
+                    <abp-button id="NewDepartmentButton"
+                                text="@L["CreateDepartment"].Value"
+                                icon="plus"
+                                button-type="Primary"/>
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <abp-column size-md="_6">
+                <abp-button button-type="Primary" abp-collapse-id="DepartmentCollapse">@L["TableFilter"] </abp-button>
+            </abp-column>
+
+            <abp-column size-md="_6" class="text-end">
+                <abp-dropdown >
+                    <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
+                    <abp-dropdown-menu>
+                        <ul style=" list-style-type: none;">
+                            <li >
+                                <input class="customcolumn" id="0" checked="true" type="checkbox">@L["Name"]</input>
+                            </li>
+                            <li >
+                                <input class="customcolumn" id="1" checked="true" type="checkbox">@L["ownerName"]</input>
+                            </li>
+                            <li >
+                                <input class="customcolumn" id="2" checked="true" type="checkbox">@L["parentName"]</input>
+                            </li>
+                        </ul>
+                    </abp-dropdown-menu>
+                </abp-dropdown>
+
+            </abp-column >
+        </abp-row>
+        <abp-collapse-body id="DepartmentCollapse">
+            <form id="DepartmentFilter" required-symbols="false">
+                <abp-input asp-for="@Model.DepartmentFilter.Name"></abp-input>
+                <abp-input asp-for="@Model.DepartmentFilter.OwnerName"></abp-input>
+                <abp-input asp-for="@Model.DepartmentFilter.ParentName"></abp-input>
+            </form>
+            <hr/>
+        </abp-collapse-body>
+        <abp-table striped-rows="true" id="DepartmentTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

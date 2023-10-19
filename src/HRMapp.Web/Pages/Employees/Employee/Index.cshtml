@@ -1,0 +1,109 @@
+@page
+@using HRMapp.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using HRMapp.Web.Pages.Employees.Employee
+@using HRMapp.Localization
+@using HRMapp.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<HRMappResource> L
+@inject IAuthorizationService Authorization
+@{
+    PageLayout.Content.Title = L["Employee"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Employee"].Value);
+    PageLayout.Content.MenuItemName = HRMappMenus.Employee;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/Employees/Employee/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/Employees/Employee/index.css"/>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Employee"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                @if (await Authorization.IsGrantedAsync(HRMappPermissions.Employee.Create))
+                {
+                    <abp-button id="NewEmployeeButton"
+                                text="@L["CreateEmployee"].Value"
+                                icon="plus"
+                                button-type="Primary"/>
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <abp-column size-md="_6">
+                <abp-button button-type="Primary" abp-collapse-id="EmployeeCollapse">@L["TableFilter"] </abp-button>
+            </abp-column>
+
+            <abp-column size-md="_6" class="text-end">
+                <abp-dropdown >
+                    <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
+                    <abp-dropdown-menu>
+                        <ul style=" list-style-type: none;">
+                            <li >
+
+                                <input class="customcolumn" id="0" checked="true" type="checkbox">@L["Name"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="1" checked="true" type="checkbox">@L["OtherName"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="2" checked="true" type="checkbox">@L["UserName"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="3" checked="true" type="checkbox">@L["ContactName"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="4" checked="true" type="checkbox">@L["DepartmentName"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="5" checked="true" type="checkbox">@L["Status"]</input>
+
+                            </li>
+
+                        </ul>
+                    </abp-dropdown-menu>
+                </abp-dropdown>
+
+            </abp-column >
+        </abp-row>
+        <abp-collapse-body id="EmployeeCollapse">
+            <form id="EmployeeFilter" required-symbols="false">
+                <abp-input asp-for="@Model.EmployeeFilter.Name"></abp-input>
+                <abp-input asp-for="@Model.EmployeeFilter.OtherName"></abp-input>
+                <abp-input asp-for="@Model.EmployeeFilter.UserName"></abp-input>
+
+                <abp-input asp-for="@Model.EmployeeFilter.ContactName"></abp-input>
+
+                <abp-input asp-for="@Model.EmployeeFilter.DepartmentName"></abp-input>
+
+                <abp-select asp-for="@Model.EmployeeFilter.Status"> </abp-select>
+            </form>
+            <hr/>
+        </abp-collapse-body>
+        <abp-table striped-rows="true" id="EmployeeTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

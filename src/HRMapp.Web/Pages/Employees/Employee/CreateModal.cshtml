@@ -1,0 +1,18 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using HRMapp.Localization
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Employees.Employee.CreateModalModel
+@{
+    Layout = null;
+}
+    <form asp-page="/Employees/Employee/CreateModal">
+    <abp-modal>
+        <abp-modal-header title="@L["CreateEmployee"].Value"></abp-modal-header>
+        <abp-modal-body>
+            @await Html.PartialAsync("_Form")
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>
