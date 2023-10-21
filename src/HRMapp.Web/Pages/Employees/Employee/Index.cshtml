@@ -65,22 +65,37 @@
                             </li>
                             <li >
 
-                                <input class="customcolumn" id="2" checked="true" type="checkbox">@L["UserName"]</input>
+                                <input class="customcolumn" id="2" checked="true" type="checkbox">@L["HrmUserName"]</input>
 
                             </li>
                             <li >
 
-                                <input class="customcolumn" id="3" checked="true" type="checkbox">@L["ContactName"]</input>
+                                <input class="customcolumn" id="3" checked="true" type="checkbox">@L["HrmContactName"]</input>
+
+                            </li> 
+                            <li >
+
+                                <input class="customcolumn" id="4" checked="true" type="checkbox">@L["Gender"]</input>
 
                             </li>
                             <li >
 
-                                <input class="customcolumn" id="4" checked="true" type="checkbox">@L["DepartmentName"]</input>
+                                <input class="customcolumn" id="5" checked="true" type="checkbox">@L["BirthDay"]</input>
 
                             </li>
                             <li >
 
-                                <input class="customcolumn" id="5" checked="true" type="checkbox">@L["Status"]</input>
+                                <input class="customcolumn" id="6" checked="true" type="checkbox">@L["PhoneNumber"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="7" checked="true" type="checkbox">@L["DepartmentName"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="8" checked="true" type="checkbox">@L["Status"]</input>
 
                             </li>
 
@@ -95,15 +110,12 @@
                 <abp-input asp-for="@Model.EmployeeFilter.Name"></abp-input>
                 <abp-input asp-for="@Model.EmployeeFilter.OtherName"></abp-input>
                 <abp-input asp-for="@Model.EmployeeFilter.UserName"></abp-input>
-
                 <abp-input asp-for="@Model.EmployeeFilter.ContactName"></abp-input>
-
                 <abp-input asp-for="@Model.EmployeeFilter.DepartmentName"></abp-input>
-
                 <abp-select asp-for="@Model.EmployeeFilter.Status"> </abp-select>
             </form>
             <hr/>
         </abp-collapse-body>
-        <abp-table striped-rows="true" id="EmployeeTable" class="nowrap"/>
+        <abp-table striped-rows="true" id="EmployeeTable" class="table-bordered nowrap"/>
     </abp-card-body>
 </abp-card>

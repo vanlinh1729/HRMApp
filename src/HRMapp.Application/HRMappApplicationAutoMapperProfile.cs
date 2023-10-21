@@ -14,6 +14,7 @@ using HRMapp.Attendents;
 using HRMapp.Attendents.Dtos;
 using AutoMapper;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.Identity;
 
 namespace HRMapp;
 
@@ -64,6 +65,7 @@ public class HRMappApplicationAutoMapperProfile : Profile
         CreateMap<CreateUpdateAttendentLineDto, AttendentLine>(MemberList.Source);
         CreateMap<Attendent, SelectResultDto>().Ignore(x=>x.Name);
         CreateMap<Shift, SelectResultDto>();
+        CreateMap<IdentityUser, SelectResultDto>();
 
         CreateMap<Contact, ContactDto>();
     }

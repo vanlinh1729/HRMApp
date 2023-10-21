@@ -37,6 +37,7 @@ public class HRMappDomainModule : AbpModule
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Languages.Add(new LanguageInfo("ar", "ar", "العربية", "ae"));
+            options.Languages.Add(new LanguageInfo("vi", "vi", "Vietnam", "vi"));
             options.Languages.Add(new LanguageInfo("cs", "cs", "Čeština"));
             options.Languages.Add(new LanguageInfo("en", "en", "English", "gb"));
             options.Languages.Add(new LanguageInfo("en-GB", "en-GB", "English (UK)"));

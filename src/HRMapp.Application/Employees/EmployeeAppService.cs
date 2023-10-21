@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Identity;
 
 namespace HRMapp.Employees;
 
@@ -21,6 +22,7 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
      private readonly IDepartmentRepository _departmentRepository;
     private readonly IRepository<Contact, Guid> _contactRepository;
     private readonly IRepository<HrmUser, Guid> _userRepository;
+    private readonly IRepository<IdentityUser, Guid> _user; 
 
     private readonly IEmployeeRepository _repository;
 
@@ -28,12 +30,14 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
         , IRepository<HrmUser, Guid> userRepository
         , IRepository<Contact, Guid> contactRepository
         , IDepartmentRepository departmentRepository
+        ,IRepository<IdentityUser, Guid> user
     ) : base(repository)
     {
         _repository = repository;
         _userRepository = userRepository;
         _contactRepository = contactRepository;
         _departmentRepository = departmentRepository;
+        _user = user;
     }
 
     protected override string GetPolicyName { get; set; } = HRMappPermissions.Employee.Default;
@@ -62,7 +66,7 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
     {
         var queryable = await _repository.GetQueryableAsync();
         var query = from employee in queryable
-            join user in await _userRepository.GetQueryableAsync() on employee.UserId equals user.Id into
+            join user in await _user.GetQueryableAsync() on employee.UserId equals user.Id into
                 employeeuser
             from user in employeeuser.DefaultIfEmpty()
             join contact in await _contactRepository.GetQueryableAsync() on employee.ContactId equals
@@ -83,13 +87,29 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
                 DepartmentName = department.Name,
                 DepartmentId = employee.DepartmentId,
                 Status = employee.Status,
-              
                 Gender = contact.Gender,
                 BirthDay = contact.BirthDay,
                 Email = contact.Email,
                 PhoneNumber = contact.PhoneNumber
             };
-        var queryResult = await AsyncExecuter.ToListAsync(query);
+        var listEmployee = query
+            .WhereIf(!input.Name.IsNullOrWhiteSpace(), x => x.Name.ToLower().Contains(input.Name.ToLower()))
+            .WhereIf(!input.OtherName.IsNullOrWhiteSpace(),
+                x => x.OtherName.ToLower().Contains(input.OtherName.ToLower()))
+            .WhereIf(!input.UserName.IsNullOrWhiteSpace(), x => x.UserName.ToLower().Contains(input.UserName.ToLower()))
+            .WhereIf(!input.ContactName.IsNullOrWhiteSpace(),
+                x => x.ContactName.ToLower().Contains(input.ContactName.ToLower()))
+            .WhereIf(!input.DepartmentName.IsNullOrWhiteSpace(),
+                x => x.DepartmentName.ToLower().Contains(input.DepartmentName.ToLower()))
+            .WhereIf(!input.DepartmentName.IsNullOrWhiteSpace(),
+                x => x.DepartmentName.ToLower().Contains(input.DepartmentName.ToLower()))
+            .WhereIf(input.Status != null, x => x.Status == input.Status)
+            .OrderBy(x=>NormalizeSorting(input.Sorting))
+            .Skip(input.SkipCount)
+            .Take(input.MaxResultCount);
+        
+        
+        var queryResult = await AsyncExecuter.ToListAsync(listEmployee);
 
         var totalCount = await Repository.GetCountAsync();
         return new PagedResultDto<EmployeeDto>(
@@ -149,8 +169,8 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
     [Authorize(HRMappPermissions.Employee.Default)]
     public async Task<ListResultDto<SelectResultDto>> GetListHrmUserAsync()
     {
-        var obj = await _userRepository.GetListAsync();
-        return new ListResultDto<SelectResultDto>(ObjectMapper.Map<List<HrmUser>, List<SelectResultDto>>(obj));
+        var obj = await _user.GetListAsync();
+        return new ListResultDto<SelectResultDto>(ObjectMapper.Map<List<IdentityUser>, List<SelectResultDto>>(obj));
     }
     public async Task<ListResultDto<SelectResultDto>> GetListHrmContactAsync()
     {

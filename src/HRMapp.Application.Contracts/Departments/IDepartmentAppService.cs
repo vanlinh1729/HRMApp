@@ -26,4 +26,5 @@ public interface IDepartmentAppService :
     Task<DepartmentDto> CreateDepartmentWithManyEmployeeAsync(CreateDepartmentAndAddEmployee input);
     Task<DepartmentDto> UpdateDepartmentWithManyEmployeeAsync(Guid departmentId, CreateDepartmentAndAddEmployee input);
     Task<List<DepartmentChangeOwnerDto>> GetDepartmentChangeListAsync(Guid departmentId);
+    Task<PagedResultDto<DepartmentWithDetailDto>> GetListUsersDepartmentEdit(DepartmentDetailById input);
 }

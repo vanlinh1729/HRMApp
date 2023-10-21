@@ -247,6 +247,50 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
             .ToList();
         return result;
     }
+     public async Task<PagedResultDto<DepartmentWithDetailDto>> GetListUsersDepartmentEdit(DepartmentDetailById input)
+    {
+      
+
+        var employees = await _ownerRepository.GetQueryableAsync();
+        var employeesDepartment = from employee in employees
+            join department in await _repository.GetQueryableAsync() on employee.DepartmentId equals department.Id into
+                emmployedepartment
+            from departments in emmployedepartment.DefaultIfEmpty()
+            join contact in await _contactRepository.GetQueryableAsync() on employee.ContactId equals contact.Id into
+                emmployedcontact
+            from contacts in emmployedcontact.DefaultIfEmpty()
+            /*into  departmentowner
+            
+            from  owner in departmentowner.DefaultIfEmpty()
+            */
+            /*where input.Id != Guid.Empty
+                ? employee.DepartmentId != input.Id && departments.OwnerId != employee.Id
+                : 1 == 1*/
+            select new
+            {
+                employee.Id,
+                EmployeeName = employee.Name,
+                contacts.Email,
+                contacts.PhoneNumber
+            };
+
+        var iQueryable = employeesDepartment
+            .WhereIf(!input.EmployeeName.IsNullOrEmpty(),
+                x => x.EmployeeName.ToLower().Contains(input.EmployeeName.ToLower()))
+            .Select(x => new DepartmentWithDetailDto
+            {
+                Id = x.Id,
+                Email = x.Email,
+                EmployeeName = x.EmployeeName,
+                PhoneNumber = x.PhoneNumber
+            });
+        var result = iQueryable.Skip(input.SkipCount)
+            .Take(input.MaxResultCount).ToList();
+        ;
+
+        var totalcount = iQueryable.Count();
+        return new PagedResultDto<DepartmentWithDetailDto>(totalcount, result);
+    }
 
     public static Guid ParseToGuidCheckException(string guid)
     {

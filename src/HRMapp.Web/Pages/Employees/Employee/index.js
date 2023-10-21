@@ -38,6 +38,7 @@ $(function () {
 
             {
                 title: l('EmployeeName'),
+                orderable: false,
                 data: "name",
                 render: function(data, type, row){
                     return data ? "<a href='javascript:void(0);' class='ViewEmployeeBtn' data-id='"+row.id+"'  " +
@@ -109,7 +110,7 @@ $(function () {
                 className: "dt-center",
                 orderable: false,
                 render: function (data,type,row) {
-                    return abp.auth.isGranted('Hrm.Employee.Update') ?  ` <a data-id="${row.id}" class="edit-button" href="#" > <i  class="fa fa-edit"></i> </a>`: "" ;
+                    return abp.auth.isGranted('HRMapp.Employee.Update') ?  ` <a data-id="${row.id}" class="edit-button" href="#" > <i  class="fa fa-edit"></i> </a>`: "" ;
                 }
             },
 
@@ -118,7 +119,7 @@ $(function () {
                 className: "dt-center",
                 orderable: false,
                 render: function (data,type,row) {
-                    return abp.auth.isGranted('Hrm.Employee.Delete') ?  ` <a data-id="${row.id}" class="delete-button text-danger" href="#" > <i  class="fa fa-trash"></i> </a>`: "" ;
+                    return abp.auth.isGranted('HRMapp.Employee.Delete') ?  ` <a data-id="${row.id}" class="delete-button text-danger" href="#" > <i  class="fa fa-trash"></i> </a>`: "" ;
                 }
             },
         ]

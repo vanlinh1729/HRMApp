@@ -11,13 +11,15 @@ public class CreateEditEmployeeViewModel
 
     [Display(Name = "EmployeeOtherName")]
     public string OtherName { get; set; }
+    
+    public string UserName { get; set; }
 
-    [Display(Name = "EmployeeUserId")]
+    [Display(Name = "EmployeeHrmUserId")]
     public Guid? UserId { get; set; }
 
     public string ContactName { get; set; }
     
-    [Display(Name = "EmployeeContactId")]
+    [Display(Name = "EmployeeHrmContactId")]
     public Guid? ContactId { get; set; }
 
     [Display(Name = "EmployeeDepartmentId")]

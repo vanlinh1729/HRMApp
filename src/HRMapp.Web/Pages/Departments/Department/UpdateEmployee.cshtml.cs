@@ -18,14 +18,10 @@ public class UpDateEmployee : HRMappPageModel
     [HiddenInput]
     [BindProperty(SupportsGet = true)]
     public Guid Id { get; set; }
-    
-    public bool JustIsUpdateEmployee { get; set; }
-
     public List<SelectListItem> Owners { get; set; }
     public List<SelectListItem> Parents { get; set; }
     [BindProperty]
     public CreateEditDepartmentViewModel ViewModel { get; set; }
-    public CreateDepartmentAndAddEmployee EmployeeViewModel { get; set; }
     public List<EmployeeNameViewModel> ViewEmployeeNameDepartmentModels { get; set; }
 
     private readonly IDepartmentAppService _service;
