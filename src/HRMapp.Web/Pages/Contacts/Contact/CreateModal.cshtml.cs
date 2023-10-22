@@ -6,22 +6,13 @@ using HRMapp.Web.Pages.Contacts.Contact.ViewModels;
 
 namespace HRMapp.Web.Pages.Contacts.Contact;
 
-public class CreateModalModel : HRMappPageModel
+public class CreateModalModel : CreateOrEditModalModel
 {
-    [BindProperty]
-    public CreateEditContactViewModel ViewModel { get; set; }
 
     private readonly IContactAppService _service;
 
-    public CreateModalModel(IContactAppService service)
+    public CreateModalModel(IContactAppService service): base(service)
     {
         _service = service;
-    }
-
-    public virtual async Task<IActionResult> OnPostAsync()
-    {
-        var dto = ObjectMapper.Map<CreateEditContactViewModel, CreateUpdateContactDto>(ViewModel);
-        await _service.CreateAsync(dto);
-        return NoContent();
     }
 }

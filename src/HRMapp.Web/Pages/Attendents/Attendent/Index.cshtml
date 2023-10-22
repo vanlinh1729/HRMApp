@@ -25,6 +25,7 @@
     <abp-style src="/Pages/Attendents/Attendent/index.css"/>
 }
 
+
 <abp-card>
     <abp-card-header>
         <abp-row>
@@ -32,26 +33,76 @@
                 <abp-card-title>@L["Attendent"]</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-			    @if (await Authorization.IsGrantedAsync(HRMappPermissions.Attendent.Create))
+                @if (await Authorization.IsGrantedAsync(HRMappPermissions.Attendent.Create))
                 {
-                <abp-button id="NewAttendentButton"
-                            text="@L["CreateAttendent"].Value"
-                            icon="plus"
-                            button-type="Primary" />
+                    <abp-button id="NewEmployeetButton"
+                                text="@L["CreateAttendent"].Value"
+                                icon="plus"
+                                button-type="Primary"/>
                 }
             </abp-column>
         </abp-row>
     </abp-card-header>
     <abp-card-body>
         <abp-row class="mb-3">
-            <a abp-collapse-id="AttendentCollapse" class="text-secondary">@L["TableFilter"] </a>
+            <abp-column size-md="_6">
+                <abp-button button-type="Primary" abp-collapse-id="AttendentCollapse">@L["TableFilter"] </abp-button>
+            </abp-column>
+
+            <abp-column size-md="_6" class="text-end">
+                <abp-dropdown >
+                    <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
+                    <abp-dropdown-menu>
+                        <ul style=" list-style-type: none;">
+                            <li >
+
+                                <input class="customcolumn" id="0" checked="true" type="checkbox">@L["Date"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="1" checked="true" type="checkbox">@L["EmployeeName"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="2" checked="true" type="checkbox">@L["daterange"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="3" checked="true" type="checkbox">@L["MissingIn"]</input>
+
+                            </li> 
+                            <li >
+
+                                <input class="customcolumn" id="4" checked="true" type="checkbox">@L["MissingOut"]</input>
+
+                            </li>
+                            @*<li >
+
+                                <input class="customcolumn" id="5" checked="true" type="checkbox">@L["Date"]</input>
+
+                            </li>*@
+                            
+
+                        </ul>
+                    </abp-dropdown-menu>
+                </abp-dropdown>
+
+            </abp-column >
         </abp-row>
-        <abp-dynamic-form abp-model="AttendentFilter" id="AttendentFilter" required-symbols="false" column-size="_3">
-            <abp-collapse-body id="AttendentCollapse">
-                <abp-form-content />
-            </abp-collapse-body>
-        </abp-dynamic-form>
-        <hr />
-        <abp-table striped-rows="true" id="AttendentTable" class="nowrap"/>
+        <abp-collapse-body id="AttendentCollapse">
+            <form id="AttendentFilter" required-symbols="false">
+                <abp-input asp-for="@Model.AttendentFilter.Date"></abp-input>
+                <abp-input asp-for="@Model.AttendentFilter.EmployeeName"></abp-input>
+                <abp-input asp-for="@Model.AttendentFilter.QueryAttendentDateRange"></abp-input>
+                <abp-input asp-for="@Model.AttendentFilter.MissingIn"></abp-input>
+                <abp-input asp-for="@Model.AttendentFilter.MissingOut"></abp-input>
+                @*<abp-select asp-for="@Model.AttendentFilter.Datetime"> </abp-select>*@
+            </form>
+            <hr/>
+        </abp-collapse-body>
+        <abp-table striped-rows="true" id="AttendentTable" class="table-bordered nowrap"/>
     </abp-card-body>
 </abp-card>

@@ -43,16 +43,18 @@ public class HRMappMenuContributor : IMenuContributor
      new ApplicationMenuItem(HRMappMenus.Employee, l["Menu:Employee"],
          "/Employees/Employee", icon: "fas fa-user-circle",
          requiredPermissionName: HRMappPermissions.Employee.Default, order:3)
-         .AddItem(new ApplicationMenuItem(HRMappMenus.AttendentLine, l["Menu:EmployeeHistory"],
+         .AddItem(new ApplicationMenuItem(HRMappMenus.AttendentLine, l["Menu:Employee"],
+             "~/Employees/Employee", requiredPermissionName: HRMappPermissions.Employee.Default))
+         .AddItem(new ApplicationMenuItem(HRMappMenus.EmployeeHistory, l["Menu:EmployeeHistory"],
              "~/Employees/EmployeeHistory", requiredPermissionName: HRMappPermissions.Employee.Default)));
  context.Menu.AddItem(
-     new ApplicationMenuItem(HRMappMenus.Employee, l["Menu:Shift"], "/Employees/Employee",
-             icon: "fas fa-file-alt", requiredPermissionName: HRMappPermissions.Employee.Default,order:4)
-         .AddItem(new ApplicationMenuItem(HRMappMenus.Employee, l["Menu:SetShift"],
-             "/Shifts/Shift", requiredPermissionName: HRMappPermissions.Employee.Default)));
+     new ApplicationMenuItem(HRMappMenus.Employee, l["Menu:Shift"], "/Shifts/Shift",
+         icon: "fa fa-clock-o", requiredPermissionName: HRMappPermissions.Employee.Default, order: 4));
  context.Menu.AddItem(
      new ApplicationMenuItem(HRMappMenus.Employee, l["Menu:Attendent"], "/Attendents/Attendent",
              icon: "fas fa-business-time", requiredPermissionName: HRMappPermissions.Employee.Default, order: 5)
+         .AddItem(new ApplicationMenuItem(HRMappMenus.AttendentLine, l["Menu:Attendent"],
+             "~/Attendents/Attendent", requiredPermissionName: HRMappPermissions.Employee.Default)) 
          .AddItem(new ApplicationMenuItem(HRMappMenus.AttendentLine, l["Menu:AttendentLine"],
              "~/Attendents/AttendentLine", requiredPermissionName: HRMappPermissions.Employee.Default))
          .AddItem(new ApplicationMenuItem(HRMappMenus.AttendentForMonth, l["Menu:AttendentForMonth"],
@@ -63,16 +65,12 @@ public class HRMappMenuContributor : IMenuContributor
          icon: "fas fa-table", requiredPermissionName: HRMappPermissions.Employee.Default, order:6)
          );
  context.Menu.AddItem(
-     new ApplicationMenuItem(HRMappMenus.Employee, l["Menu:Shift"], "/Shifts/Shift",
-         icon: "fas fa-table", requiredPermissionName: HRMappPermissions.Employee.Default, order:7)
- );
- context.Menu.AddItem(
      new ApplicationMenuItem(HRMappMenus.Employee, l["Menu:Contact"], "/Contacts/Contact",
-         icon: "fas fa-table", requiredPermissionName: HRMappPermissions.Employee.Default, order:8)
+         icon: "fa fa-address-book-o", requiredPermissionName: HRMappPermissions.Employee.Default, order:7)
  );
  context.Menu.AddItem(
      new ApplicationMenuItem(HRMappMenus.Employee, l["Menu:Contract"], "/Contracts/Contract",
-         icon: "fas fa-table", requiredPermissionName: HRMappPermissions.Employee.Default, order:9)
+         icon: "fa fa-folder-open", requiredPermissionName: HRMappPermissions.Employee.Default, order:8)
  );
  
 

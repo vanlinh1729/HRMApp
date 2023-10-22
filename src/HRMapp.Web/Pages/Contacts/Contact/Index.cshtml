@@ -32,26 +32,79 @@
                 <abp-card-title>@L["Contact"]</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-			    @if (await Authorization.IsGrantedAsync(HRMappPermissions.Contact.Create))
+                @if (await Authorization.IsGrantedAsync(HRMappPermissions.Contact.Create))
                 {
-                <abp-button id="NewContactButton"
-                            text="@L["CreateContact"].Value"
-                            icon="plus"
-                            button-type="Primary" />
+                    <abp-button id="NewContactButton"
+                                text="@L["CreateContact"].Value"
+                                icon="plus"
+                                button-type="Primary"/>
                 }
             </abp-column>
         </abp-row>
     </abp-card-header>
     <abp-card-body>
         <abp-row class="mb-3">
-            <a abp-collapse-id="ContactCollapse" class="text-secondary">@L["TableFilter"] </a>
+            <abp-column size-md="_6">
+                <abp-button button-type="Primary" abp-collapse-id="ContactCollapse">@L["TableFilter"] </abp-button>
+            </abp-column>
+
+            <abp-column size-md="_6" class="text-end">
+                <abp-dropdown >
+                    <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
+                    <abp-dropdown-menu>
+                        <ul style=" list-style-type: none;">
+                            <li >
+
+                                <input class="customcolumn" id="0" checked="true" type="checkbox">@L["Contact"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="1" checked="true" type="checkbox">@L["ContactGender"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="2" checked="true" type="checkbox">@L["ContactBirthday"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="3" checked="true" type="checkbox">@L["ContactActive"]</input>
+
+                            </li> 
+                            <li >
+
+                                <input class="customcolumn" id="4" checked="true" type="checkbox">@L["ContactEmail"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="5" checked="true" type="checkbox">@L["ContactPhoneNumber"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="6" checked="true" type="checkbox">@L["ContactAddress"]</input>
+
+                            </li>
+                          
+
+                        </ul>
+                    </abp-dropdown-menu>
+                </abp-dropdown>
+
+            </abp-column >
         </abp-row>
-        <abp-dynamic-form abp-model="ContactFilter" id="ContactFilter" required-symbols="false" column-size="_3">
-            <abp-collapse-body id="ContactCollapse">
-                <abp-form-content />
-            </abp-collapse-body>
-        </abp-dynamic-form>
-        <hr />
-        <abp-table striped-rows="true" id="ContactTable" class="nowrap"/>
+        <abp-collapse-body id="ContactCollapse">
+            <form id="ContactFilter" required-symbols="false">
+                <abp-input asp-for="@Model.ContactFilter.Name"></abp-input>
+                <abp-input asp-for="@Model.ContactFilter.Address"></abp-input>
+                <abp-input asp-for="@Model.ContactFilter.Email"></abp-input>
+                <abp-input asp-for="@Model.ContactFilter.PhoneNumber"></abp-input>
+            </form>
+            <hr/>
+        </abp-collapse-body>
+        <abp-table striped-rows="true" id="ContactTable" class="table-bordered nowrap"/>
     </abp-card-body>
 </abp-card>

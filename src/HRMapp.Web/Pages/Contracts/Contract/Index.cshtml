@@ -32,26 +32,65 @@
                 <abp-card-title>@L["Contract"]</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-			    @if (await Authorization.IsGrantedAsync(HRMappPermissions.Contract.Create))
+                @if (await Authorization.IsGrantedAsync(HRMappPermissions.Contract.Create))
                 {
-                <abp-button id="NewContractButton"
-                            text="@L["CreateContract"].Value"
-                            icon="plus"
-                            button-type="Primary" />
+                    <abp-button id="NewContractButton"
+                                text="@L["CreateContract"].Value"
+                                icon="plus"
+                                button-type="Primary"/>
                 }
             </abp-column>
         </abp-row>
     </abp-card-header>
     <abp-card-body>
         <abp-row class="mb-3">
-            <a abp-collapse-id="ContractCollapse" class="text-secondary">@L["TableFilter"] </a>
+            <abp-column size-md="_6">
+                <abp-button button-type="Primary" abp-collapse-id="ContractCollapse">@L["TableFilter"] </abp-button>
+            </abp-column>
+
+            <abp-column size-md="_6" class="text-end">
+                <abp-dropdown >
+                    <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
+                    <abp-dropdown-menu>
+                        <ul style=" list-style-type: none;">
+                            <li >
+
+                                <input class="customcolumn" id="0" checked="true" type="checkbox">@L["ContractEmployeeName"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="1" checked="true" type="checkbox">@L["TimeContract"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="2" checked="true" type="checkbox">@L["ContractDateSign"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="3" checked="true" type="checkbox">@L["ContractCoefficientSalary"]</input>
+
+                            </li> 
+                            
+                          
+
+                        </ul>
+                    </abp-dropdown-menu>
+                </abp-dropdown>
+
+            </abp-column >
         </abp-row>
-        <abp-dynamic-form abp-model="ContractFilter" id="ContractFilter" required-symbols="false" column-size="_3">
-            <abp-collapse-body id="ContractCollapse">
-                <abp-form-content />
-            </abp-collapse-body>
-        </abp-dynamic-form>
-        <hr />
-        <abp-table striped-rows="true" id="ContractTable" class="nowrap"/>
+        <abp-collapse-body id="ContractCollapse">
+            <form id="ContractFilter" required-symbols="false">
+                <abp-input asp-for="@Model.ContractFilter.EmployeeId"></abp-input>
+                <abp-input asp-for="@Model.ContractFilter.TimeContract"></abp-input>
+                <abp-input asp-for="@Model.ContractFilter.SignDate"></abp-input>
+                <abp-input asp-for="@Model.ContractFilter.CoefficientSalary"></abp-input>
+            </form>
+            <hr/>
+        </abp-collapse-body>
+        <abp-table striped-rows="true" id="ContractTable" class="table-bordered nowrap"/>
     </abp-card-body>
 </abp-card>

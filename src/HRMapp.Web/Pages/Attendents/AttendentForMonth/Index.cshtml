@@ -32,26 +32,53 @@
                 <abp-card-title>@L["AttendentForMonth"]</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-			    @if (await Authorization.IsGrantedAsync(HRMappPermissions.AttendentForMonth.Create))
+                @if (await Authorization.IsGrantedAsync(HRMappPermissions.AttendentForMonth.Create))
                 {
-                <abp-button id="NewAttendentForMonthButton"
-                            text="@L["CreateAttendentForMonth"].Value"
-                            icon="plus"
-                            button-type="Primary" />
+                    <abp-button id="NewAttendentForMonthButton"
+                                text="@L["CreateAttendentForMonth"].Value"
+                                icon="plus"
+                                button-type="Primary"/>
                 }
             </abp-column>
         </abp-row>
     </abp-card-header>
     <abp-card-body>
         <abp-row class="mb-3">
-            <a abp-collapse-id="AttendentForMonthCollapse" class="text-secondary">@L["TableFilter"] </a>
+            <abp-column size-md="_6">
+                <abp-button button-type="Primary" abp-collapse-id="AttendentForMonthCollapse">@L["TableFilter"] </abp-button>
+            </abp-column>
+
+            <abp-column size-md="_6" class="text-end">
+                <abp-dropdown >
+                    <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
+                    <abp-dropdown-menu>
+                        <ul style=" list-style-type: none;">
+                            <li >
+
+                                <input class="customcolumn" id="0" checked="true" type="checkbox">@L["AttendentForMonthEmployeeName"]</input>
+
+                            </li>
+                            <li >
+
+                                <input class="customcolumn" id="1" checked="true" type="checkbox">@L["Date"]</input>
+
+                            </li>
+                            
+
+                        </ul>
+                    </abp-dropdown-menu>
+                </abp-dropdown>
+
+            </abp-column >
         </abp-row>
-        <abp-dynamic-form abp-model="AttendentForMonthFilter" id="AttendentForMonthFilter" required-symbols="false" column-size="_3">
-            <abp-collapse-body id="AttendentForMonthCollapse">
-                <abp-form-content />
-            </abp-collapse-body>
-        </abp-dynamic-form>
-        <hr />
-        <abp-table striped-rows="true" id="AttendentForMonthTable" class="nowrap"/>
+        <abp-collapse-body id="AttendentForMonthCollapse">
+            <form id="AttendentForMonthFilter" required-symbols="false">
+                <abp-input asp-for="@Model.AttendentForMonthFilter.EmployeeId"></abp-input>
+                <abp-input asp-for="@Model.AttendentForMonthFilter.Month"></abp-input>
+                
+            </form>
+            <hr/>
+        </abp-collapse-body>
+        <abp-table striped-rows="true" id="AttendentForMonthTable" class="table-bordered nowrap"/>
     </abp-card-body>
 </abp-card>
