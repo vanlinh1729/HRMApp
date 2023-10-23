@@ -1,0 +1,47 @@
+﻿@page
+@using HRMapp.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Contacts.Contact.ViewModalModel
+@{
+    Layout = null;
+}
+<abp-modal>
+    <abp-modal-header title="@L["Contact"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-table>
+            <tbody>
+            <tr>
+                <th>@L["ContactName"].Value</th>
+                <td>@Model.ViewModel.Name</td>
+            </tr>
+            <tr>
+                <th>@L["ContactGender"].Value</th>
+                <td>@Model.ViewModel.Gender</td>
+            </tr>
+            <tr>
+                <th>@L["ContactBirthDay"].Value</th>
+                <td>@Model.ViewModel.BirthDay</td>
+            </tr>
+            <tr>
+                <th>@L["ContactActive"].Value</th>
+                <td>@Model.ViewModel.Active</td>
+            </tr>
+            <tr>
+                <th>@L["ContactEmail"].Value</th>
+                <td>@Model.ViewModel.Email</td>
+            </tr>
+            <tr>
+                <th>@L["ContacPhoneNumber"].Value</th>
+                <td>@Model.ViewModel.PhoneNumber</td>
+            </tr>
+            <tr>
+                <th>@L["ContactAddress"].Value</th>
+                <td>@Model.ViewModel.Address</td>
+            </tr>
+            </tbody>
+        </abp-table>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+</abp-modal>
