@@ -4,6 +4,7 @@ $(function () {
         dataTable.ajax.reload();
     });
 
+    $('#EmployeeHistoryFilter div').addClass('col-sm-3').parent().addClass('row');
     //After abp v7.2 use dynamicForm 'column-size' instead of the following settings
     //$('#EmployeeHistoryCollapse div').addClass('col-sm-3').parent().addClass('row');
 
@@ -22,8 +23,10 @@ $(function () {
     var l = abp.localization.getResource('HRMapp');
 
     var service = hRMapp.employees.employeeHistory;
-    var createModal = new abp.ModalManager(abp.appPath + 'Employees/EmployeeHistory/CreateModal');
-    var editModal = new abp.ModalManager(abp.appPath + 'Employees/EmployeeHistory/EditModal');
+    var host_name = "https://localhost:44350";
+    var createModal = new abp.ModalManager(host_name + '/Employees/EmployeeHistory/CreateModal');
+    var editModal = new abp.ModalManager(host_name + '/Employees/EmployeeHistory/EditModal');
+    var viewModal = new abp.ModalManager(host_name + '/Employees/EmployeeHistory/ViewModal');
 
     var dataTable = $('#EmployeeHistoryTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -36,51 +39,75 @@ $(function () {
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
         columnDefs: [
             {
-                rowAction: {
-                    items:
-                        [
-                            {
-                                text: l('Edit'),
-                                visible: abp.auth.isGranted('HRMapp.EmployeeHistory.Update'),
-                                action: function (data) {
-                                    editModal.open({ id: data.record.id });
-                                }
-                            },
-                            {
-                                text: l('Delete'),
-                                visible: abp.auth.isGranted('HRMapp.EmployeeHistory.Delete'),
-                                confirmMessage: function (data) {
-                                    return l('EmployeeHistoryDeletionConfirmationMessage', data.record.id);
-                                },
-                                action: function (data) {
-                                    service.delete(data.record.id)
-                                        .then(function () {
-                                            abp.notify.info(l('SuccessfullyDeleted'));
-                                            dataTable.ajax.reload();
-                                        });
-                                }
-                            }
-                        ]
+                title: l('EmployeeName'),
+                orderable: false,
+                data: "employeeName",
+                render: function(data, type, row){
+                    return data ? "<a href='javascript:void(0);' class='ViewEmployeeHistoryBtn' data-id='"+row.id+"'  " +
+                        "style=\"text-decoration: none\">"+data+"</a>" : "";
                 }
             },
+
+
             {
+                width: "1%",
                 title: l('EmployeeHistoryStart'),
                 data: "start"
             },
             {
+                width: "1%",
                 title: l('EmployeeHistoryEnd'),
                 data: "end"
             },
             {
+                width: "1%",
                 title: l('EmployeeHistoryOrganization'),
                 data: "organization"
-            },
-            {
+            },{
+                width: "1%",
                 title: l('EmployeeHistoryDescription'),
                 data: "description"
             },
+            {    width: "1%",
+                title: l('Edit'),
+                className: "dt-center",
+                orderable: false,
+                render: function (data,type,row) {
+                    return abp.auth.isGranted('HRMapp.EmployeeHistory.Update') ?  ` <a data-id="${row.id}" class="edit-button" href="#" > <i  class="fa fa-edit"></i> </a>`: "" ;
+                }
+            },
+            {    
+                width: "1%",
+                title: l('Delete'),
+                className: "dt-center",
+                orderable: false,
+                render: function (data,type,row) {
+                    return abp.auth.isGranted('HRMapp.EmployeeHistory.Delete') ?  ` <a data-id="${row.id}" class="delete-button text-danger" href="#" > <i  class="fa fa-trash"></i> </a>`: "" ;
+                }
+            },
         ]
     }));
+    // edit record
+    $(document).on('click', '.edit-button', function (e) {
+        editModal.open({id: this.dataset.id});
+    });
+    // delete record
+    $(document).on('click', '.delete-button', function (e) {
+        var id = this.dataset.id;
+        abp.message.confirm(l('EmployeeHistoryDeletionConfirmationMessage',id))
+            .then(function(confirmed){
+                if(confirmed){
+                    service.delete(id)
+                        .then(function () {
+                            abp.notify.info(l('SuccessfullyDeleted'));
+                            dataTable.ajax.reload();
+                        });
+                }
+            });
+    });
+    //visible column
+    dataTable.column([]).visible(false, false);
+
 
     createModal.onResult(function () {
         dataTable.ajax.reload();
@@ -93,5 +120,20 @@ $(function () {
     $('#NewEmployeeHistoryButton').click(function (e) {
         e.preventDefault();
         createModal.open();
+    });
+    $(document).on('click','.ViewEmployeeHistoryBtn', function (e) {
+        e.preventDefault();
+        console.log(e);
+        var id = this.dataset.id;
+        viewModal.open({id});
+    });
+    $('input.customcolumn').on('click', function (e) {
+        // e.preventDefault();
+
+        // Get the column API object
+        var column = dataTable.column($(this).attr('id'));
+
+        // Toggle the visibility
+        column.visible(!column.visible());
     });
 });

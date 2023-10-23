@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRMapp.Web.Pages.Departments.Department;
 
-public class UpDateEmployee : HRMappPageModel
+public class UpdateEmployee : HRMappPageModel
 {
 
     [HiddenInput]
@@ -26,7 +26,7 @@ public class UpDateEmployee : HRMappPageModel
 
     private readonly IDepartmentAppService _service;
 
-    public UpDateEmployee(IDepartmentAppService service)
+    public UpdateEmployee(IDepartmentAppService service)
     {
         _service = service;
     }
@@ -35,6 +35,7 @@ public class UpDateEmployee : HRMappPageModel
     {
         var dto = await _service.GetDepartmentDetail(Id);
         ViewModel = ObjectMapper.Map<DepartmentDto, CreateEditDepartmentViewModel>(dto);
+        
         var owners = await _service.GetListOwnerAsync();
         Owners = owners.Items.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
             .ToList();

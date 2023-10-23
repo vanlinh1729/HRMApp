@@ -5,6 +5,12 @@ namespace HRMapp.Web.Pages.Employees.EmployeeHistory.ViewModels;
 
 public class CreateEditEmployeeHistoryViewModel
 {
+    [Display(Name = "EmployeeHistoryEmployeeName")]
+    public string EmployeeName { get; set; }
+    
+    [Display(Name = "EmployeeHistoryEmployeeId")]
+    public Guid EmployeeId { get; set; }
+    
     [Display(Name = "EmployeeHistoryStart")]
     public DateTime Start { get; set; }
 

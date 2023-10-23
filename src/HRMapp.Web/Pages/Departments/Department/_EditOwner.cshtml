@@ -9,6 +9,5 @@
 <abp-select  asp-for="ViewModel.OwnerId" asp-items="@Model.Owners" label="@L["newOwnerName"].Value">
         <option value="" >@L["NoOption"]</option>
 </abp-select>
-<select hidden="hidden" asp-for="ViewModel.ParentId" asp-items="@Model.Parents" >
-    </select>
+<select hidden="hidden" asp-for="ViewModel.ParentId" asp-items="@Model.Parents" ></select>
 

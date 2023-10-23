@@ -1,5 +1,7 @@
 using System;
+using System.Threading.Tasks;
 using HRMapp.Employees.Dtos;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace HRMapp.Employees;
@@ -14,4 +16,6 @@ public interface IEmployeeHistoryAppService :
         CreateUpdateEmployeeHistoryDto>
 {
 
+    Task<ListResultDto<SelectResultDto>> GetListEmployees();
+    Task<EmployeeHistoryDto> GetEmployeeHistoryDetail(Guid employeeHistoryId);
 }

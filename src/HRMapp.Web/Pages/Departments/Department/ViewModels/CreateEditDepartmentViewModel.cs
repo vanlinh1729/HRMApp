@@ -15,9 +15,9 @@ public class CreateEditDepartmentViewModel
     [Display(Name = "DepartmentParentId")]
     public Guid? ParentId { get; set; }
     
-    [CanBeNull] public string OwnerName { get; set; }
+    public string? OwnerName { get; set; }
     
-    [CanBeNull] public string ParentName { get; set; }
+    public string? ParentName { get; set; }
 
     [CanBeNull] public Guid[] employeeId { get; set; }
 }
