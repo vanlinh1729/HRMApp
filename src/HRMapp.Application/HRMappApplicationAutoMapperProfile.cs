@@ -61,11 +61,13 @@ public class HRMappApplicationAutoMapperProfile : Profile
      
         CreateMap<Employee, SelectResultDto>();
         CreateMap<Employee,EmployeeDto>();
+        CreateMap<EmployeeHistory ,EmployeeHistoryDto>();
         
         CreateMap<CreateUpdateAttendentLineDto, AttendentLine>(MemberList.Source);
         CreateMap<Attendent, SelectResultDto>().Ignore(x=>x.Name);
         CreateMap<Shift, SelectResultDto>();
         CreateMap<IdentityUser, SelectResultDto>();
+        CreateMap<CreateUpdateEmployeeHistoryDto, EmployeeHistory>();
 
         CreateMap<Contact, ContactDto>();
     }

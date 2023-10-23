@@ -8,9 +8,11 @@ namespace HRMapp.Departments.Dtos;
 public class DepartmentDto : FullAuditedEntityDto<Guid>
 {
     public string Name { get; set; }
-    public string? OwnerName { get; set; }
+    [CanBeNull] 
+    public string OwnerName { get; set; }
     public Guid? OwnerId { get; set;}
-    public string? ParentName { get; set; }
+    [CanBeNull] 
+    public string ParentName { get; set; }
     public Guid? ParentId { get; set;}
     
     public int Count { get; set;}

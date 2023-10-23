@@ -18,6 +18,10 @@ public class IndexModel : HRMappPageModel
 public class EmployeeHistoryFilterInput
 {
     [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "EmployeeHistoryEmployeeName")]
+    public string? EmployeeName { get; set; }
+    
+    [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "EmployeeHistoryStart")]
     public DateTime? Start { get; set; }
 

@@ -6,6 +6,10 @@ namespace HRMapp.Employees.Dtos;
 [Serializable]
 public class EmployeeHistoryDto : FullAuditedEntityDto<Guid>
 {
+    public string EmployeeName { get; set; }
+    
+    public Guid EmployeeId { get; set; }
+    
     public DateTime Start { get; set; }
 
     public DateTime End { get; set; }

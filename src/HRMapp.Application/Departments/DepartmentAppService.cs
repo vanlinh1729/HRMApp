@@ -177,7 +177,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
     } 
 
     [UnitOfWork]
-    public async Task<DepartmentDto> UpdateDepartmentWithManyEmployeeAsync(Guid departmentId,CreateDepartmentAndAddEmployee input)
+    public async Task<string> UpdateDepartmentWithManyEmployeeAsync(Guid departmentId,CreateDepartmentAndAddEmployee input)
     {
         var department = await _repository.GetAsync(departmentId);
         if (department == null)
@@ -201,14 +201,15 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         }              
         foreach (var em in employeeinDepartment)
         {
-            em.DepartmentId = Guid.Empty;
+            em.DepartmentId = null;
         }        
         employees.AddRange(employeeinDepartment);
-        await _ownerRepository.UpdateManyAsync(employees);
+        await _ownerRepository.UpdateManyAsync(employeeinDepartment);
         /*}*/
         
 
-        return ObjectMapper.Map<Department,DepartmentDto>(department);
+        // return ObjectMapper.Map<Department,DepartmentDto>(department);
+        return "ok";
     }
 
     public async Task<List<DepartmentChangeOwnerDto>> GetDepartmentChangeListAsync(Guid departmentId)
