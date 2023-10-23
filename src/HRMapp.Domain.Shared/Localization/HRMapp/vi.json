@@ -258,6 +258,10 @@
     "Menu:EmployeeHistory": "Tiểu Sử Nhân Viên",
     "Menu:AttendentLine" : "Dòng Chấm Công",
     "Menu:AttendentForMonth": "Chấm Công theo Tháng",
-
+    "ContractEmployeeName": "Họ Tên ",
+    "ContractDateSign": "Ngày Kí Hợp Đồng",
+    "ContractCoefficientSalary": "Hệ số lương",
+    "CreateContact": "Tạo liên lạc",
+    "CreateContract": "Tạo Hợp đồng"
   }
 } 

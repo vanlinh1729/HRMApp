@@ -43,10 +43,10 @@ $(function () {
                 title: l('EmployeeName'),
                 orderable: false,
                 data: "employeeId",
-                render: function(data, type, row){
+                /*render: function(data, type, row){
                     return data ? "<a href='javascript:void(0);' class='ViewContractBtn' data-id='"+row.id+"'  " +
                         "style=\"text-decoration: none\">"+data+"</a>" : "";
-                }
+                }*/
             },
 
 
@@ -131,12 +131,12 @@ $(function () {
         createModal.open();
     });
 
-    $(document).on('click','.ViewContractBtn', function (e) {
+    /*$(document).on('click','.ViewContractBtn', function (e) {
         e.preventDefault();
         console.log(e);
         var id = this.dataset.id;
         viewModal.open({id});
-    });
+    });*/
 
     $('input.customcolumn').on('click', function (e) {
         // e.preventDefault();
