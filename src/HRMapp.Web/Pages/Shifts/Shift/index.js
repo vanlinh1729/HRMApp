@@ -3,6 +3,8 @@ $(function () {
     $("#ShiftFilter :input").on('input', function () {
         dataTable.ajax.reload();
     });
+    $('#ShiftFilter div').addClass('col-sm-3').parent().addClass('row');
+
 
     //After abp v7.2 use dynamicForm 'column-size' instead of the following settings
     //$('#ShiftCollapse div').addClass('col-sm-3').parent().addClass('row');
@@ -22,8 +24,10 @@ $(function () {
     var l = abp.localization.getResource('HRMapp');
 
     var service = hRMapp.shifts.shift;
-    var createModal = new abp.ModalManager(abp.appPath + 'Shifts/Shift/CreateModal');
-    var editModal = new abp.ModalManager(abp.appPath + 'Shifts/Shift/EditModal');
+    var host_name = "https://localhost:44350";
+    var createModal = new abp.ModalManager(host_name + '/Shifts/Shift/CreateModal');
+    var editModal = new abp.ModalManager(host_name + '/Shifts/Shift/EditModal');
+    var viewModal = new abp.ModalManager(host_name + '/Shifts/Shift/ViewModal');
 
     var dataTable = $('#ShiftTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -36,58 +40,82 @@ $(function () {
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
         columnDefs: [
             {
-                rowAction: {
-                    items:
-                        [
-                            {
-                                text: l('Edit'),
-                                visible: abp.auth.isGranted('HRMapp.Shift.Update'),
-                                action: function (data) {
-                                    editModal.open({ id: data.record.id });
-                                }
-                            },
-                            {
-                                text: l('Delete'),
-                                visible: abp.auth.isGranted('HRMapp.Shift.Delete'),
-                                confirmMessage: function (data) {
-                                    return l('ShiftDeletionConfirmationMessage', data.record.id);
-                                },
-                                action: function (data) {
-                                    service.delete(data.record.id)
-                                        .then(function () {
-                                            abp.notify.info(l('SuccessfullyDeleted'));
-                                            dataTable.ajax.reload();
-                                        });
-                                }
-                            }
-                        ]
+                title: l('ShiftName'),
+                data: "name",
+                render: function(data, type, row){
+                    return data ? "<a href='javascript:void(0);' class='ViewShiftBtn' data-id='"+row.id+"'  style=\"text-decoration: none\">"+data+"</a>" : "";
                 }
             },
+
+
             {
-                title: l('ShiftName'),
-                data: "name"
-            },
-            {
-                title: l('ShiftStart'),
+                width: "1%",
+                title: l('Start'),
                 data: "start"
             },
+
+
             {
-                title: l('ShiftEnd'),
+                width: "1%",
+                title: l('End'),
                 data: "end"
             },
             {
-                title: l('ShiftTimeStartCheckin'),
+                width: "1%",
+                title: l('TimeStartCheckin'),
                 data: "timeStartCheckin"
             },
             {
-                title: l('ShiftTimeStopCheckout'),
+                width: "1%",
+                title: l('TimeStopCheckout'),
                 data: "timeStopCheckout"
+            },
+            {
+                className: "dt-center",
+                width: "1%",
+                title: l('Edit'),
+                orderable: false,
+                render: function (data,type,row) {
+                    return abp.auth.isGranted('HRMapp.Shift.Update') ?  ` <a data-id="${row.id}" class="edit-button" href="#" > <i  class="fa fa-edit"></i> </a>`: "" ;
+                }
+            },
+
+            {
+                className: "dt-center",
+                width: "1%",
+                title: l('Delete'),
+                orderable: false,
+                render: function (data,type,row) {
+                    return abp.auth.isGranted('HRMapp.Shift.Delete') ?  ` <a data-id="${row.id}" class="delete-button text-danger" href="#" > <i  class="fa fa-trash"></i> </a>`: "" ;
+                }
             },
         ]
     }));
 
+    // edit record
+    $(document).on('click', '.edit-button', function (e) {
+        editModal.open({id: this.dataset.id});
+    });
+    // delete record
+    $(document).on('click', '.delete-button', function (e) {
+        var id = this.dataset.id;
+        abp.message.confirm(l('ShiftDeletionConfirmationMessage',id))
+            .then(function(confirmed){
+                if(confirmed){
+                    service.delete(id)
+                        .then(function () {
+                            abp.notify.info(l('SuccessfullyDeleted'));
+                            dataTable.ajax.reload();
+                        });
+                }
+            });
+    });
+    //visible column
+    dataTable.column([]).visible( false, false );
+
     createModal.onResult(function () {
         dataTable.ajax.reload();
+
     });
 
     editModal.onResult(function () {
@@ -98,4 +126,35 @@ $(function () {
         e.preventDefault();
         createModal.open();
     });
+
+    $(document).on('click','.ViewShiftBtn', function (e) {
+        e.preventDefault();
+        console.log(e);
+        var id = this.dataset.id;
+        viewModal.open({id});
+    });
+    $('input.customcolumn').on('click', function (e) {
+        // e.preventDefault();
+
+        // Get the column API object
+        var column = dataTable.column($(this).attr('id'));
+
+        // Toggle the visibility
+        column.visible(!column.visible());
+    });
 });
+
+
+
+/*
+$('input[name="starttime"]').daterangepicker({
+    singleTimePicker: true,
+    timePicker24Hour: true,
+    timePickerIncrement: 1,
+    timePickerSeconds: true,
+    locale: {
+        format: 'HH:mm:ss'
+    }
+}).on('show.daterangepicker', function (ev, picker) {
+    picker.container.find(".calendar-table").hide();
+});*/

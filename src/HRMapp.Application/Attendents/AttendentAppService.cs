@@ -24,19 +24,23 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
         _repository = repository;
     }
 
-    protected override async Task<IQueryable<Attendent>> CreateFilteredQueryAsync(AttendentGetListInput input)
-    {
-        // TODO: AbpHelper generated
-        return (await base.CreateFilteredQueryAsync(input))
-            /*
-            .WhereIf(input.Date != null, x => x.Date == input.Date)
-            */
-            .WhereIf(input.EmployeeId != null, x => x.EmployeeId == input.EmployeeId)
-            .WhereIf(input.MissingIn != null, x => x.MissingIn == input.MissingIn)
-            .WhereIf(input.MissingOut != null, x => x.MissingOut == input.MissingOut)
-            /*
-            .WhereIf(input.AttendentLines != null, x => x.AttendentLines == input.AttendentLines)
-            */
-            ;
-    }
+    // protected override async Task<IQueryable<Attendent>> CreateFilteredQueryAsync(AttendentGetListInput input)
+    // {
+    //     // TODO: AbpHelper generated
+    //     return (await base.CreateFilteredQueryAsync(input))
+    //         /*
+    //         .WhereIf(input.Date != null, x => x.Date == input.Date)
+    //         */
+    //         .WhereIf(input.EmployeeId != null, x => x.EmployeeId == input.EmployeeId)
+    //         .WhereIf(input.MissingIn != null, x => x.MissingIn == input.MissingIn)
+    //         .WhereIf(input.MissingOut != null, x => x.MissingOut == input.MissingOut)
+    //         /*
+    //         .WhereIf(input.AttendentLines != null, x => x.AttendentLines == input.AttendentLines)
+    //         */
+    //         ;
+    // }
+    
+    
+    
+    
 }

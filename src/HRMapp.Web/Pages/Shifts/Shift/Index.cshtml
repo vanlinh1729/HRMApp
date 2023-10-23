@@ -44,14 +44,55 @@
     </abp-card-header>
     <abp-card-body>
         <abp-row class="mb-3">
-            <a abp-collapse-id="ShiftCollapse" class="text-secondary">@L["TableFilter"] </a>
-        </abp-row>
-        <abp-dynamic-form abp-model="ShiftFilter" id="ShiftFilter" required-symbols="false" column-size="_3">
-            <abp-collapse-body id="ShiftCollapse">
-                <abp-form-content />
-            </abp-collapse-body>
-        </abp-dynamic-form>
-        <hr />
+            <abp-column size-md="_6">
+                <abp-button button-type="Primary" abp-collapse-id="ShiftCollapse">@L["TableFilter"] </abp-button>
+             </abp-column>
+
+        <abp-column size-md="_6" class="text-end">
+            <abp-dropdown >
+                <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
+                <abp-dropdown-menu>
+                    <ul style=" list-style-type: none;">
+                        <li >
+
+                            <input class="customcolumn" id="0" checked="true" type="checkbox">@L["ShiftName"]</input>
+
+                        </li>
+                        <li >
+
+                            <input class="customcolumn" id="1" checked="true" type="checkbox">@L["ShiftStart"]</input>
+
+                        </li>
+                        <li >
+
+                            <input class="customcolumn" id="2" checked="true" type="checkbox">@L["ShiftEnd"]</input>
+
+                        </li> 
+                        <li >
+
+                            <input class="customcolumn" id="3" checked="true" type="checkbox">@L["ShiftTimeStartCheckIn"]</input>
+
+                        </li> 
+                        <li >
+
+                            <input class="customcolumn" id="4" checked="true" type="checkbox">@L["ShiftTimeStopCheckout"]</input>
+
+                        </li>
+
+                    </ul>
+                </abp-dropdown-menu>
+            </abp-dropdown>
+        
+        </abp-column >
+                </abp-row>
+        <abp-collapse-body id="ShiftCollapse">
+            <form id="ShiftFilter" required-symbols="false">
+                <abp-input asp-for="@Model.ShiftFilter.Name"></abp-input>
+                <abp-input type="time" asp-for="@Model.ShiftFilter.Start"></abp-input>
+                <abp-input type="time" asp-for="@Model.ShiftFilter.End"></abp-input>
+            </form>
+            <hr />
+        </abp-collapse-body>
         <abp-table striped-rows="true" id="ShiftTable" class="nowrap"/>
     </abp-card-body>
 </abp-card>
