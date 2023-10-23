@@ -5,7 +5,9 @@ namespace HRMapp.Contracts.Dtos;
 [Serializable]
 public class CreateUpdateContractDto
 {
-    public Guid? EmployeeId { get; set; }
+    public string EmployeeName { get; set; }
+
+    public Guid EmployeeId { get; set; }
 
     public TimeContract TimeContract { get; set; }
 

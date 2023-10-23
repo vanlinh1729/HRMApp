@@ -1,0 +1,35 @@
+﻿@page
+@using HRMapp.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Contracts.Contract.ViewModalModel
+@{
+    Layout = null;
+}
+<abp-modal>
+    <abp-modal-header title="@L["Contract"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-table>
+            <tbody>
+            <tr>
+                <th>@L["EmployeeName"].Value</th>
+                <td>@Model.ViewModel.EmployeeName</td>
+            </tr>
+            <tr>
+                <th>@L["ContractTimeContract"].Value</th>
+                <td>@Model.ViewModel.TimeContract</td>
+            </tr>
+            <tr>
+                <th>@L["ContractCoefficientSalary"].Value</th>
+                <td>@Model.ViewModel.CoefficientSalary</td>
+            </tr>
+            <tr>
+                <th>@L["ContractSignDate"].Value</th>
+                <td>@Model.ViewModel.SignDate</td>
+            </tr>
+            </tbody>
+        </abp-table>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+</abp-modal>
