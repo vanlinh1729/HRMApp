@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using HRMapp.Localization
+@using HRMapp.Localization
+@inject IHtmlLocalizer<HRMappResource> L
+
+@model HRMapp.Web.Pages.Contacts.Contact.CreateModalModel
+<abp-input asp-for="ViewModel.Name"/>
+<abp-select asp-for="ViewModel.Gender"/>
+<abp-input asp-for="ViewModel.BirthDay"/>
+<abp-input asp-for="ViewModel.Active"/>
+<abp-input asp-for="ViewModel.Email"/>
+<abp-input asp-for="ViewModel.PhoneNumber"/>
+<abp-input asp-for="ViewModel.Address"/>
