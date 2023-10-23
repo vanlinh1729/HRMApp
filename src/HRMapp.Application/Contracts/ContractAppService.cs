@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using HRMapp.Contacts.Dtos;
 using HRMapp.Permissions;
 using HRMapp.Contracts.Dtos;
 using Volo.Abp.Application.Services;
@@ -23,7 +24,6 @@ public class ContractAppService : CrudAppService<Contract, ContractDto, Guid, Co
     {
         _repository = repository;
     }
-
     protected override async Task<IQueryable<Contract>> CreateFilteredQueryAsync(ContractGetListInput input)
     {
         // TODO: AbpHelper generated
@@ -34,4 +34,6 @@ public class ContractAppService : CrudAppService<Contract, ContractDto, Guid, Co
             .WhereIf(input.CoefficientSalary != null, x => x.CoefficientSalary == input.CoefficientSalary)
             ;
     }
+   
+
 }

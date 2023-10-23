@@ -245,7 +245,23 @@
     "Female": "Nữ",
     "Gender": "Giới tính",
     "BirthDay": "Ngày sinh",
-
-
+    "ContactAddress": "Địa chỉ",
+    "ContactPhoneNumber": "Số điện thoại",
+    "ContactEmail": "Email",
+    "ContactActive": "Trạng thái",
+    "ContactBirthday": "Ngày sinh",
+    "Menu:Contact": "Liên Lạc" ,
+    "ContractName": "Tên Hợp Đồng",
+    "ContactName": "Tên liên lạc",
+    "ContactGender": "Giới Tính",
+    "Menu:Attendent": "Chấm Công",
+    "Menu:EmployeeHistory": "Tiểu Sử Nhân Viên",
+    "Menu:AttendentLine" : "Dòng Chấm Công",
+    "Menu:AttendentForMonth": "Chấm Công theo Tháng",
+    "ContractEmployeeName": "Họ Tên ",
+    "ContractDateSign": "Ngày Kí Hợp Đồng",
+    "ContractCoefficientSalary": "Hệ số lương",
+    "CreateContact": "Tạo liên lạc",
+    "CreateContract": "Tạo Hợp đồng"
   }
 } 
