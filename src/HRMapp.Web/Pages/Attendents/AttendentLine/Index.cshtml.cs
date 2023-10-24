@@ -20,7 +20,11 @@ public class AttendentLineFilterInput
 {
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "AttendentName")]
-    public string AttendentName { get; set; }
+    public string EmmployeeName { get; set; } 
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "AttendentName")]
+    public Guid AttendentId { get; set; }
     
 
     [FormControlSize(AbpFormControlSize.Small)]
@@ -35,5 +39,13 @@ public class AttendentLineFilterInput
 
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "ShiftName")]
-    public string ShiftName { get; set; }
+    public string ShiftName { get; set; } 
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "TimeMissingIn")]
+    public int TimeMissingIn { get; set; } 
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "TimeMissingOut")]
+    public int TimeMissingOut { get; set; }
 }

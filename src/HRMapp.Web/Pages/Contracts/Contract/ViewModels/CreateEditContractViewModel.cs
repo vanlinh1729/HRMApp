@@ -7,6 +7,9 @@ namespace HRMapp.Web.Pages.Contracts.Contract.ViewModels;
 public class CreateEditContractViewModel
 {
     [Display(Name = "ContractEmployeeId")]
+    public string? EmployeeName { get; set; } 
+    
+    [Display(Name = "ContractEmployeeId")]
     public Guid? EmployeeId { get; set; }
 
     [Display(Name = "ContractTimeContract")]

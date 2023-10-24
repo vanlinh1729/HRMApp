@@ -73,8 +73,6 @@
                                 <input class="customcolumn" id="3" checked="true" type="checkbox">@L["ContractCoefficientSalary"]</input>
 
                             </li> 
-                            
-                          
 
                         </ul>
                     </abp-dropdown-menu>
@@ -84,7 +82,7 @@
         </abp-row>
         <abp-collapse-body id="ContractCollapse">
             <form id="ContractFilter" required-symbols="false">
-                <abp-input asp-for="@Model.ContractFilter.EmployeeId"></abp-input>
+                <abp-input asp-for="@Model.ContractFilter.EmployeeName"></abp-input>
                 <abp-input asp-for="@Model.ContractFilter.TimeContract"></abp-input>
                 <abp-input asp-for="@Model.ContractFilter.SignDate"></abp-input>
                 <abp-input asp-for="@Model.ContractFilter.CoefficientSalary"></abp-input>

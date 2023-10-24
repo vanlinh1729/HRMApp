@@ -7,6 +7,8 @@ namespace HRMapp.Contracts.Dtos;
 [Serializable]
 public class ContractGetListInput : PagedAndSortedResultRequestDto
 {
+    public string? EmployeeName { get; set; }
+    
     public Guid? EmployeeId { get; set; }
 
     public TimeContract? TimeContract { get; set; }

@@ -1,0 +1,37 @@
+@page
+@using HRMapp.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Shifts.Shift.ViewModalModel
+@{
+    Layout = null;
+}
+<abp-modal>
+    <abp-modal-header title="@L["Shift"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-table>
+            <tbody>
+            <tr>
+                <th>@L["shiftName"].Value</th>
+                <td>@Model.ViewModel.Name</td>
+            </tr>
+            <tr>
+                <th>@L["Start"].Value</th>
+                <td>@Model.ViewModel.Start</td>
+            </tr>
+            <tr>
+                <th>@L["End"].Value</th>
+                <td>@Model.ViewModel.End</td>
+            </tr>            <tr>
+                <th>@L["End"].Value</th>
+                <td>@Model.ViewModel.TimeStartCheckin</td>
+            </tr>            <tr>
+                <th>@L["End"].Value</th>
+                <td>@Model.ViewModel.TimeStopCheckout</td>
+            </tr>
+            </tbody>
+        </abp-table>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+</abp-modal>

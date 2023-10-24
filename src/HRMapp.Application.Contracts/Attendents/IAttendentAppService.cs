@@ -1,5 +1,7 @@
 using System;
+using System.Threading.Tasks;
 using HRMapp.Attendents.Dtos;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace HRMapp.Attendents;
@@ -13,5 +15,6 @@ public interface IAttendentAppService :
         CreateUpdateAttendentDto,
         CreateUpdateAttendentDto>
 {
+    Task<ListResultDto<SelectResultDto>> GetListEmployeeAsync();
 
 }

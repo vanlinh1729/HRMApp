@@ -20,6 +20,10 @@ public class ContractFilterInput
 {
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "ContractEmployeeId")]
+    public string? EmployeeName { get; set; }
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "ContractEmployeeId")]
     public Guid? EmployeeId { get; set; }
 
     [FormControlSize(AbpFormControlSize.Small)]

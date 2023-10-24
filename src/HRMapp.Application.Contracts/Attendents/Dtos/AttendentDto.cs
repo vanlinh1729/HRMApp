@@ -10,6 +10,8 @@ public class AttendentDto : FullAuditedEntityDto<Guid>
 {
     public DateTime Date { get; set; }
 
+    public string EmployeeName { get; set; }
+    
     public Guid EmployeeId { get; set; }
 
     public int MissingIn { get; set; }
