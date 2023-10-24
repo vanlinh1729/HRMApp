@@ -65,7 +65,7 @@ $(function () {
             },
             {
                 title: l('AttendentLineAttendentId'),
-                data: "attendentId"
+                data: "employeeName"
             },
             {
                 title: l('AttendentLineTimeCheck'),
@@ -77,7 +77,7 @@ $(function () {
             },
             {
                 title: l('AttendentLineShiftId'),
-                data: "shiftId"
+                data: "shiftName"
             },
             {
                 title: l('AttendentLineTimeMissingIn'),

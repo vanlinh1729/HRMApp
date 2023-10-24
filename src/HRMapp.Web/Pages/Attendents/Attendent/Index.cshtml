@@ -33,12 +33,12 @@
                 <abp-card-title>@L["Attendent"]</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-end">
-                @if (await Authorization.IsGrantedAsync(HRMappPermissions.Attendent.Create))
+			    @if (await Authorization.IsGrantedAsync(HRMappPermissions.Attendent.Create))
                 {
-                    <abp-button id="NewEmployeetButton"
-                                text="@L["CreateAttendent"].Value"
-                                icon="plus"
-                                button-type="Primary"/>
+                <abp-button id="NewAttendentButton"
+                            text="@L["CreateAttendent"].Value"
+                            icon="plus"
+                            button-type="Primary" />
                 }
             </abp-column>
         </abp-row>
@@ -47,62 +47,49 @@
         <abp-row class="mb-3">
             <abp-column size-md="_6">
                 <abp-button button-type="Primary" abp-collapse-id="AttendentCollapse">@L["TableFilter"] </abp-button>
-            </abp-column>
+             </abp-column>
 
-            <abp-column size-md="_6" class="text-end">
-                <abp-dropdown >
-                    <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
-                    <abp-dropdown-menu>
-                        <ul style=" list-style-type: none;">
-                            <li >
+        <abp-column size-md="_6" class="text-end">
+            <abp-dropdown >
+                <abp-dropdown-button button-type="Primary" text="@L["CustomColumn"].Value"/>
+                <abp-dropdown-menu>
+                    <ul style=" list-style-type: none;">
+                        <li >
 
-                                <input class="customcolumn" id="0" checked="true" type="checkbox">@L["Date"]</input>
+                            <input class="customcolumn" id="1" checked="true" type="checkbox">@L["Date"]</input>
 
-                            </li>
-                            <li >
+                        </li>
+                        <li >
 
-                                <input class="customcolumn" id="1" checked="true" type="checkbox">@L["EmployeeName"]</input>
+                            <input class="customcolumn" id="2" checked="true" type="checkbox">@L["EmployeeName"]</input>
 
-                            </li>
-                            <li >
+                        </li>
+                        <li >
 
-                                <input class="customcolumn" id="2" checked="true" type="checkbox">@L["daterange"]</input>
+                            <input class="customcolumn" id="3" checked="true" type="checkbox">@L["MissingIn"]</input>
 
-                            </li>
-                            <li >
+                        </li>
+                        <li >
 
-                                <input class="customcolumn" id="3" checked="true" type="checkbox">@L["MissingIn"]</input>
+                            <input class="customcolumn" id="4" checked="true" type="checkbox">@L["MissingOut"]</input>
 
-                            </li> 
-                            <li >
+                        </li>
 
-                                <input class="customcolumn" id="4" checked="true" type="checkbox">@L["MissingOut"]</input>
-
-                            </li>
-                            @*<li >
-
-                                <input class="customcolumn" id="5" checked="true" type="checkbox">@L["Date"]</input>
-
-                            </li>*@
-                            
-
-                        </ul>
-                    </abp-dropdown-menu>
-                </abp-dropdown>
-
-            </abp-column >
-        </abp-row>
+                    </ul>
+                </abp-dropdown-menu>
+            </abp-dropdown>
+        
+        </abp-column >
+                </abp-row>
         <abp-collapse-body id="AttendentCollapse">
             <form id="AttendentFilter" required-symbols="false">
-                <abp-input asp-for="@Model.AttendentFilter.Date"></abp-input>
+                <abp-input asp-for="@Model.AttendentFilter.Datetime"></abp-input>
                 <abp-input asp-for="@Model.AttendentFilter.EmployeeName"></abp-input>
-                <abp-input asp-for="@Model.AttendentFilter.QueryAttendentDateRange"></abp-input>
                 <abp-input asp-for="@Model.AttendentFilter.MissingIn"></abp-input>
                 <abp-input asp-for="@Model.AttendentFilter.MissingOut"></abp-input>
-                @*<abp-select asp-for="@Model.AttendentFilter.Datetime"> </abp-select>*@
             </form>
-            <hr/>
+            <hr />
         </abp-collapse-body>
-        <abp-table striped-rows="true" id="AttendentTable" class="table-bordered nowrap"/>
+        <abp-table striped-rows="true" id="AttendentTable" class="nowrap"/>
     </abp-card-body>
 </abp-card>

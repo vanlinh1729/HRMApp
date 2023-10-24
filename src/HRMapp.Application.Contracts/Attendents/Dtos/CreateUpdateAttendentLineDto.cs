@@ -12,4 +12,9 @@ public class CreateUpdateAttendentLineDto
     public TypeLine Type { get; set; }
 
     public Guid ShiftId { get; set; }
+    
+    public int TimeMissingIn { get; set; }
+    
+    public int TimeMissingOut { get; set; }
+    
 }

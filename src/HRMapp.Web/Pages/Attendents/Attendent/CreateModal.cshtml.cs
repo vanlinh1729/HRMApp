@@ -6,22 +6,13 @@ using HRMapp.Web.Pages.Attendents.Attendent.ViewModels;
 
 namespace HRMapp.Web.Pages.Attendents.Attendent;
 
-public class CreateModalModel : HRMappPageModel
+public class CreateModalModel : CreateOrEditModalModel
 {
-    [BindProperty]
-    public CreateEditAttendentViewModel ViewModel { get; set; }
 
     private readonly IAttendentAppService _service;
 
-    public CreateModalModel(IAttendentAppService service)
+    public CreateModalModel(IAttendentAppService service): base(service)
     {
         _service = service;
-    }
-
-    public virtual async Task<IActionResult> OnPostAsync()
-    {
-        var dto = ObjectMapper.Map<CreateEditAttendentViewModel, CreateUpdateAttendentDto>(ViewModel);
-        await _service.CreateAsync(dto);
-        return NoContent();
     }
 }
