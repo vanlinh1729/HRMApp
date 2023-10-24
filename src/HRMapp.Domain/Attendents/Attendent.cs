@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -18,14 +19,14 @@ public class Attendent: FullAuditedAggregateRoot<Guid>, IMultiTenant
     
     public ICollection<AttendentLine> AttendentLines { get; set; }
 
-    public Attendent(Guid id, Guid? tenantId, DateTime date, Guid employeeId, int missingIn, int missingOut, ICollection<AttendentLine> attendentLines) : base(id)
+    public Attendent(Guid id, Guid? tenantId, DateTime date, Guid employeeId, int missingIn, int missingOut) : base(id)
     {
         TenantId = tenantId;
         Date = date;
         EmployeeId = employeeId;
         MissingIn = missingIn;
         MissingOut = missingOut;
-        AttendentLines = attendentLines;
+        AttendentLines = new Collection<AttendentLine>();
     }
 
    
