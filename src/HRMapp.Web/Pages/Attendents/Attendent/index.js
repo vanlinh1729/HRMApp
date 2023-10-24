@@ -77,33 +77,68 @@ $(function () {
                 data: "missingOut"
             }
         ];
-        for (const item in list) {
-            result.push({
+        // for (const item in list) {
+        //     result.push({
+        //
+        //         width: "1%",
+        //         title: l('CheckIn'),
+        //         /*
+        //                          data: "detail["+'['+list[item].code+']'+']',
+        //         */
+        //         orderable: false,
+        //         render: function (data, type, row) {
+        //             return row.attendentLines?.[item]?.['timeCheck'] ? moment(row.attendentLines?.[item]?.['timeCheck']).format("HH:mm:ss") : "";
+        //         }
+        //     });
+        //     result.push({
+        //         width: "1%",
+        //         title: l('CheckOut'),
+        //         /*
+        //                          data: "detail["+'['+list[item].code+']'+']',
+        //         */
+        //         orderable: false,
+        //         render: function (data, type, row) {
+        //             return row.attendentLines?.[1 + item]?.['timeCheck'] ? moment(row.attendentLines?.[1 + item]?.['timeCheck']).format("HH:mm:ss") : "";
+        //
+        //         }
+        //     });
+        // }
 
+
+        for (let i = 0; i < list.length; i+=3) {
+            result.push({
                 width: "1%",
                 title: l('CheckIn'),
-                /*
-                                 data: "detail["+'['+list[item].code+']'+']',
-                */
                 orderable: false,
                 render: function (data, type, row) {
-                    return row.attendentLine?.[item]?.['timeCheck'] ? moment(row.attendentLine?.[item]?.['timeCheck']).format("HH:mm:ss") : "";
+                    return row.attendentLines?.[0]?.['timeCheck'] ? moment(row.attendentLines?.[0]?.['timeCheck']).format("HH:mm:ss") : "";
                 }
             });
             result.push({
                 width: "1%",
                 title: l('CheckOut'),
-                /*
-                                 data: "detail["+'['+list[item].code+']'+']',
-                */
                 orderable: false,
                 render: function (data, type, row) {
-                    return row.attendentLine?.[1 + item]?.['timeCheck'] ? moment(row.attendentLine?.[1 + item]?.['timeCheck']).format("HH:mm:ss") : "";
-
+                    return row.attendentLines?.[1]?.['timeCheck'] ? moment(row.attendentLines?.[1]?.['timeCheck']).format("HH:mm:ss") : "";
+                }
+            });
+            result.push({
+                width: "1%",
+                title: l('CheckIn'),
+                orderable: false,
+                render: function (data, type, row) {
+                    return row.attendentLines?.[2]?.['timeCheck'] ? moment(row.attendentLines?.[2]?.['timeCheck']).format("HH:mm:ss") : "";
+                }
+            });
+            result.push({
+                width: "1%",
+                title: l('CheckOut'),
+                orderable: false,
+                render: function (data, type, row) {
+                    return row.attendentLines?.[3]?.['timeCheck'] ? moment(row.attendentLines?.[3]?.['timeCheck']).format("HH:mm:ss") : "";
                 }
             });
         }
-
         result.push({
 
             width: "1%",
