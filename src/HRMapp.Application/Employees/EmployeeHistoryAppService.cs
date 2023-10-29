@@ -58,6 +58,7 @@ public class EmployeeHistoryAppService : CrudAppService<EmployeeHistory, Employe
                 EmployeeId = employeehistory.EmployeeId,
                 Start = employeehistory.Start,
                 End = employeehistory.End,
+                JobPosition = employeehistory.JobPosition,
                 Organization = employeehistory.Organization,
                 Description = employeehistory.Description
                
@@ -96,6 +97,7 @@ public class EmployeeHistoryAppService : CrudAppService<EmployeeHistory, Employe
                 EmployeeId = employeehistory.EmployeeId,
                 Start = employeehistory.Start,
                 End = employeehistory.End,
+                JobPosition = employeehistory.JobPosition,
                 Organization = employeehistory.Organization,
                 Description = employeehistory.Description
                

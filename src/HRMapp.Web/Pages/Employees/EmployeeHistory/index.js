@@ -61,6 +61,11 @@ $(function () {
             },
             {
                 width: "1%",
+                title: l('EmployeeHistoryJobPosition'),
+                data: "jobPosition"
+            },
+            {
+                width: "1%",
                 title: l('EmployeeHistoryOrganization'),
                 data: "organization"
             },{

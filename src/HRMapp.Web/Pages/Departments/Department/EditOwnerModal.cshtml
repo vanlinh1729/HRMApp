@@ -3,13 +3,13 @@
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
 @using HRMapp.Localization
 @inject IHtmlLocalizer<HRMappResource> L
-@model HRMapp.Web.Pages.Departments.Department.EditOwnerModal
+@model HRMapp.Web.Pages.Departments.Department.EditModalModel
 @{
     Layout = null;
 }
-   <form  asp-page="/Departments/Department/EditOwnerModal">
-<abp-modal>
-        <abp-modal-header title="@L["EditOwner"].Value"></abp-modal-header>
+ <form  asp-page="/Departments/Department/EditOwnerModal">
+    <abp-modal size="ExtraLarge">
+        <abp-modal-header title="@L["EditDepartment"].Value"></abp-modal-header>
         <abp-modal-body>
             <abp-input asp-for="Id" />
             @await Html.PartialAsync("_EditOwner")

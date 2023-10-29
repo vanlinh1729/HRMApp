@@ -7,8 +7,8 @@ namespace HRMapp.Web.Pages.Departments.Department.ViewModels;
 public class CreateEditDepartmentViewModel
 {
     [Display(Name = "DepartmentName")]
-    public string Name { get; set; }
-
+    public string? Name { get; set; }
+    
     [Display(Name = "DepartmentOwnerId")]
     public Guid? OwnerId { get; set; }
 

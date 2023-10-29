@@ -4,6 +4,8 @@ $(function () {
         dataTable.ajax.reload();
     });
 
+    $('#AttendentForMonthFilter div').addClass('col-sm-3').parent().addClass('row');
+
     //After abp v7.2 use dynamicForm 'column-size' instead of the following settings
     //$('#AttendentForMonthCollapse div').addClass('col-sm-3').parent().addClass('row');
 
@@ -21,9 +23,10 @@ $(function () {
 
     var l = abp.localization.getResource('HRMapp');
     var host_name = "https://localhost:44350";
-    var service = hRMapp.attendents.attendentForMonth;
-    var createModal = new abp.ModalManager(abp.appPath + 'Attendents/AttendentForMonth/CreateModal');
-    var editModal = new abp.ModalManager(abp.appPath + 'Attendents/AttendentForMonth/EditModal');
+    var service = hRMapp.attendentForMonths.attendentForMonth;
+    var createModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/CreateModal');
+    var editModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/EditModal');
+    var viewModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/ViewModal');
 
     var dataTable = $('#AttendentForMonthTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -36,43 +39,27 @@ $(function () {
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
         columnDefs: [
             {
-                /*rowAction: {
-                    items:
-                        [
-                            {
-                                text: l('Edit'),
-                                visible: abp.auth.isGranted('HRMapp.AttendentForMonth.Update'),
-                                action: function (data) {
-                                    editModal.open({ id: data.record.id });
-                                }
-                            },
-                            {
-                                text: l('Delete'),
-                                visible: abp.auth.isGranted('HRMapp.AttendentForMonth.Delete'),
-                                confirmMessage: function (data) {
-                                    return l('AttendentForMonthDeletionConfirmationMessage', data.record.id);
-                                },
-                                action: function (data) {
-                                    service.delete(data.record.id)
-                                        .then(function () {
-                                            abp.notify.info(l('SuccessfullyDeleted'));
-                                            dataTable.ajax.reload();
-                                        });
-                                }
-                            }
-                        ]
-                }*/
-            },
-            {
-                title: l('AttendentForMonthEmployeeId'),
-                data: "employeeId"
-            },
-            {
-                title: l('AttendentForMonthMonth'),
-                data: "month",
-                render: function (data, type, full, meta) {
-                    return data != null ? moment(data).format("MM-YYYY") : "";
+                title: l('EmployeeName'),
+                orderable: false,
+                data: "employeeName",
+                render: function(data, type, row){
+                    return data ? "<a href='javascript:void(0);' class='ViewAttendentForMonthBtn' data-id='"+row.id+"'  " +
+                        "style=\"text-decoration: none\">"+data+"</a>" : "";
                 }
+            },
+
+
+            {
+                width: "1%",
+                title: l('Month'),
+                data: "month"
+            },
+
+
+            {
+                width: "1%",
+                title: l('Count'),
+                data: "count"
             },
             {    width: "1%",
                 title: l('Edit'),

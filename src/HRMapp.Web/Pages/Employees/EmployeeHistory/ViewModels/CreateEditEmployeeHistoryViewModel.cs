@@ -17,6 +17,9 @@ public class CreateEditEmployeeHistoryViewModel
     [Display(Name = "EmployeeHistoryEnd")]
     public DateTime End { get; set; }
 
+    [Display(Name = "EmployeeHistoryJobPosition")]
+    public string JobPosition { get; set; }
+    
     [Display(Name = "EmployeeHistoryOrganization")]
     public string Organization { get; set; }
 

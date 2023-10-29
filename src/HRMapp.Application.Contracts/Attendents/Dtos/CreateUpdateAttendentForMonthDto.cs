@@ -8,4 +8,5 @@ public class CreateUpdateAttendentForMonthDto
     public Guid EmployeeId { get; set; }
 
     public DateTime Month { get; set; }
+    public float Count { get; set; }
 }
