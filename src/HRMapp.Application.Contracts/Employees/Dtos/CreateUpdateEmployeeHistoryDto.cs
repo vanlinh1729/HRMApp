@@ -13,6 +13,8 @@ public class CreateUpdateEmployeeHistoryDto
 
     public DateTime End { get; set; }
 
+    public string JobPosition { get; set; }
+    
     public string Organization { get; set; }
 
     public string Description { get; set; }

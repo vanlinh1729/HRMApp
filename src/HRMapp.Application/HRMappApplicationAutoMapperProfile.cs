@@ -69,10 +69,14 @@ public class HRMappApplicationAutoMapperProfile : Profile
         CreateMap<IdentityUser, SelectResultDto>();
         CreateMap<CreateUpdateEmployeeHistoryDto, EmployeeHistory>();
         CreateMap<CreateUpdateContractDto, Contract>();
+        CreateMap<CreateUpdateAttendentForMonthDto ,AttendentForMonth>();
+        
+
 
         CreateMap<Contact, ContactDto>();
         CreateMap<Contract, ContractDto>();
         CreateMap<Attendent, AttendentDto >();
         CreateMap<AttendentLine, AttendentLineDto >();
+        CreateMap<AttendentForMonth, AttendentForMonthDto >();
     }
 }

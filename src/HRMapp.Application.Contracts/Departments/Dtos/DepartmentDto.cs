@@ -7,13 +7,11 @@ namespace HRMapp.Departments.Dtos;
 [Serializable]
 public class DepartmentDto : FullAuditedEntityDto<Guid>
 {
-    public string Name { get; set; }
-    [CanBeNull] 
-    public string OwnerName { get; set; }
+    public string? Name { get; set; }
+    public string? OwnerName { get; set; }
     public Guid? OwnerId { get; set;}
-    [CanBeNull] 
-    public string ParentName { get; set; }
+    public string? ParentName { get; set; }
     public Guid? ParentId { get; set;}
     
-    public int Count { get; set;}
+    public int? Count { get; set;}
 }

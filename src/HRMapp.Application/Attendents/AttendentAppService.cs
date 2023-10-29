@@ -223,7 +223,7 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
     {
         if (sorting.IsNullOrEmpty())
         {
-            return $"attendentLine.{nameof(AttendentLine.Id)}";
+            return $"attendent.{nameof(Attendent.Id)}";
         }
 
         // custom contain sorting 

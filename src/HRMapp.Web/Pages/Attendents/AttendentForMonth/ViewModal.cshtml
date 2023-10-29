@@ -1,0 +1,28 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using HRMapp.Localization
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Attendents.AttendentForMonth.ViewModalModel
+@{
+    Layout = null;
+}
+
+<abp-modal>
+    <abp-modal-header title="@L["Attendent"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-table>
+            <tbody>
+            <tr>
+                <th>@L["EmployeeName"].Value</th>
+                <td>@Model.ViewModel.EmployeeName</td>
+            </tr>
+             <tr>
+                 <th>@L["Date"].Value</th>
+                 <td>@Model.ViewModel.Month</td>
+                 </tr>
+            </tbody>
+        </abp-table>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+</abp-modal>
