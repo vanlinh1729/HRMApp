@@ -11,6 +11,7 @@ using HRMapp.Salarys.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
 namespace HRMapp.Salarys;
 
@@ -92,7 +93,7 @@ public class SalaryAppService : CrudAppService<Salary, SalaryDto, Guid, SalaryGe
             TotalSalary = x.TotalSalary
            
         }).ToList();
-        var totalCount = await AsyncExecuter.CountAsync(query);
+        var totalCount = await Repository.CountAsync();
         return new PagedResultDto<SalaryDto>(
             totalCount,
             salaryDtos
