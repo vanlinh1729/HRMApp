@@ -86,7 +86,7 @@ public class AttendentForMonthAppService : CrudAppService<AttendentForMonth, Att
             Count = x.Count
            
         }).ToList();
-        var totalCount = await AsyncExecuter.CountAsync(query);
+        var totalCount = await _repository.CountAsync();
         return new PagedResultDto<AttendentForMonthDto>(
             totalCount,
             AttendentForMonthDtos

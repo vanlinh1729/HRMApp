@@ -70,12 +70,13 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
             from employees in attendentemployee.DefaultIfEmpty()
             select new
             {
-                attendent.Id,
-                attendent.Date,
+                Id =  attendent.Id,
+                EmployeeName = employees.Name?? string.Empty,
+                Date = attendent.Date,
+                MissingIn = 
                 attendent.MissingIn,
-                attendent.MissingOut,
+                MissingOut = attendent.MissingOut,
                 attendent.AttendentLines,
-                EmployeeName = employees.Name ?? string.Empty
             };
             query = query
                 .WhereIf(!input.Datetime.IsNullOrEmpty()
@@ -100,7 +101,7 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
             MissingOut = x.MissingOut,
             AttendentLines = ObjectMapper.Map<List<AttendentLine>, List<AttendentLineDto>>(x.AttendentLines.ToList())
         }).ToList();
-        var totalCount = await AsyncExecuter.CountAsync(query);
+        var totalCount = await _repository.GetCountAsync();
         return new PagedResultDto<AttendentDto>(
             totalCount,
             AttendentDtos
