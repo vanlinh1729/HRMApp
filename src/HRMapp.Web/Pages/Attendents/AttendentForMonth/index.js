@@ -37,6 +37,13 @@ $(function () {
         scrollCollapse: true,
         order: [[0, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ],
         columnDefs: [
             {
                 title: l('EmployeeName'),
@@ -52,7 +59,10 @@ $(function () {
             {
                 width: "1%",
                 title: l('Month'),
-                data: "month"
+                data: "month",
+                "render": function (data, type, full, meta) {
+                    return data != null ? moment(data).format("MM-YYYY") : "";
+                }
             },
 
 

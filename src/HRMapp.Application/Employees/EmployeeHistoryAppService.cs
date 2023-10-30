@@ -65,6 +65,9 @@ public class EmployeeHistoryAppService : CrudAppService<EmployeeHistory, Employe
             };
         var listEmployeeHistory = query
             .WhereIf(!input.EmployeeName.IsNullOrWhiteSpace(), x => x.EmployeeName.ToLower().Contains(input.EmployeeName.ToLower()))
+            .WhereIf(!input.Datetime.IsNullOrEmpty()
+                , x => x.Start.Date >= DateTimeformatCustom.DateRangeToDateTime(input.Datetime)[0]
+                       && x.End.Date <= DateTimeformatCustom.DateRangeToDateTime(input.Datetime)[1])
             .WhereIf(input.Start!=null,
                 x => x.Start == input.Start)
             .WhereIf(input.End!=null,
