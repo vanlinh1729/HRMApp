@@ -1,5 +1,7 @@
 using System;
+using System.Threading.Tasks;
 using HRMapp.Salarys.Dtos;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace HRMapp.Salarys;
@@ -14,4 +16,6 @@ public interface ISalaryAppService :
         CreateUpdateSalaryDto>
 {
 
+    Task<ListResultDto<SelectResultDto>> GetListEmployeeAsync();
+    Task<SalaryDto> GetSalaryDetail(Guid salaryId);
 }

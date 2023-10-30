@@ -13,6 +13,7 @@ using HRMapp.Salarys.Dtos;
 using HRMapp.Attendents;
 using HRMapp.Attendents.Dtos;
 using AutoMapper;
+using HRMapp.Permissions;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Identity;
 
@@ -69,9 +70,16 @@ public class HRMappApplicationAutoMapperProfile : Profile
         CreateMap<IdentityUser, SelectResultDto>();
         CreateMap<CreateUpdateEmployeeHistoryDto, EmployeeHistory>();
         CreateMap<CreateUpdateContractDto, Contract>();
+        CreateMap<CreateUpdateAttendentForMonthDto ,AttendentForMonth>();
+        CreateMap<CreateUpdateSalaryDto ,Salary>();
+        
+
 
         CreateMap<Contact, ContactDto>();
         CreateMap<Contract, ContractDto>();
+        CreateMap<Salary, SalaryDto>();
         CreateMap<Attendent, AttendentDto >();
+        CreateMap<AttendentLine, AttendentLineDto >();
+        CreateMap<AttendentForMonth, AttendentForMonthDto >();
     }
 }

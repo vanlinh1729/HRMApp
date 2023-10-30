@@ -18,10 +18,18 @@ public class IndexModel : HRMappPageModel
 public class SalaryFilterInput
 {
     [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "SalaryEmployeeName")]
+    public string? EmployeeName { get; set; } 
+    
+    [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "SalaryEmployeeId")]
     public Guid? EmployeeId { get; set; }
 
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "SalaryAttendentForMonthId")]
     public Guid? AttendentForMonthId { get; set; }
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "SalaryAttendentForMonthId")]
+    public DateTime? AttendentForMonthMonth { get; set; }
 }

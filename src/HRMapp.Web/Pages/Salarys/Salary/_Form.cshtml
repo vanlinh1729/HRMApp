@@ -5,17 +5,16 @@
 @using HRMapp.Localization
 @inject IHtmlLocalizer<HRMappResource> L
 
-@model HRMapp.Web.Pages.Employees.EmployeeHistory.CreateOrEditModalModel
+@model HRMapp.Web.Pages.Salarys.Salary.CreateOrEditModalModel
 <abp-select  asp-for="ViewModel.EmployeeId" asp-items="@Model.Employees" label="@L["Employee"].Value">
         <option value="">@L["NoOption"]</option>
 </abp-select>
-<abp-input asp-for="ViewModel.Start"></abp-input>
-<abp-input asp-for="ViewModel.End"></abp-input>
-<abp-input asp-for="ViewModel.JobPosition"></abp-input>
-<abp-input asp-for="ViewModel.Organization"></abp-input>
-<abp-input asp-for="ViewModel.Description"></abp-input>
+<abp-input asp-for="ViewModel.AttendentForMonthMonth"></abp-input>
+<abp-input asp-for="ViewModel.TotalSalary"></abp-input>
+
          
 
+  
 
 
 

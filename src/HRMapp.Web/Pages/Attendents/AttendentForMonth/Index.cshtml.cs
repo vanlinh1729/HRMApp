@@ -18,6 +18,10 @@ public class IndexModel : HRMappPageModel
 public class AttendentForMonthFilterInput
 {
     [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "AttendentForMonthEmployeeName")]
+    public string? EmployeeName { get; set; }
+    
+    [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "AttendentForMonthEmployeeId")]
     public Guid? EmployeeId { get; set; }
 

@@ -9,5 +9,11 @@ public class CreateEditSalaryViewModel
     public Guid? EmployeeId { get; set; }
 
     [Display(Name = "SalaryAttendentForMonthId")]
-    public Guid? AttendentForMonthId { get; set; }
+    public Guid? AttendentForMonthId { get; set; } 
+    
+    [Display(Name = "SalaryAttendentForMonthMonth")]
+    public DateTime? AttendentForMonthMonth { get; set; } 
+    
+    [Display(Name = "SalaryTotalSalary")]
+    public decimal? TotalSalary { get; set; }
 }

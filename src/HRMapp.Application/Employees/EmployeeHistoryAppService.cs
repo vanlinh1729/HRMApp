@@ -58,12 +58,16 @@ public class EmployeeHistoryAppService : CrudAppService<EmployeeHistory, Employe
                 EmployeeId = employeehistory.EmployeeId,
                 Start = employeehistory.Start,
                 End = employeehistory.End,
+                JobPosition = employeehistory.JobPosition,
                 Organization = employeehistory.Organization,
                 Description = employeehistory.Description
                
             };
         var listEmployeeHistory = query
             .WhereIf(!input.EmployeeName.IsNullOrWhiteSpace(), x => x.EmployeeName.ToLower().Contains(input.EmployeeName.ToLower()))
+            .WhereIf(!input.Datetime.IsNullOrEmpty()
+                , x => x.Start.Date >= DateTimeformatCustom.DateRangeToDateTime(input.Datetime)[0]
+                       && x.End.Date <= DateTimeformatCustom.DateRangeToDateTime(input.Datetime)[1])
             .WhereIf(input.Start!=null,
                 x => x.Start == input.Start)
             .WhereIf(input.End!=null,
@@ -96,6 +100,7 @@ public class EmployeeHistoryAppService : CrudAppService<EmployeeHistory, Employe
                 EmployeeId = employeehistory.EmployeeId,
                 Start = employeehistory.Start,
                 End = employeehistory.End,
+                JobPosition = employeehistory.JobPosition,
                 Organization = employeehistory.Organization,
                 Description = employeehistory.Description
                

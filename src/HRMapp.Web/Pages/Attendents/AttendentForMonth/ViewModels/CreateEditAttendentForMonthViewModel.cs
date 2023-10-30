@@ -9,5 +9,7 @@ public class CreateEditAttendentForMonthViewModel
     public Guid EmployeeId { get; set; }
 
     [Display(Name = "AttendentForMonthMonth")]
-    public DateTime Month { get; set; }
+    public DateTime Month { get; set; } 
+    [Display(Name = "AttendentForMonthCount")]
+    public float Count { get; set; }
 }
