@@ -55,8 +55,8 @@ public class HRMappMenuContributor : IMenuContributor
              icon: "fas fa-business-time", requiredPermissionName: HRMappPermissions.Employee.Default, order: 5)
          .AddItem(new ApplicationMenuItem(HRMappMenus.AttendentLine, l["Menu:Attendent"],
              "~/Attendents/Attendent", requiredPermissionName: HRMappPermissions.Employee.Default)) 
-         .AddItem(new ApplicationMenuItem(HRMappMenus.AttendentLine, l["Menu:AttendentLine"],
-             "~/Attendents/AttendentLine", requiredPermissionName: HRMappPermissions.Employee.Default))
+         /*.AddItem(new ApplicationMenuItem(HRMappMenus.AttendentLine, l["Menu:AttendentLine"],
+             "~/Attendents/AttendentLine", requiredPermissionName: HRMappPermissions.Employee.Default))*/
          .AddItem(new ApplicationMenuItem(HRMappMenus.AttendentForMonth, l["Menu:AttendentForMonth"],
              "/Attendents/AttendentForMonth", requiredPermissionName: HRMappPermissions.Employee.Default)));
      

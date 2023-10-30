@@ -73,7 +73,7 @@ public class AttendentForMonthAppService : CrudAppService<AttendentForMonth, Att
     
         query = query
             .WhereIf(!input.EmployeeName.IsNullOrWhiteSpace(), x => x.EmployeeName.ToLower().Contains(input.EmployeeName.ToLower()))
-            .WhereIf(input.Month != null, x => x.Month.ToString("MM-yyyy") == input.Month.GetValueOrDefault().ToString("MM-yyyy"))
+            .WhereIf(input.Month != null, x => x.Month.Month == input.Month.GetValueOrDefault().Month && x.Month.Year == input.Month.GetValueOrDefault().Year)
             .OrderBy(x=>NormalizeSorting(input.Sorting))
             .Skip(input.SkipCount)
             .Take(input.MaxResultCount);

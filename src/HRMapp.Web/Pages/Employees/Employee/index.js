@@ -34,6 +34,13 @@ $(function () {
         scrollCollapse: true,
         order: [[0, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ],
         columnDefs: [
 
             {

@@ -79,8 +79,8 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
             };
             query = query
                 .WhereIf(!input.Datetime.IsNullOrEmpty()
-                    , x => x.Date >= DateTimeformatCustom.DateRangeToDateTime(input.Datetime)[0]
-                           && x.Date <= DateTimeformatCustom.DateRangeToDateTime(input.Datetime)[1])
+                    , x => x.Date.Date >= DateTimeformatCustom.DateRangeToDateTime(input.Datetime)[0]
+                           && x.Date.Date <= DateTimeformatCustom.DateRangeToDateTime(input.Datetime)[1])
                 /*
                 .WhereIf(input.Start != null && input.End != null, x=>x.attendent.Date >= input.Start && x.attendent.Date <= input.End )
                 */

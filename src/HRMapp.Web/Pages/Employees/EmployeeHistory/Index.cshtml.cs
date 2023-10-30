@@ -27,7 +27,11 @@ public class EmployeeHistoryFilterInput
 
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "EmployeeHistoryEnd")]
-    public DateTime? End { get; set; }
+    public DateTime? End { get; set; } 
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "Date")]
+    public string? Datetime { get; set; }
 
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "EmployeeHistoryOrganization")]

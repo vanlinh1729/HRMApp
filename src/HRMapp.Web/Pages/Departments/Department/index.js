@@ -66,10 +66,10 @@ $(function () {
 
             {
                 title: l('ownerName'), data: "ownerName",
-                render: function (data, type, row) {
+                /*render: function (data, type, row) {
                     return data ? "<a href='javascript:void(0);' class='EditOwnerBtn' data-id='" + row.id + "'  style=\"text-decoration: none\">" + data + "</a>" : "<a href='javascript:void(0);' class='EditOwnerBtn' data-id='" + row.id + "'  style=\"text-decoration: none\">Thêm trưởng phòng</a>";
 
-                },
+                },*/
                 width: "1%"
             },
             {

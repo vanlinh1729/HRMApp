@@ -1,4 +1,7 @@
+
 $(function () {
+    var dateformat = abp.localization.currentCulture.dateTimeFormat.shortDatePattern.toUpperCase();
+
 
     $("#EmployeeHistoryFilter :input").on('input', function () {
         dataTable.ajax.reload();
@@ -37,6 +40,13 @@ $(function () {
         scrollCollapse: true,
         order: [[0, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ],
         columnDefs: [
             {
                 title: l('EmployeeName'),
@@ -52,12 +62,18 @@ $(function () {
             {
                 width: "1%",
                 title: l('EmployeeHistoryStart'),
-                data: "start"
+                data: "start",
+                "render": function (data, type, full, meta) {
+                    return data != null ? moment(data).format("dd-MM-YYYY") : "";
+                }
             },
             {
                 width: "1%",
                 title: l('EmployeeHistoryEnd'),
-                data: "end"
+                data: "end",
+                "render": function (data, type, full, meta) {
+                    return data != null ? moment(data).format("dd-MM-YYYY") : "";
+                }
             },
             {
                 width: "1%",
@@ -92,6 +108,32 @@ $(function () {
             },
         ]
     }));
+
+    //date range
+    $('#EmployeeHistoryFilter_Datetime').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear'
+        }
+    }, function (start, end, label) {
+        /*
+                $(this).val(start.format(dateformat) + "-" + end.format(dateformat));
+        */
+        /*
+                dataTable.ajax.reload()
+        */
+        console.log(start.format(dateformat) + "-" + end.format(dateformat));
+    });
+    $('#EmployeeHistoryFilter_Datetime').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format(dateformat) + ' - ' + picker.endDate.format(dateformat));
+        $(this).trigger("change");
+    });
+    $('#EmployeeHistoryFilter_Datetime').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+        $(this).trigger("change");
+    });
+    
+    
     // edit record
     $(document).on('click', '.edit-button', function (e) {
         editModal.open({id: this.dataset.id});
@@ -141,4 +183,7 @@ $(function () {
         // Toggle the visibility
         column.visible(!column.visible());
     });
+
+
+    
 });
