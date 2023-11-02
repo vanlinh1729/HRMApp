@@ -1,59 +1,71 @@
 @page
 @using HRMapp.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
-@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
 @inject IHtmlLocalizer<HRMappResource> L
 @model HRMapp.Web.Pages.Employees.Employee.ViewModalModel
 @{
     Layout = null;
 }
-<abp-modal>
-    <abp-modal-header title="@L["Employee"].Value"></abp-modal-header>
+@section scripts
+{
+    <abp-script src="/Pages/Employees/Employee/index.js" />
+}
+<abp-modal size="Large">
+    <abp-modal-header title="@L["EmployeeCV"].Value"></abp-modal-header>
     <abp-modal-body>
-        <abp-table class="table-bordered">
-            <tbody>
-            <tr>
-                <th>@L["EmployeeName"].Value</th>
-                <td>@Model.ViewModel.Name</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeOtherName"].Value</th>
-                <td>@Model.ViewModel.OtherName</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeHrmUserName"].Value</th>
-                <td>@Model.ViewModel.UserName</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeHrmContactName"].Value</th>
-                <td>@Model.ViewModel.ContactName</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeDepartmentName"].Value</th>
-                <td>@Model.ViewModel.DepartmentName</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeContactBirthDay"].Value</th>
-                <td>@Model.ViewModel.BirthDay</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeContactGender"].Value</th>
-                <td>@Model.ViewModel.Gender</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeContactEmail"].Value</th>
-                <td>@Model.ViewModel.Email</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeContactPhoneNumber"].Value</th>
-                <td>@Model.ViewModel.PhoneNumber</td>
-            </tr>
-            <tr>
-                <th>@L["EmployeeStatus"].Value</th>
-                <td>@Model.ViewModel.Status</td>
-            </tr>
-            </tbody>
-        </abp-table>
+        <div class="container" style="padding: 20px;">
+            <header style="text-align: center;">
+                <img src="https://icon-library.com/images/user-icon-jpg/user-icon-jpg-18.jpg" style="width: 100px; border-radius: 50%;" alt="Ảnh đại diện">
+                <h1 style="font-size: 28px; margin: 10px 0;">@Model.ViewModel.Name</h1>
+                <p style="font-size: 16px; margin: 5px 0;">
+                    <i class="fas fa-phone" style="margin-right: 5px;"></i> @Model.ViewModel.PhoneNumber
+                </p>
+                <p style="font-size: 16px; margin: 5px 0;">
+                    <i class="fas fa-envelope" style="margin-right: 5px;"></i> @Model.ViewModel.Email
+                </p>
+                <p style="font-size: 16px; margin: 5px 0;">
+                    <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> @Model.ViewModel.ContactAddress
+                </p>
+            </header>
+
+            <main style="padding: 20px; background-color: #f9f9f9; border-radius: 5px; margin-top: 20px;">
+                <section style="margin-bottom: 20px;">
+                    <h2 style="text-align: center; font-size: 24px; margin-bottom: 20px;">@L["WorkHistory"].Value</h2>
+
+                    <div style="background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px;">
+                        @if (Model.ViewModel.EmployeeHistories.Any())
+                        {
+                            @for (var i = 0; i < Model.ViewModel.EmployeeHistories.Count; i++)
+                            {
+                                var item = Model.ViewModel.EmployeeHistories[i];
+                                if (i > 0)
+                                {
+                                    <hr style="margin: 20px 0; border: 2px solid #2b3035;" />
+                                }
+                                <div style="margin-bottom: 20px; display: flex; justify-content: space-between;">
+                                    <div>
+                                        <p style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">@item.Organization</p>
+                                        <p style="font-size: 16px; font-style: italic; margin-bottom: 5px;">@item.JobPosition</p>
+                                        <p style="font-size: 16px; margin-bottom: 5px;">@item.Description</p>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <p style="font-size: 14px; font-weight: normal; margin-bottom: 5px;">@item.Start.ToShortDateString() - @item.End.ToShortDateString()</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p style="font-size: 16px; text-align: center;">@L["NoWorkHistory"].Value</p>
+                        }
+                    </div>
+                </section>
+            </main>
+        </div>
     </abp-modal-body>
-    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)">
+        <button class="btn btn-primary" id="exportPdfButton">Export to PDF</button>
+    </abp-modal-footer>
 </abp-modal>
+

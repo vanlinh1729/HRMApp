@@ -14,7 +14,7 @@ public class ViewModalModel : HRMappPageModel
     public Guid Id { get; set; }
     
     [BindProperty]
-    public EmployeeDto ViewModel { get; set; }
+    public CVOfEmployeeDto ViewModel { get; set; }
 
     private readonly IEmployeeAppService _service;
 
@@ -25,7 +25,7 @@ public class ViewModalModel : HRMappPageModel
 
     public virtual async Task OnGetAsync()
     {
-        var dto = await _service.GetEmployeeDetail(Id);
+        var dto = await _service.GetCVofEmployee(Id);
         ViewModel = dto;
     }
 }

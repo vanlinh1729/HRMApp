@@ -16,4 +16,7 @@ public class ContractGetListInput : PagedAndSortedResultRequestDto
     public DateTime? SignDate { get; set; }
 
     public decimal? CoefficientSalary { get; set; }
+    
+    public int MaxResultCount { get; set; } = (int)999999999;
+
 }

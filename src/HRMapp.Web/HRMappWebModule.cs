@@ -22,6 +22,7 @@ using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Bundling;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.AutoMapper;
@@ -119,6 +120,10 @@ public class HRMappWebModule : AbpModule
                     bundle.AddFiles("/global-styles.css");
                 }
             );
+            options
+                .ScriptBundles
+                .Get(StandardBundles.Scripts.Global)
+                .AddFiles("/libs/jspdf/jspdf.umd.min.js");
         });
     }
 

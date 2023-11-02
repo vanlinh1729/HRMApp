@@ -44,6 +44,16 @@ $(function () {
         scrollCollapse: true,
         order: [[0, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList, getFilter),
+        dom: 'Bfrtilp',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'pdfHtml5'
+        ],
+        lengthMenu: [
+            [10, 25, 50, 9999999],
+            [10, 25, 50, 'All']
+        ],
         columnDefs: [
             {
                 title: l('DepartmentName'),
@@ -129,6 +139,10 @@ $(function () {
             autoWidth: true,
             scrollCollapse: true,
             order: [[0, "asc"]],
+            lengthMenu: [
+                [10, 25, 50, 9999999],
+                [10, 25, 50, 'All']
+            ],
             ajax: abp.libs.datatables.createAjax(service.getListUsersDepartmentEdit, {employeeName: $('#DepartmentUser1_filter > label > input').val()}),
             columnDefs: [{
                 title: l('EmployeeName'), data: "employeeName",
@@ -163,6 +177,10 @@ $(function () {
             autoWidth: true,
             scrollCollapse: true,
             order: [[0, "asc"]],
+            lengthMenu: [
+                [10, 25, 50, 9999999],
+                [10, 25, 50, 'All']
+            ],
             ajax: abp.libs.datatables.createAjax(service.getListUsersDepartmentEdit, {employeeName: $('#DepartmentUser1_filter > label > input').val()}),
             columnDefs: [{
                 title: l('EmployeeName'), data: "employeeName",
@@ -202,6 +220,10 @@ $(function () {
             autoWidth: true,
             scrollCollapse: true,
             order: [[0, "asc"]],
+            lengthMenu: [
+                [10, 25, 50, 9999999],
+                [10, 25, 50, 'All']
+            ],
             ajax: abp.libs.datatables.createAjax(service.getListUsersDepartmentEdit, {employeeName: $('#DepartmentUser1_filter > label > input').val()}),
             columnDefs: [{
                 title: l('EmployeeName'), data: "employeeName",
@@ -295,6 +317,10 @@ $(function () {
             autoWidth: false,
             scrollCollapse: true,
             order: [[0, "asc"]],
+            lengthMenu: [
+                [10, 25, 50, 9999999],
+                [10, 25, 50, 'All']
+            ],
             ajax: abp.libs.datatables.createAjax(service.getListUsersDepartment, {id: $('#departmenId').val()}),
             columnDefs: [{
                 title: l('EmployeeName'), data: "employeeName",
@@ -306,35 +332,46 @@ $(function () {
 
 
         }));
+        // var employeetable = $('#DepartmentUser1').DataTable(abp.libs.datatables.normalizeConfiguration({
+        //     processing: true,
+        //     serverSide: true,
+        //     paging: true,
+        //     searching: false,//disable default searchbox
+        //     autoWidth: true,
+        //     scrollCollapse: true,
+        //     order: [[0, "asc"]],
+        //     ajax: abp.libs.datatables.createAjax(service.getListUsersDepartmentEdit, {id: $('#departmenId').val()}),
+        //     columnDefs: [{
+        //         title: l('EmployeeName'), data: "employeeName",
+        //     }, {
+        //         title: l('PhoneNumber'), data: "phoneNumber",
+        //     }, {
+        //         title: "Email", data: "email",
+        //     }, {
+        //         width: "1%",
+        //         className: "dt-center "+row.id,
+        //         orderable: false,
+        //         title: "Chọn", data: "id", render: function (data, type, row) {
+        //             console.log(row)
+        //             return "<a class='selectToDepartment' data-name='" + row.employeeName + "'  data-id='" + row.id + "' style=\"text-decoration: none\"><i class=\"fa fa-check-circle\"></i></a>"
+        //         }
+        //     },]
+        //
+        //
+        // }));
 
-        var employeetable = $('#DepartmentUser1').DataTable(abp.libs.datatables.normalizeConfiguration({
-            processing: true,
-            serverSide: true,
-            paging: true,
-            searching: false,//disable default searchbox
-            autoWidth: true,
-            scrollCollapse: true,
-            order: [[0, "asc"]],
-            ajax: abp.libs.datatables.createAjax(service.getListUsersDepartmentEdit, {id: $('#departmenId').val()}),
-            columnDefs: [{
-                title: l('EmployeeName'), data: "employeeName",
-            }, {
-                title: l('PhoneNumber'), data: "phoneNumber",
-            }, {
-                title: "Email", data: "email",
-            }, {
-                width: "1%",
-                className: "dt-center "+row.id,
-                orderable: false,
-                title: "Chọn", data: "id", render: function (data, type, row) {
-                    console.log(row)
-                    return "<a class='selectToDepartment' data-name='" + row.employeeName + "'  data-id='" + row.id + "' style=\"text-decoration: none\"><i class=\"fa fa-check-circle\"></i></a>"
-                }
-            },]
-
-
-        }));
-
+        $('#exportPdfButton').on('click', function () {
+            var element = $(".modal-body").html();
+            console.log("danhannut");
+            var opt = {
+                margin: 10,
+                filename: 'DepartmentInfo'+jQuery.now()+'.pdf',
+                image: {type: 'jpeg', quality: 1},
+                html2canvas: {scale: 2},
+                jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
+            };
+            html2pdf().set(opt).from(element).save();
+        });
     });
 
     $(document).on('click', '.deleteemployeebtn', function (e) {

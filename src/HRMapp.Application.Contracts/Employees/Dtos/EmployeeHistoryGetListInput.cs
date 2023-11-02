@@ -20,4 +20,7 @@ public class EmployeeHistoryGetListInput : PagedAndSortedResultRequestDto
     public string? Organization { get; set; }
 
     public string? Description { get; set; }
+    
+    public int MaxResultCount { get; set; } = (int)999999999;
+
 }

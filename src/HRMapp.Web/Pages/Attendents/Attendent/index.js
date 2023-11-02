@@ -155,7 +155,7 @@ $(function () {
             orderable: false,
             className: "dt-center",
             render: function (data, type, row) {
-                return abp.auth.isGranted('HRMapp.Shift.Delete') ? ` <a data-id="${row.id}" class="delete-button text-danger" href="#" > <i  class="fa fa-trash"></i> </a>` : "";
+                return abp.auth.isGranted('HRMapp.Attendent.Delete') ? ` <a data-id="${row.id}" class="delete-button text-danger" href="#" > <i  class="fa fa-trash"></i> </a>` : "";
             }
         })
 
@@ -250,12 +250,15 @@ $(function () {
             scrollCollapse: true,
             order: [[0, "asc"]],
             ajax: abp.libs.datatables.createAjax(service.getList, getFilter),
-            dom: 'Bfrtip',
+            dom: 'Bfrtilp',
             buttons: [
                 'copyHtml5',
                 'excelHtml5',
-                'csvHtml5',
                 'pdfHtml5'
+            ],
+            lengthMenu: [
+                [10, 25, 50, 9999999],
+                [10, 25, 50, 'All']
             ],
             columnDefs: newcolumnnew
 

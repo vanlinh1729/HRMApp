@@ -38,12 +38,15 @@ $(function () {
         scrollCollapse: true,
         order: [[0, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
-        dom: 'Bfrtip',
+        dom: 'Bfrtilp',
         buttons: [
             'copyHtml5',
             'excelHtml5',
-            'csvHtml5',
             'pdfHtml5'
+        ],
+        lengthMenu: [
+            [10, 25, 50, 9999999],
+            [10, 25, 50, 'All']
         ],
         columnDefs: [
                 {
@@ -60,7 +63,10 @@ $(function () {
             {
                 width: "1%",
                 title: l('ContactGender'),
-                data: "gender"
+                data: "gender",
+                render: function (data, type, row) {
+                    return data != null ? l('gender:' + data) : "";
+                }
             },
 
 
@@ -77,7 +83,10 @@ $(function () {
             {
                 width: "1%",
                 title: l('ContactActive'),
-                data: "active"
+                data: "active",
+                render: function (data, type, row) {
+                    return data != null ? l('active:' + data) : "";
+                }
             },
 
             {

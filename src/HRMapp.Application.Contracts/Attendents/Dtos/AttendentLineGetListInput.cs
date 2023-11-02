@@ -22,4 +22,7 @@ public class AttendentLineGetListInput : PagedAndSortedResultRequestDto
     public int? TimeMissingIn { get; set; }
     
     public int? TimeMissingOut { get; set; }
+    
+    public int MaxResultCount { get; set; } = (int)999999999;
+
 }

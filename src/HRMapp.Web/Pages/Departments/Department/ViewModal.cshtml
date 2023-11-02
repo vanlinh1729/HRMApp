@@ -6,7 +6,11 @@
 @model HRMapp.Web.Pages.Departments.Department.ViewModalModel
 @section scripts
 {
+    
     <abp-script src="/Pages/Departments/Department/index.js"/>
+}
+@{
+    Layout = null;
 }
     <abp-modal centered="true" scrollable="true" size="ExtraLarge">
         <abp-modal-header title="@L["Department Information"].Value"></abp-modal-header>
@@ -65,4 +69,7 @@
                 </abp-tab>*@
             </abp-tabs>
         </abp-modal-body>
+         <abp-modal-footer buttons="@(AbpModalButtons.Close)">
+                <button class="btn btn-primary" id="exportPdfButton">Export to PDF</button>
+            </abp-modal-footer>
     </abp-modal>

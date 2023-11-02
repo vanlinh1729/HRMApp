@@ -178,7 +178,7 @@ public class AttendentDataSeeder
                     tenantId,
                     employee.Id,
                     new DateTime(2023, 10, 1, 0, 0, 0),
-                    3
+                    12
                 );
 
                 attendentForMonths.Add(attendentformonth);

@@ -71,12 +71,21 @@ public class ContactDataSeeder
                 "Lê Hà Xuân Thái", "Nguyễn Ngọc Phương", "Bùi Anh Tài", "Dương Chí Tâm", "Phạm Thanh Quốc"
             };
             List<Contact> contacts =new List<Contact>();
+            
             foreach (string name in ten_viet_nam)
             {
+                Random random = new Random();
+
+           
+                DateTime startDate = new DateTime(1993, 1, 1);
+                DateTime endDate = new DateTime(2001, 12, 31);
+                int range = (endDate - startDate).Days;
+
+                DateTime randomDate = startDate.AddDays(random.Next(range));
                 string email = $"{name.Replace(" ", "").ToLower()}@abp.io.vn"; // Generate email based on name
                 string phone = "0933146147"; // Sample phone number
 
-                Contact contact = new Contact(_guidGenerator.Create(), tenantId, name, Gender.Male, DateTime.Now, true, email, phone, "Việt Nam");
+                Contact contact = new Contact(_guidGenerator.Create(), tenantId, name, Gender.Male, randomDate, true, email, phone, "Việt Nam");
                 contacts.Add(contact);
             }
             await _contactRepository.InsertManyAsync(contacts);

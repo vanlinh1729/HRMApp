@@ -22,5 +22,6 @@ public interface IEmployeeAppService :
 
     Task<ListResultDto<SelectResultDto>> GetListDepartmentAsync();
     Task<EmployeeDto> GetEmployeeDetail(Guid departmentId);
+    Task<CVOfEmployeeDto> GetCVofEmployee(Guid departmentId);
     Task<string> UpdateDepartment(EmployeeInputUpdateOneFieldDto input);
 }

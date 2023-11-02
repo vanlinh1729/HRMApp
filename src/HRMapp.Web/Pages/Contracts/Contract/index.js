@@ -38,6 +38,10 @@ $(function () {
         scrollCollapse: true,
         order: [[0, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
+        lengthMenu: [
+            [10, 25, 50, 9999999],
+            [10, 25, 50, 'All']
+        ],
         columnDefs: [
             {
                 title: l('EmployeeName'),
@@ -53,7 +57,10 @@ $(function () {
             {
                 width: "1%",
                 title: l('TimeContract'),
-                data: "timeContract"
+                data: "timeContract",
+                render: function (data, type, row) {
+                    return data != null ? l('timeContract:' + data) : "";
+                }
             },
 
 

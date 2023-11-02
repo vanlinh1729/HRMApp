@@ -217,7 +217,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         var employee = await _ownerRepository.GetListAsync();
         var entityChange =
             await _auditLogRepository.GetEntityChangesWithUsernameAsync(departmentId.ToString(),
-                "Hrm.Departments.Department");
+                "HRMapp.Departments.Department");
         var ownerchange = entityChange.Select(x => new
         {
             x.UserName,
@@ -247,6 +247,44 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
                     { UserName = x.username, ChangeTime = x.changetime, NewValue = x.newvalue, OriginalValue = y.Name })
             .ToList();
         return result;
+    }
+    
+    public async Task<PagedResultDto<DepartmentWithDetailDto>> GetListUsersDepartment(DepartmentDetailById input)
+    {
+        var employees = await _ownerRepository.GetQueryableAsync();
+        var employeesDepartment = from employee in employees
+            join department in await _repository.GetQueryableAsync() on employee.DepartmentId equals department.Id into
+                emmployedepartment
+            from departments in emmployedepartment.DefaultIfEmpty()
+            join contact in await _contactRepository.GetQueryableAsync() on employee.ContactId equals contact.Id into
+                emmployedcontact
+            from contacts in emmployedcontact.DefaultIfEmpty()
+            /*into  departmentowner
+
+            from  owner in departmentowner.DefaultIfEmpty()
+            */
+            where departments.Id == input.Id && departments.OwnerId != employee.Id
+            select new
+            {
+                employee.Id,
+                EmployeeName = employee.Name,
+                contacts.Email,
+                contacts.PhoneNumber
+            };
+        var resultObj = employeesDepartment.Select(x => new DepartmentWithDetailDto
+        {
+            Id = x.Id,
+            EmployeeName = x.EmployeeName,
+            Email = x.Email,
+            PhoneNumber = x.PhoneNumber
+        });
+        /*.OrderBy(NormalizeSorting(input.Sorting))
+        .Skip(input.SkipCount)
+        .Take(input.MaxResultCount);;*/
+        var result = resultObj.Skip(input.SkipCount)
+            .Take(input.MaxResultCount).ToList();
+        var totalcount = resultObj.Count();
+        return new PagedResultDto<DepartmentWithDetailDto>(totalcount, result);
     }
      public async Task<PagedResultDto<DepartmentWithDetailDto>> GetListUsersDepartmentEdit(DepartmentDetailById input)
     {
@@ -285,11 +323,14 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
                 EmployeeName = x.EmployeeName,
                 PhoneNumber = x.PhoneNumber
             });
-        var result = iQueryable.Skip(input.SkipCount)
+        var totalcount = iQueryable.Count();
+
+        var result = iQueryable
+                .OrderBy((x) => x.EmployeeName)
+                .Skip(input.SkipCount)
             .Take(input.MaxResultCount).ToList();
         ;
 
-        var totalcount = iQueryable.Count();
         return new PagedResultDto<DepartmentWithDetailDto>(totalcount, result);
     }
 

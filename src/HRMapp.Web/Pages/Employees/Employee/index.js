@@ -1,11 +1,12 @@
-$(function () {
 
+$(function () {
     $("#EmployeeFilter :input").on('input', function () {
         dataTable.ajax.reload();
     });
 
     $('#EmployeeFilter div').addClass('col-sm-3').parent().addClass('row');
 
+  
     var getFilter = function () {
         var input = {};
         $("#EmployeeFilter")
@@ -34,12 +35,15 @@ $(function () {
         scrollCollapse: true,
         order: [[0, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
-        dom: 'Bfrtip',
+        dom: 'Bfrtilp',
         buttons: [
             'copyHtml5',
             'excelHtml5',
-            'csvHtml5',
             'pdfHtml5'
+        ],
+        lengthMenu: [
+            [10, 25, 50, 9999999],
+            [10, 25, 50, 'All']
         ],
         columnDefs: [
 
@@ -172,6 +176,22 @@ $(function () {
         console.log(e);
         var id = this.dataset.id;
         viewModal.open({id});
+    });
+    
+    viewModal.onOpen(function () {
+        console.log("ab123c da mo modal");
+        $('#exportPdfButton').on('click', function () {
+            var element = $(".modal-body").html();
+            console.log("danhannut");
+            var opt = {
+                margin: 10,
+                filename: 'CV'+jQuery.now()+'.pdf',
+                image: {type: 'jpeg', quality: 1},
+                html2canvas: {scale: 2},
+                jsPDF: {unit: 'mm', format: 'a4', orientation: 'portrait'}
+            };
+            html2pdf().set(opt).from(element).save();
+        });
     });
     $('input.customcolumn').on('click', function (e) {
         // e.preventDefault();

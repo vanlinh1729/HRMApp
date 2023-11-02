@@ -25,14 +25,17 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
     private readonly IRepository<IdentityUser, Guid> _user; 
 
     private readonly IEmployeeRepository _repository;
+    private readonly IEmployeeHistoryRepository _employeeHistoryRepository;
 
     public EmployeeAppService(IEmployeeRepository repository
         , IRepository<HrmUser, Guid> userRepository
         , IRepository<Contact, Guid> contactRepository
         , IDepartmentRepository departmentRepository
+        ,IEmployeeHistoryRepository employeeHistoryRepository
         ,IRepository<IdentityUser, Guid> user
     ) : base(repository)
     {
+        _employeeHistoryRepository = employeeHistoryRepository;
         _repository = repository;
         _userRepository = userRepository;
         _contactRepository = contactRepository;
@@ -163,6 +166,43 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
             };
         var queryResult = await AsyncExecuter.FirstAsync(query);
 
+        return queryResult;
+    }
+    public async Task<CVOfEmployeeDto> GetCVofEmployee(Guid employeeId)
+    {
+        var employeehistory = (await _employeeHistoryRepository.GetListAsync()).Where(x => x.EmployeeId == employeeId).ToList();
+        var queryable = await _repository.GetQueryableAsync();
+        var query = from employee in queryable
+            where employee.Id == employeeId
+            join user in await _userRepository.GetQueryableAsync() on employee.UserId equals user.Id into
+                employeeuser
+            from user in employeeuser.DefaultIfEmpty()
+            join contact in await _contactRepository.GetQueryableAsync() on employee.ContactId equals
+                contact.Id into employeecontact
+            from contact in employeecontact.DefaultIfEmpty()
+            join department in await _departmentRepository.GetQueryableAsync() on employee.DepartmentId equals
+                department.Id into employeedepartment
+            from department in employeedepartment.DefaultIfEmpty()
+            select new CVOfEmployeeDto
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                OtherName = employee.OtherName,
+                UserName = user.UserName,
+                UserId = employee.UserId,
+                ContactName = contact.Name,
+                ContactId = employee.ContactId,
+                DepartmentName = department.Name,
+                ContactAddress = contact.Address,
+                DepartmentId = employee.DepartmentId,
+                Status = employee.Status,
+                Gender = contact.Gender,
+                BirthDay = contact.BirthDay,
+                Email = contact.Email,
+                PhoneNumber = contact.PhoneNumber,
+                EmployeeHistories =ObjectMapper.Map<List<EmployeeHistory>, List<EmployeeHistoryDto>>(employeehistory)
+            };
+        var queryResult = AsyncExecuter.FirstAsync(query).Result;
         return queryResult;
     }
 

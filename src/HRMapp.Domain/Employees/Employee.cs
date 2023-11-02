@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using JetBrains.Annotations;
@@ -24,6 +26,8 @@ public class Employee : FullAuditedAggregateRoot<Guid>, IMultiTenant
     
     [CanBeNull]
     public Guid? DepartmentId { get; set; }
+    public ICollection<EmployeeHistory> EmployeeHistories { get; set; }
+
     
     [DefaultValue("Offline")]
     public StatusEmployee Status { get; set; }
@@ -37,6 +41,7 @@ public class Employee : FullAuditedAggregateRoot<Guid>, IMultiTenant
         ContactId = contactId;
         DepartmentId = departmentId;
         Status = status;
+        EmployeeHistories = new Collection<EmployeeHistory>();
     }
 
 
