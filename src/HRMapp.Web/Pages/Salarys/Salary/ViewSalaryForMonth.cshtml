@@ -1,0 +1,53 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using HRMapp.Localization
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Salarys.Salary.ExportSalaryForMonthModel
+@{
+    Layout = null;
+}
+<abp-modal size="ExtraLarge">
+    <abp-modal-header title="@L["Salary"].Value"></abp-modal-header>
+    <abp-modal-body id="viewSalaryforMonth">
+        <div class="text-center mb-3"> <!-- Center-align the content -->
+            <h2 class="fw-bold">THGroup</h2> <!-- Apply bold font and larger size -->
+            <h3 id="SalaryMonth"></h3> <!-- Text "Bảng lương tháng" --></div>
+        <abp-table hoverable-rows="true" responsive-sm="true" class="table ta table-bordered">
+            <thead>
+            <tr>
+                <th scope="Column">@L["EmployeeName"]</th>
+                <th scope="Column">@L["DepartmentName"]</th>
+                <th scope="Column">@L["AttendentForMonthMonth"]</th>
+                <th scope="Column">@L["AttendentForMonthCount"]</th>
+                <th scope="Column">@L["CoefficientSalary"]</th>
+                <th scope="Column">@L["TotalSalary"]</th>
+            </tr>
+            </thead>
+            <tbody id="viewSalaryforMonthBody">
+            @*
+            @foreach (var item in Model.ViewModel.ListSalarys)
+            {
+                <tr>
+                    <td>@item.EmployeeName</td>
+                    <td>
+                        @item.DepartmentName
+                    </td> <td>
+                        @item.AttendentForMonthMonth.ToString("MM-yyyy")
+                    </td> <td>
+                        @item.AttendentForMonthCount
+                    </td> <td>
+                        @item.CoefficientSalary
+                    </td> <td>
+                        @item.TotalSalary
+                    </td> 
+                </tr>
+            }
+            *@
+            </tbody>
+        </abp-table>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)">
+        <button class="btn btn-primary" id="exportSalaryPdfButton">Export to PDF</button>
+    </abp-modal-footer>
+</abp-modal>

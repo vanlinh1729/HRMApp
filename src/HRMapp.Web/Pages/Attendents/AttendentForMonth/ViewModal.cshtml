@@ -7,22 +7,40 @@
 @{
     Layout = null;
 }
-
-<abp-modal>
-    <abp-modal-header title="@L["Attendent"].Value"></abp-modal-header>
+@section scripts
+{
+    <abp-script src="/Pages/Attendents/AttendentForMonth/index.js" />
+}
+<abp-modal size="Large">
+    <abp-modal-header title="@L["Salary"].Value"></abp-modal-header>
     <abp-modal-body>
-        <abp-table>
-            <tbody>
-            <tr>
-                <th>@L["EmployeeName"].Value</th>
-                <td>@Model.ViewModel.EmployeeName</td>
-            </tr>
-             <tr>
-                 <th>@L["Date"].Value</th>
-                 <td>@Model.ViewModel.Month</td>
-                 </tr>
-            </tbody>
-        </abp-table>
+         <div class="text-center mb-3"> <!-- Center-align the content -->
+                    <h2 class="fw-bold">THGroup</h2> <!-- Apply bold font and larger size -->
+                    <h3>Chấm công tháng @Model.ViewModel.Month.ToString("MM-yyyy")</h3> <!-- Text "Bảng lương tháng" --></div>
+        <div class="table-responsive"> <!-- Add Bootstrap responsive class for small screens -->
+            <table class="table table-bordered"> <!-- Use Bootstrap table classes -->
+                <tbody>
+                <tr>
+                    <th>@L["EmployeeName"].Value</th>
+                    <td>@Model.ViewModel.EmployeeName</td>
+                </tr>
+                <tr>
+                        <th>@L["EmployeeName"].Value</th>
+                        <td>@Model.ViewModel.DepartmentName</td>
+                    </tr>
+                    <tr>
+                        <th>@L["AttendentForMonthMonth"].Value</th>
+                        <td>@Model.ViewModel.Month.ToString("MM-yyyy")</td>
+                    </tr>
+                    <tr>
+                        <th>@L["AttendentForMonthCount"].Value</th>
+                        <td>@Model.ViewModel.Count</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </abp-modal-body>
-    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)">
+            <button class="btn btn-primary" id="exportPdfButton">Export to PDF</button>
+        </abp-modal-footer>
 </abp-modal>

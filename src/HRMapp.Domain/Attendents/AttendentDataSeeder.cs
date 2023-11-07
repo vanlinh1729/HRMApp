@@ -47,7 +47,9 @@ public class AttendentDataSeeder
     {
         await AddAttendentSeeder(context);
         await AddAttendentLineSeeder(context);
+        /*
         await AddAttendentForMonthSeeder(context);
+    */
     }
 
     public async Task AddAttendentSeeder(DataSeedContext context)
@@ -62,33 +64,48 @@ public class AttendentDataSeeder
             var tenantId = context?.TenantId;
             var employees = await _employeeRepository.GetListAsync();
             var attendents = new List<Attendent>();
+            int[] daysInOctober2023 = { 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 30, 31 };
+            int[] daysInSeptember2023 = { 1,2, 4, 5, 6, 7, 9, 11, 12, 13, 14,15, 16, 18, 19, 20, 21, 23, 25, 26, 27, 28, 29, 30};
+            int[] daysInAugust2023 = { 1,2, 4, 5, 7,8, 9,10, 11, 12, 14,15, 16,17, 18, 19, 21, 23, 25, 26, 28, 29, 30,31};
 
             foreach (var employee in employees)
             {
-                var attendent1 = new Attendent(
-                    _guidGenerator.Create(),
-                    tenantId,
-                    new DateTime(2023, 10, 01),
-                    employee.Id,
-                    0, 0
-                );
-                var attendent2 = new Attendent(
-                    _guidGenerator.Create(),
-                    tenantId,
-                    new DateTime(2023, 10, 02),
-                    employee.Id,
-                    0, 0
-                );
-                var attendent3 = new Attendent(
-                    _guidGenerator.Create(),
-                    tenantId,
-                    new DateTime(2023, 10, 03),
-                    employee.Id,
-                    0, 0
-                );
-                attendents.Add(attendent1);
-                attendents.Add(attendent2);
-                attendents.Add(attendent3);
+                foreach (int day in daysInOctober2023)
+                {
+                    var attendent = new Attendent(
+                        _guidGenerator.Create(),
+                        tenantId,
+                        new DateTime(2023, 10, day),
+                        employee.Id,
+                        0,
+                        0
+                    );
+                    attendents.Add(attendent);
+                }
+                foreach (int day in daysInSeptember2023)
+                {
+                    var attendent = new Attendent(
+                        _guidGenerator.Create(),
+                        tenantId,
+                        new DateTime(2023, 9, day),
+                        employee.Id,
+                        0,
+                        0
+                    );
+                    attendents.Add(attendent);
+                }
+                foreach (int day in daysInAugust2023)
+                {
+                    var attendent = new Attendent(
+                        _guidGenerator.Create(),
+                        tenantId,
+                        new DateTime(2023, 8, day),
+                        employee.Id,
+                        0,
+                        0
+                    );
+                    attendents.Add(attendent);
+                }
             }
 
             await _attendentRepository.InsertManyAsync(attendents);
@@ -173,15 +190,31 @@ public class AttendentDataSeeder
 
             foreach (var employee in employees)
             {
-                var attendentformonth = new AttendentForMonth(
+                var attendentformonth1 = new AttendentForMonth(
                     _guidGenerator.Create(),
                     tenantId,
                     employee.Id,
                     new DateTime(2023, 10, 1, 0, 0, 0),
                     12
+                ); 
+                var attendentformonth2 = new AttendentForMonth(
+                    _guidGenerator.Create(),
+                    tenantId,
+                    employee.Id,
+                    new DateTime(2023, 9, 1, 0, 0, 0),
+                    12
+                );
+                var attendentformonth3 = new AttendentForMonth(
+                    _guidGenerator.Create(),
+                    tenantId,
+                    employee.Id,
+                    new DateTime(2023, 8, 1, 0, 0, 0),
+                    12
                 );
 
-                attendentForMonths.Add(attendentformonth);
+                attendentForMonths.Add(attendentformonth1);
+                attendentForMonths.Add(attendentformonth2);
+                attendentForMonths.Add(attendentformonth3);
             }
 
             await _attendentForMonthRepository.InsertManyAsync(attendentForMonths);

@@ -16,5 +16,8 @@ public interface IAttendentForMonthAppService :
         CreateUpdateAttendentForMonthDto>
 {
     Task<ListResultDto<SelectResultDto>> GetListEmployeeAsync();
+    Task<AttendentForMonthDto> CreateManyAttendentForMonthAsync(CreateManyAttendentForMonthDto input);
+    Task<AttendentForMonthDto> GetAttendentForMonthDetail(Guid att4mId);
+    Task<AllAttendentForMonthDto> GetListManyAttendentForMonthAsync(CreateManyAttendentForMonthDto input);
 
 }

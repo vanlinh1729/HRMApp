@@ -17,5 +17,6 @@ public interface IContractAppService :
 {
     Task<ListResultDto<SelectResultDto>> GetListEmployees();
     Task<ContractDto> GetContractDetail(Guid ContractId);
+    Task<int> ContractCountAsync();
 
 }

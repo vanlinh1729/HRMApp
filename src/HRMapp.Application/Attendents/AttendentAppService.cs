@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using HRMapp.Permissions;
 using HRMapp.Attendents.Dtos;
@@ -26,7 +27,7 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
     private readonly IAttendentLineRepository _attendentLineRepository;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IAttendentLineAppService _attendentLineAppService;
-    
+    private readonly IAttendentForMonthAppService _attendentForMonthAppService;
     private readonly IAttendentRepository _repository;
     private readonly IShiftRepository _shiftRepository;
 
@@ -34,9 +35,11 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
         , IEmployeeRepository employeeRepository,
         IAttendentLineRepository attendentLineRepository,
         IShiftRepository shiftRepository,
-        IAttendentLineAppService attendentLineAppService
+        IAttendentLineAppService attendentLineAppService,
+        IAttendentForMonthAppService attendentForMonthAppService
     ) : base(repository)
     {
+        _attendentForMonthAppService = attendentForMonthAppService;
         _attendentLineAppService = attendentLineAppService;
         _shiftRepository = shiftRepository;
         _attendentLineRepository = attendentLineRepository;
@@ -130,6 +133,7 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
         //lấy attendent của Emoloyee ngày hôm đó
         var attendent = queryable
             .Where(x => x.Date.Date == input.Date.Date)
+            .Where(x=>x.Date.Year == input.Date.Year)
             .Where(x => x.EmployeeId == input.EmployeeId).ToList().FirstOrDefault();
         // var attendentId = attendent.Id;
         // kiểm tra xem ca làm việc ngày hôm đó có attline chưa
@@ -162,15 +166,19 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
                 {
                     var attendentSuccess = await _repository.InsertAsync(new Attendent(GuidGenerator.Create(),
                         CurrentTenant.Id, input.Date, input.EmployeeId, 0, 0));
-
-
+                    
                     await _attendentLineRepository.InsertAsync(new AttendentLine(
-                        GuidGenerator.Create(),
+                         GuidGenerator.Create(),
                         CurrentTenant.Id,
                         attendentSuccess.Id,
                         input.Date, input.Type,
                         shift.Id, timeMissingIn, timeMissingOut));
-
+                    //update att4m
+                    var att4m = ObjectMapper.Map<CreateUpdateAttendentDto, CreateUpdateAttendentForMonthDto>(input);
+                    att4m.EmployeeId = input.EmployeeId;
+                    att4m.Month = input.Date;
+                    await _attendentForMonthAppService.CreateAsync(att4m);
+                    
                     return ObjectMapper.Map<Attendent, AttendentDto>(attendentSuccess);
                 }
 
@@ -187,6 +195,11 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
                             attendentLine.TimeMissingOut = timeMissingOut;
                             await _attendentLineRepository.UpdateAsync(attendentLine);
                         }
+                        //update att4m
+                        var att4m = ObjectMapper.Map<CreateUpdateAttendentDto, CreateUpdateAttendentForMonthDto>(input);
+                        att4m.EmployeeId = input.EmployeeId;
+                        att4m.Month = input.Date;
+                        await _attendentForMonthAppService.CreateAsync(att4m);
                     }
 
                     if (attendentLine.Type == TypeLine.CheckIn) //nếu attline alf check in
@@ -199,6 +212,11 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
                             attendentLine.TimeMissingOut = timeMissingOut;
                             await _attendentLineRepository.UpdateAsync(attendentLine);
                         }
+                        //update att4m
+                        var att4m = ObjectMapper.Map<CreateUpdateAttendentDto, CreateUpdateAttendentForMonthDto>(input);
+                        att4m.EmployeeId = input.EmployeeId;
+                        att4m.Month = input.Date;
+                        await _attendentForMonthAppService.CreateAsync(att4m);
                     }
                 }
                 else //chưa có thì tạo
@@ -209,6 +227,11 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
                         attendent.Id,
                         input.Date, input.Type,
                         shift.Id, timeMissingIn, timeMissingOut));
+                    //update att4m
+                    var att4m = ObjectMapper.Map<CreateUpdateAttendentDto, CreateUpdateAttendentForMonthDto>(input);
+                    att4m.EmployeeId = input.EmployeeId;
+                    att4m.Month = input.Date;
+                    await _attendentForMonthAppService.CreateAsync(att4m);
                 }
             }
 
@@ -218,8 +241,24 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
         return new AttendentDto();
     }
 
-    
-    
+    public async override Task DeleteAsync(Guid id)
+    {
+        var attendenlines = (await _attendentLineRepository.GetQueryableAsync()).Where(x => x.AttendentId == id)
+            .ToList();
+        await _attendentLineRepository.DeleteManyAsync(attendenlines);
+        
+        
+        await Repository.DeleteAsync(id);
+
+        var employeeId = (await Repository.GetAsync(id)).EmployeeId;
+        var month = (await Repository.GetAsync(id)).Date;
+        //update att4m
+        var att4m = new CreateUpdateAttendentForMonthDto();
+        att4m.EmployeeId = employeeId;
+        att4m.Month = month;
+        await _attendentForMonthAppService.CreateAsync(att4m);
+    }
+
     private static string NormalizeSorting(string sorting)
     {
         if (sorting.IsNullOrEmpty())

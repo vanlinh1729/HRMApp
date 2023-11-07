@@ -59,16 +59,23 @@ public class ContractDataSeeder
             var employees = await _employeeRepository.GetListAsync();
             List<Contract> contracts =new List<Contract>();
 
+           
             foreach (var employee in employees)
             {
-                // Create a contract for each employee
+                Random random = new Random();
+                decimal min = 160000m;
+                decimal max = 350000m;
+
+                decimal randomNumber = Math.Floor((decimal)(random.NextDouble() * ((double)(max - min) / 1000)) * 1000) + min;
+
+               
                 var contract = new Contract(
                     _guidGenerator.Create(),
                     tenantId,
-                    employee.Id, // Assuming employee ID is used
-                    TimeContract.OneYear, // Example: Set the contract type
-                    DateTime.UtcNow, // Example: Set the sign date to the current time
-                    150000.0m // Example: Set a default salary coefficient
+                    employee.Id, 
+                    TimeContract.OneYear, 
+                    DateTime.UtcNow, 
+                    randomNumber 
                 );
                 contracts.Add(contract);
             }

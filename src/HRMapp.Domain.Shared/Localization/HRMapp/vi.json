@@ -261,6 +261,7 @@
     "ContractEmployeeName": "Họ Tên ",
     "ContractDateSign": "Ngày Kí Hợp Đồng",
     "ContractCoefficientSalary": "Hệ số lương",
+    "CoefficientSalary": "Hệ số lương",
     "CreateContact": "Tạo liên lạc",
     "CreateContract": "Tạo Hợp đồng",
     "ShiftStart": "Thời gian bắt đầu ca",
@@ -277,7 +278,7 @@
     "TimeSalary": "Tháng",
     "SalaryDateSign" : "Tổng lương",
     "Month": "Tháng ",
-    "Count": "Số lượt chấm công",
+    "Count": "Số công",
     "AttendentForMonthEmployeeName" : "Tên nhân viên",
     "EmployeeHistoryStart": "Ngày bắt đầu ",
     "EmployeeHistoryEnd": "Ngày kết thúc",
@@ -299,7 +300,26 @@
     "WorkHistory": "Quá trình công tác",
     "EmployeeCV" : "Quá trình công tác",
     "NoWorkHistory" : "Chưa có",
-    "EditEmployeeDepartment": "Điều chuyển nhân sự"
+    "EditEmployeeDepartment": "Điều chuyển nhân sự",
+    "SalaryAttendentForMonthId" : "Tháng",
+    "SalaryAttendentForMonthMonth" : "Tháng",
+    "AttendentForMonthCount" : "Tổng công",
+    "CreateManyAttendentForMonth" : "Tạo tất cả chấm công theo tháng",
+    "CreateAttendentForMonth" : "Tạo mới",
+    "CreateManySalary" : "Tạo tất cả bảng lương theo tháng",
+    "EmmployeeHistoryStart": "Bắt đầu",
+    "EmmployeeHistoryEnd":"Kết thúc",
+    "EmmployeeHistoryOrganization":  "Công ty",
+    "EmmployeeHistoryDescription" : "Mô tả",
+    "EditAttendentForMonth" : "Sửa chấm công theo tháng",
+    "ContacPhoneNumber" : "Số điện thoại",
+    "EditContact" : "Sửa liên lạc",
+    "ExportAllAttendentForMonthModal" : "Xuất tất cả chấm công theo tháng",
+    "CreateAllAttendentForMonthInMonth" : "Xuất tất cả chấm công theo tháng",
+    "ExportSalaryForMonth" : "Xuất tất cả bảng lương theo tháng"
+    
+    
+    
     
     
   }

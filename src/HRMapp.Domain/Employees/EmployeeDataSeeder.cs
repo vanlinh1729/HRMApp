@@ -9,11 +9,14 @@ using HRMapp.Contracts;
 using HRMapp.Departments;
 using HRMapp.Salarys;
 using HRMapp.Shifts;
+using HRMapp.Users;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Guids;
 using Volo.Abp.MultiTenancy;
+using Volo.Abp.Users;
+using HrmUser = HRMapp.Users.HrmUser;
 
 namespace HRMapp.Employees;
 
@@ -26,6 +29,7 @@ public class EmployeeDataSeeder
     private readonly IGuidGenerator _guidGenerator;
     private readonly ICurrentTenant _currentTenant;
     private readonly IEmployeeHistoryRepository _employeeHistoryRepository;
+    private readonly IHrmUserRepository _userRepository;
 
     
 
@@ -35,9 +39,11 @@ public class EmployeeDataSeeder
         ICurrentTenant currentTenant,
         IDepartmentRepository departmentRepository,
         IContactRepository contactRepository,
-        IEmployeeHistoryRepository employeeHistoryRepository
+        IEmployeeHistoryRepository employeeHistoryRepository,
+        IHrmUserRepository userRepository
     )
     {
+        _userRepository = userRepository;
         _employeeHistoryRepository = employeeHistoryRepository;
         _contactRepository = contactRepository;
         _employeeRepository = employeeRepository;
@@ -65,78 +71,78 @@ public class EmployeeDataSeeder
             var contact = await _contactRepository.GetListAsync();
             var tenantId = context?.TenantId;
             List<Employee> employee = new List<Employee>();
-            var employee_it = new Employee(_guidGenerator.Create(), tenantId, "Đỗ Đức Hùng", "", null, contact[0].Id,
+            var employee_it = new Employee(_guidGenerator.Create(), tenantId, "Đỗ Đức Hùng", "Không có", null, contact[0].Id,
                 department[0].Id, StatusEmployee.Online);
-            var employee_it_1 = new Employee(_guidGenerator.Create(), tenantId, "Trần Vũ Hoàn", "", null, contact[2].Id,
+            var employee_it_1 = new Employee(_guidGenerator.Create(), tenantId, "Trần Vũ Hoàn", "Không có", null, contact[2].Id,
                 department[0].Id, StatusEmployee.Online);
-            var employee_it_2 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Văn Lĩnh", "", null, contact[3].Id,
+            var employee_it_2 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Văn Lĩnh", "Không có", null, contact[3].Id,
                 department[0].Id, StatusEmployee.Online);
-            var employee_it_3 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Minh Tuấn", "", null, contact[4].Id,
+            var employee_it_3 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Minh Tuấn", "Không có", null, contact[4].Id,
                 department[0].Id, StatusEmployee.Online);
-            var employee_it_4 = new Employee(_guidGenerator.Create(), tenantId, "Trần Quốc Vương", "", null, contact[5].Id,
+            var employee_it_4 = new Employee(_guidGenerator.Create(), tenantId, "Trần Quốc Vương", "Không có", null, contact[5].Id,
                 department[0].Id, StatusEmployee.Online);
-            var employee_it_5 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Thị Hương", "", null, contact[6].Id, department[0].Id, StatusEmployee.Online);
-            var employee_it_6 = new Employee(_guidGenerator.Create(), tenantId, "Lê Văn Duy", "", null, contact[7].Id, department[0].Id, StatusEmployee.Online);
-            var employee_it_7 = new Employee(_guidGenerator.Create(), tenantId, "Phạm Thị Lan", "", null, contact[8].Id, department[0].Id, StatusEmployee.Online);
-            var employee_it_8 = new Employee(_guidGenerator.Create(), tenantId, "Hoàng Minh Tuấn", "", null, contact[9].Id, department[0].Id, StatusEmployee.Online);
-            var employee_it_9 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Thị Mai", "", null, contact[10].Id, department[0].Id, StatusEmployee.Online);
+            var employee_it_5 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Thị Hương", "Không có", null, contact[6].Id, department[0].Id, StatusEmployee.Online);
+            var employee_it_6 = new Employee(_guidGenerator.Create(), tenantId, "Lê Văn Duy", "Không có", null, contact[7].Id, department[0].Id, StatusEmployee.Online);
+            var employee_it_7 = new Employee(_guidGenerator.Create(), tenantId, "Phạm Thị Lan", "Không có", null, contact[8].Id, department[0].Id, StatusEmployee.Online);
+            var employee_it_8 = new Employee(_guidGenerator.Create(), tenantId, "Hoàng Minh Tuấn", "Không có", null, contact[9].Id, department[0].Id, StatusEmployee.Online);
+            var employee_it_9 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Thị Mai", "Không có", null, contact[10].Id, department[0].Id, StatusEmployee.Online);
             
-            var employee_hr = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Đình Quyết", "", null, contact[11].Id,
+            var employee_hr = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Đình Quyết", "Không có", null, contact[11].Id,
                 department[1].Id, StatusEmployee.Online);
-            var employee_hr_1 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Cao Lâm", "", null, contact[12].Id,
+            var employee_hr_1 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Cao Lâm", "Không có", null, contact[12].Id,
                 department[1].Id, StatusEmployee.Online);
-            var employee_hr_2 = new Employee(_guidGenerator.Create(), tenantId, "Đặng Văn Quang", "", null, contact[13].Id,
+            var employee_hr_2 = new Employee(_guidGenerator.Create(), tenantId, "Đặng Văn Quang", "Không có", null, contact[13].Id,
                 department[1].Id, StatusEmployee.Online);
-            var employee_hr_3 = new Employee(_guidGenerator.Create(), tenantId, "Trần Thị Diễm", "", null, contact[14].Id,
+            var employee_hr_3 = new Employee(_guidGenerator.Create(), tenantId, "Trần Thị Diễm", "Không có", null, contact[14].Id,
                 department[1].Id, StatusEmployee.Online);
-            var employee_hr_4 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Hải Dương", "", null, contact[15].Id,
+            var employee_hr_4 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Hải Dương", "Không có", null, contact[15].Id,
                 department[1].Id, StatusEmployee.Online);
-            var employee_hr_5 = new Employee(_guidGenerator.Create(), tenantId, "Trần Thanh Tâm", "", null, contact[16].Id, department[1].Id, StatusEmployee.Online);
-            var employee_hr_6 = new Employee(_guidGenerator.Create(), tenantId, "Lê Thị Thu", "", null, contact[17].Id, department[1].Id, StatusEmployee.Online);
-            var employee_hr_7 = new Employee(_guidGenerator.Create(), tenantId, "Phạm Văn Hùng", "", null, contact[18].Id, department[1].Id, StatusEmployee.Online);
-            var employee_hr_8 = new Employee(_guidGenerator.Create(), tenantId, "Hoàng Đức Huy", "", null, contact[19].Id, department[1].Id, StatusEmployee.Online);
-            var employee_hr_9 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Thị Thu Hà", "", null, contact[20].Id, department[1].Id, StatusEmployee.Online);
+            var employee_hr_5 = new Employee(_guidGenerator.Create(), tenantId, "Trần Thanh Tâm", "Không có", null, contact[16].Id, department[1].Id, StatusEmployee.Online);
+            var employee_hr_6 = new Employee(_guidGenerator.Create(), tenantId, "Lê Thị Thu", "Không có", null, contact[17].Id, department[1].Id, StatusEmployee.Online);
+            var employee_hr_7 = new Employee(_guidGenerator.Create(), tenantId, "Phạm Văn Hùng", "Không có", null, contact[18].Id, department[1].Id, StatusEmployee.Online);
+            var employee_hr_8 = new Employee(_guidGenerator.Create(), tenantId, "Hoàng Đức Huy", "Không có", null, contact[19].Id, department[1].Id, StatusEmployee.Online);
+            var employee_hr_9 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Thị Thu Hà", "Không có", null, contact[20].Id, department[1].Id, StatusEmployee.Online);
             
-            var employee_kt = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Thị Như Quỳnh", "", null, contact[21].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt1 = new Employee(_guidGenerator.Create(), tenantId, "Lê Hoàng Quân", "", null, contact[22].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt2 = new Employee(_guidGenerator.Create(), tenantId, "Đinh Văn Phượng", "", null, contact[23].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt3 = new Employee(_guidGenerator.Create(), tenantId, "Lê Văn Minh Châu", "", null, contact[24].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt4 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Xuân Sang", "", null, contact[25].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt5 = new Employee(_guidGenerator.Create(), tenantId, "Lê Phú Quý", "", null, contact[26].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt6 = new Employee(_guidGenerator.Create(), tenantId, "Lý Quốc Quyền", "", null, contact[27].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt7 = new Employee(_guidGenerator.Create(), tenantId, "Bùi Minh Quân", "", null, contact[28].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt8 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Ngọc Sơn", "", null, contact[29].Id, department[2].Id, StatusEmployee.Online);
-            var employee_kt9 = new Employee(_guidGenerator.Create(), tenantId, "Bùi Duy Qúy", "", null, contact[30].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Thị Như Quỳnh", "Không có", null, contact[21].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt1 = new Employee(_guidGenerator.Create(), tenantId, "Lê Hoàng Quân", "Không có", null, contact[22].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt2 = new Employee(_guidGenerator.Create(), tenantId, "Đinh Văn Phượng", "Không có", null, contact[23].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt3 = new Employee(_guidGenerator.Create(), tenantId, "Lê Văn Minh Châu", "Không có", null, contact[24].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt4 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Xuân Sang", "Không có", null, contact[25].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt5 = new Employee(_guidGenerator.Create(), tenantId, "Lê Phú Quý", "Không có", null, contact[26].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt6 = new Employee(_guidGenerator.Create(), tenantId, "Lý Quốc Quyền", "Không có", null, contact[27].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt7 = new Employee(_guidGenerator.Create(), tenantId, "Bùi Minh Quân", "Không có", null, contact[28].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt8 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Ngọc Sơn", "Không có", null, contact[29].Id, department[2].Id, StatusEmployee.Online);
+            var employee_kt9 = new Employee(_guidGenerator.Create(), tenantId, "Bùi Duy Qúy", "Không có", null, contact[30].Id, department[2].Id, StatusEmployee.Online);
             
-            var employee_marketing = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Vũ Ngọc Quyên", "", null, contact[31].Id, department[3].Id, StatusEmployee.Online);
-            var employee_marketing1 = new Employee(_guidGenerator.Create(), tenantId, "Trương Trọng Quân", "", null, contact[32].Id, department[3].Id, StatusEmployee.Online);
-            var employee_marketing2 = new Employee(_guidGenerator.Create(), tenantId, "Phạm Minh Quân", "", null, contact[33].Id, department[3].Id, StatusEmployee.Online);
-            var employee_marketing3 = new Employee(_guidGenerator.Create(), tenantId, "Võ Thanh Sanh", "", null, contact[34].Id, department[3].Id, StatusEmployee.Online);
-            var employee_marketing4 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Minh Phương", "", null, contact[35].Id, department[3].Id, StatusEmployee.Online);
+            var employee_marketing = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Vũ Ngọc Quyên", "Không có", null, contact[31].Id, department[3].Id, StatusEmployee.Online);
+            var employee_marketing1 = new Employee(_guidGenerator.Create(), tenantId, "Trương Trọng Quân", "Không có", null, contact[32].Id, department[3].Id, StatusEmployee.Online);
+            var employee_marketing2 = new Employee(_guidGenerator.Create(), tenantId, "Phạm Minh Quân", "Không có", null, contact[33].Id, department[3].Id, StatusEmployee.Online);
+            var employee_marketing3 = new Employee(_guidGenerator.Create(), tenantId, "Võ Thanh Sanh", "Không có", null, contact[34].Id, department[3].Id, StatusEmployee.Online);
+            var employee_marketing4 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Minh Phương", "Không có", null, contact[35].Id, department[3].Id, StatusEmployee.Online);
 
-            var employee_sale = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Viết Sơn", "", null, contact[36].Id, department[4].Id, StatusEmployee.Online);
-            var employee_sale1 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Hoàng Hải Sơn", "", null, contact[37].Id, department[4].Id, StatusEmployee.Online);
-            var employee_sale2 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Hải Sơn", "", null, contact[38].Id, department[4].Id, StatusEmployee.Online);
-            var employee_sale3 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Vũ Trường Sơn", "", null, contact[39].Id, department[4].Id, StatusEmployee.Online);
-            var employee_sale4 = new Employee(_guidGenerator.Create(), tenantId, "Trần Minh Sang", "", null, contact[40].Id, department[4].Id, StatusEmployee.Online);
+            var employee_sale = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Viết Sơn", "Không có", null, contact[36].Id, department[4].Id, StatusEmployee.Online);
+            var employee_sale1 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Hoàng Hải Sơn", "Không có", null, contact[37].Id, department[4].Id, StatusEmployee.Online);
+            var employee_sale2 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Hải Sơn", "Không có", null, contact[38].Id, department[4].Id, StatusEmployee.Online);
+            var employee_sale3 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Vũ Trường Sơn", "Không có", null, contact[39].Id, department[4].Id, StatusEmployee.Online);
+            var employee_sale4 = new Employee(_guidGenerator.Create(), tenantId, "Trần Minh Sang", "Không có", null, contact[40].Id, department[4].Id, StatusEmployee.Online);
 
-            var employee_cs = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Trung Sơn", "", null, contact[41].Id, department[5].Id, StatusEmployee.Online);
-            var employee_cs1 = new Employee(_guidGenerator.Create(), tenantId, "Lê Quang", "", null, contact[42].Id, department[5].Id, StatusEmployee.Online);
-            var employee_cs2 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Thị Phương", "", null, contact[43].Id, department[5].Id, StatusEmployee.Online);
-            var employee_cs3 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Văn Sơn", "", null, contact[44].Id, department[5].Id, StatusEmployee.Online);
-            var employee_cs4 = new Employee(_guidGenerator.Create(), tenantId, "Lê Anh Sơn", "", null, contact[45].Id, department[5].Id, StatusEmployee.Online);
+            var employee_cs = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Trung Sơn", "Không có", null, contact[41].Id, department[5].Id, StatusEmployee.Online);
+            var employee_cs1 = new Employee(_guidGenerator.Create(), tenantId, "Lê Quang", "Không có", null, contact[42].Id, department[5].Id, StatusEmployee.Online);
+            var employee_cs2 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Thị Phương", "Không có", null, contact[43].Id, department[5].Id, StatusEmployee.Online);
+            var employee_cs3 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Văn Sơn", "Không có", null, contact[44].Id, department[5].Id, StatusEmployee.Online);
+            var employee_cs4 = new Employee(_guidGenerator.Create(), tenantId, "Lê Anh Sơn", "Không có", null, contact[45].Id, department[5].Id, StatusEmployee.Online);
 
-            var employee_rd = new Employee(_guidGenerator.Create(), tenantId, "Võ Tiến Sĩ", "", null, contact[46].Id, department[6].Id, StatusEmployee.Online);
-            var employee_rd1 = new Employee(_guidGenerator.Create(), tenantId, "Phan Đức Sơn", "", null, contact[47].Id, department[6].Id, StatusEmployee.Online);
-            var employee_rd2 = new Employee(_guidGenerator.Create(), tenantId, "Trần Thế Sơn", "", null, contact[48].Id, department[6].Id, StatusEmployee.Online);
-            var employee_rd3 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Hồng Tâm", "", null, contact[49].Id, department[6].Id, StatusEmployee.Online);
-            var employee_rd4 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Minh Tân", "", null, contact[50].Id, department[6].Id, StatusEmployee.Online);
+            var employee_rd = new Employee(_guidGenerator.Create(), tenantId, "Võ Tiến Sĩ", "Không có", null, contact[46].Id, department[6].Id, StatusEmployee.Online);
+            var employee_rd1 = new Employee(_guidGenerator.Create(), tenantId, "Phan Đức Sơn", "Không có", null, contact[47].Id, department[6].Id, StatusEmployee.Online);
+            var employee_rd2 = new Employee(_guidGenerator.Create(), tenantId, "Trần Thế Sơn", "Không có", null, contact[48].Id, department[6].Id, StatusEmployee.Online);
+            var employee_rd3 = new Employee(_guidGenerator.Create(), tenantId, "Vũ Hồng Tâm", "Không có", null, contact[49].Id, department[6].Id, StatusEmployee.Online);
+            var employee_rd4 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Minh Tân", "Không có", null, contact[50].Id, department[6].Id, StatusEmployee.Online);
 
-            var employee_operations = new Employee(_guidGenerator.Create(), tenantId, "Lê Hà Xuân Thái", "", null, contact[51].Id, department[7].Id, StatusEmployee.Online);
-            var employee_operations1 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Ngọc Phương", "", null, contact[52].Id, department[7].Id, StatusEmployee.Online);
-            var employee_operations2 = new Employee(_guidGenerator.Create(), tenantId, "Bùi Anh Tài", "", null, contact[53].Id, department[7].Id, StatusEmployee.Online);
-            var employee_operations3 = new Employee(_guidGenerator.Create(), tenantId, "Dương Chí Tâm", "", null, contact[54].Id, department[7].Id, StatusEmployee.Online);
-            var employee_operations4 = new Employee(_guidGenerator.Create(), tenantId, "Phạm Thanh Quốc", "", null, contact[55].Id, department[7].Id, StatusEmployee.Online);
+            var employee_operations = new Employee(_guidGenerator.Create(), tenantId, "Lê Hà Xuân Thái", "Không có", null, contact[51].Id, department[7].Id, StatusEmployee.Online);
+            var employee_operations1 = new Employee(_guidGenerator.Create(), tenantId, "Nguyễn Ngọc Phương", "Không có", null, contact[52].Id, department[7].Id, StatusEmployee.Online);
+            var employee_operations2 = new Employee(_guidGenerator.Create(), tenantId, "Bùi Anh Tài", "Không có", null, contact[53].Id, department[7].Id, StatusEmployee.Online);
+            var employee_operations3 = new Employee(_guidGenerator.Create(), tenantId, "Dương Chí Tâm", "Không có", null, contact[54].Id, department[7].Id, StatusEmployee.Online);
+            var employee_operations4 = new Employee(_guidGenerator.Create(), tenantId, "Phạm Thanh Quốc", "Không có", null, contact[55].Id, department[7].Id, StatusEmployee.Online);
 
             employee.Add(employee_it);
             employee.Add(employee_it_1);
@@ -227,27 +233,33 @@ public class EmployeeDataSeeder
 
             foreach (var employee in employees)
             {
+                Random random = new Random();
+                DateTime startDate = new DateTime(2022, 04, 04);
+                DateTime endDate = new DateTime(2023, 6, 01);
+                int range = (endDate - startDate).Days;
+                
+                DateTime randomDate = startDate.AddDays(random.Next(range));
                 var employeehistory1 = new EmployeeHistory(
                     _guidGenerator.Create(),
                     tenantId,
                     employee.Id,
-                    new DateTime(2010, 01, 01),
-                    new DateTime(2020, 01, 01),
-                    "Freelancer",
-                    "",
-                    "No"
+                    new DateTime(2020, 07, 15),
+                    new DateTime(2022, 04, 01),
+                    "Part-time Freelancer",
+                    "*",
+                    "Tham gia nhiều dự án freelance cho các công ty nước ngoài."
                 ); 
                 var employeehistory2 = new EmployeeHistory(
                     _guidGenerator.Create(),
                     tenantId,
                     employee.Id,
-                    
-                    new DateTime(2020, 01, 01),
-                    new DateTime(2023, 01, 01),
-                    "Employee",
+                    randomDate,
+                    randomDate,
+                    "Nhân viên",
                     "THG",
-                    "No"
-                );
+                    "Gia nhập công ty THG."
+                );  
+               
                 employeeHistories.Add(employeehistory1);
                 employeeHistories.Add(employeehistory2);
             }

@@ -27,7 +27,7 @@ public class ViewModalModel : HRMappPageModel
 
     public virtual async Task OnGetAsync()
     {
-        var dto = await _service.GetAsync(Id);
+        var dto = await _service.GetContractDetail(Id);
         ViewModel = dto;
     }
 }

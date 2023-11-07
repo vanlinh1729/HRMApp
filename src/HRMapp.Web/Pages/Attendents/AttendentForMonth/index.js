@@ -25,8 +25,11 @@ $(function () {
     var host_name = "https://localhost:44350";
     var service = hRMapp.attendentForMonths.attendentForMonth;
     var createModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/CreateModal');
+    var createManyModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/CreateManyAttendenForMonthModal');
     var editModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/EditModal');
     var viewModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/ViewModal');
+    var exportAll = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/ExportAllAttendentForMonthModal');
+    var viewAllModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/ViewAllAttendentForMonthModal');
 
     var dataTable = $('#AttendentForMonthTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -101,7 +104,7 @@ $(function () {
     
     $(document).on('click', '.delete-button', function (e) {
         var id = this.dataset.id;
-        abp.message.confirm(l('ContactDeletionConfirmationMessage',id))
+        abp.message.confirm(l('AttendentForMonthDeletionConfirmationMessage',id))
             .then(function(confirmed){
                 if(confirmed){
                     service.delete(id)
@@ -113,22 +116,122 @@ $(function () {
             });
     });
 
+   
+    
     dataTable.column([]).visible(false, false);
     
     
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
+    createManyModal.onResult(function () {
+        dataTable.ajax.reload();
+    });
 
     editModal.onResult(function () {
         dataTable.ajax.reload();
+    }); 
+    exportAll.onResult(function (e) {
+        e.preventDefault();
+        console.log("abc");
+        var date = $("#ViewMonthModel_Month").val();
+        // Gọi AJAX để lấy dữ liệu từ server
+        viewAllModal.open();
+
+        $.ajax({
+            url: '/api/app/attendent-for-month/many-attendent-for-month',
+            method: 'GET',
+            data: {  Month: date  },
+            success: function(data) {
+                if (data) {
+                    // Điền dữ liệu vào modal
+                    fillModalWithData(data);
+                    // Mở modal
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+
     });
+
+    function fillModalWithData(data) {
+        $('#viewAttendentforMonthBody').empty(); // Xóa dữ liệu cũ trong bảng
+
+        // Duyệt qua danh sách đối tượng và thêm dữ liệu vào bảng trong modal
+        for (var i = 0; i < data.listAttendentForMonth.length; i++) {
+            var item = data.listAttendentForMonth[i];
+            var departmentNames = item.departmentName != null ? item.departmentName : ''
+            var month = moment(item.month).format("MM-YYYY")
+            var row = '<tr>' +
+                '<td>' + item.employeeName + '</td>' +
+                '<td>' + departmentNames + '</td>' +
+                '<td>' + month + '</td>' +
+                '<td>' + item.count + '</td>' +
+                '</tr>';
+
+            $('#viewAttendentforMonthBody').append(row);
+        }
+
+        // Cập nhật thông tin về tháng lương trong phần tử có ID là #SalaryMonth (ví dụ: lấy thông tin từ phần tử đầu tiên trong danh sách)
+        if (data.listAttendentForMonth.length > 0) {
+            $("#AttendentMonth").text("Chấm công tháng "+moment(data.listAttendentForMonth[0].month).format("MM-YYYY"));
+        } else {
+            // Nếu không có dữ liệu, có thể cập nhật thông báo hoặc giá trị mặc định
+            $("#AttendentMonth").text("Không có dữ liệu cho tháng này");
+        }
+    }
 
     $('#NewAttendentForMonthButton').click(function (e) {
         e.preventDefault();
         createModal.open();
     });
+    $('#NewManyAttendentForMonthButton').click(function (e) {
+        e.preventDefault();
+        createManyModal.open();
+    }); 
+    $('#CreateAllAttendentForMonthInMonthButton').click(function (e) {
+        e.preventDefault();
+        exportAll.open();
+    });
 
+    $(document).on('click','.ViewAttendentForMonthBtn', function (e) {
+        e.preventDefault();
+        console.log(e);
+        var id = this.dataset.id;
+        viewModal.open({id});
+    });
+    viewModal.onOpen(function () {
+        console.log("ab123c da mo modal");
+        $('#exportPdfButton').on('click', function () {
+            var element = $(".modal-body").html();
+            console.log("danhannut");
+            var opt = {
+                margin: 10,
+                filename: 'ChamCongThang'+jQuery.now()+'.pdf',
+                image: {type: 'jpeg', quality: 1},
+                html2canvas: {scale: 2},
+                jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+    });
+    viewAllModal.onOpen(function () {
+        console.log("ab123c da mo modal");
+        $('#exportAttendentForMonthPdfButton').on('click', function () {
+            var element = $(".modal-body").html();
+            console.log("danhannut");
+            var opt = {
+                margin: 10,
+                filename: 'ChamCongThang'+jQuery.now()+'.pdf',
+                image: {type: 'jpeg', quality: 1},
+                html2canvas: {scale: 2},
+                jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+    });
     $('input.customcolumn').on('click', function (e) {
         // e.preventDefault();
 

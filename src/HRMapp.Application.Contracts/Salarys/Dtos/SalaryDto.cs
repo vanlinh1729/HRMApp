@@ -7,10 +7,12 @@ namespace HRMapp.Salarys.Dtos;
 public class SalaryDto : FullAuditedEntityDto<Guid>
 {
     
-    public Guid? EmployeeId { get; set; }
-    public string? EmployeeName { get; set; }
-
-    public Guid? AttendentForMonthId { get; set; }
-    public DateTime? AttendentForMonthMonth { get; set; }
-    public decimal? TotalSalary { get; set; }
+    public string DepartmentName { get; set; }
+    public decimal CoefficientSalary { get; set; }
+    public Guid EmployeeId { get; set; }
+    public string EmployeeName { get; set; }
+    public float AttendentForMonthCount { get; set; }
+    public Guid AttendentForMonthId { get; set; }
+    public DateTime AttendentForMonthMonth { get; set; }
+    public decimal TotalSalary { get; set; }
 }

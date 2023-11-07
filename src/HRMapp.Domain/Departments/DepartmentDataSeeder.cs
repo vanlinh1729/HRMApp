@@ -66,9 +66,9 @@ public class DepartmentDataSeeder
             var department_kt = new Department(_guidGenerator.Create(), tenantId, "Phòng Kế toán", null, null);
             var department_marketing = new Department(_guidGenerator.Create(), tenantId, "Phòng Marketing", null, null);
             var department_sales = new Department(_guidGenerator.Create(), tenantId, "Phòng Kinh doanh", null, null);
-            var department_cs = new Department(_guidGenerator.Create(), tenantId, "Phòng Hỗ trợ khách hàng", null, null);
+            var department_cs = new Department(_guidGenerator.Create(), tenantId, "Phòng CSKH", null, null);
             var department_rd = new Department(_guidGenerator.Create(), tenantId, "Phòng Nghiên cứu phát triển", null, null);
-            var department_operations = new Department(_guidGenerator.Create(), tenantId, "Phòng Vận hành", null, null);
+            var department_operations = new Department(_guidGenerator.Create(), tenantId, "Phòng Điều hành", null, null);
             departments.Add(department_it);
             departments.Add(department_hr);
             departments.Add(department_kt);

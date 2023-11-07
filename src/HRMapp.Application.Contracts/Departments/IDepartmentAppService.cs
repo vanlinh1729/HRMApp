@@ -28,4 +28,5 @@ public interface IDepartmentAppService :
     Task<List<DepartmentChangeOwnerDto>> GetDepartmentChangeListAsync(Guid departmentId);
     Task<PagedResultDto<DepartmentWithDetailDto>> GetListUsersDepartmentEdit(DepartmentDetailById input);
     Task<PagedResultDto<DepartmentWithDetailDto>> GetListUsersDepartment(DepartmentDetailById input);
+    Task<int> DepartmentCountAsync();
 }

@@ -7,16 +7,18 @@
 @{
     Layout = null;
 }
-@section scripts
-{
-    <abp-script src="/Departments/Department/index.js"/>
-}
+
  <form  asp-page="/Departments/Department/EditOwnerModal">
-    <abp-modal size="ExtraLarge">
+    <abp-modal>
         <abp-modal-header title="@L["EditOwner"].Value"></abp-modal-header>
         <abp-modal-body>
             <abp-input asp-for="Id" />
-            @await Html.PartialAsync("_Form")
+            <abp-input asp-for="@Model.ViewModel.Name" readonly="true"></abp-input>
+            <abp-select  asp-for="@Model.ViewModel.OwnerId" asp-items="@Model.Owners" label="@L["newOwnerName"].Value">
+                    <option value="" >@L["NoOption"]</option>
+            </abp-select>
+            <select hidden="hidden" asp-for="@Model.ViewModel.ParentId" asp-items="@Model.Parents" >
+                </select>
         </abp-modal-body>
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
     </abp-modal>

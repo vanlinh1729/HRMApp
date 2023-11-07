@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Text;
 using System.Threading.Tasks;
 using HRMapp.Attendents;
 using HRMapp.Contacts;
@@ -59,7 +61,7 @@ public class ContactDataSeeder
             List<string> ten_viet_nam = new List<string>
             {
                 "Đỗ Đức Hùng","Nguyễn Bình", "Trần Vũ Hoàn", "Nguyễn Văn Lĩnh", "Nguyễn Minh Tuấn", "Trần Quốc Vương",
-                "Nguyễn Thị Hương", "Lê Văn Duy", "Phạm Thị Lan", "Hoàng Minh Tuấn", "Vũ Thị Mai",
+                "Nguyễn Thanh Hương", "Lê Văn Duy", "Phạm Thị Lan", "Hoàng Minh Tuấn", "Vũ Thị Mai",
                 "Nguyễn Đình Quyết", "Vũ Cao Lâm", "Đặng Văn Quang", "Trần Thị Diễm", "Nguyễn Hải Dương",
                 "Trần Thanh Tâm", "Lê Thị Thu", "Phạm Văn Hùng", "Hoàng Đức Huy", "Vũ Thị Thu Hà",
                 "Nguyễn Thị Như Quỳnh", "Lê Hoàng Quân", "Đinh Văn Phượng", "Lê Văn Minh Châu", "Nguyễn Xuân Sang",
@@ -82,7 +84,7 @@ public class ContactDataSeeder
                 int range = (endDate - startDate).Days;
 
                 DateTime randomDate = startDate.AddDays(random.Next(range));
-                string email = $"{name.Replace(" ", "").ToLower()}@abp.io.vn"; // Generate email based on name
+                string email = $"{RemoveDiacritics(name.Replace(" ","")).ToLower()}@abp.io.vn"; // Generate email based on name
                 string phone = "0933146147"; // Sample phone number
 
                 Contact contact = new Contact(_guidGenerator.Create(), tenantId, name, Gender.Male, randomDate, true, email, phone, "Việt Nam");
@@ -90,6 +92,27 @@ public class ContactDataSeeder
             }
             await _contactRepository.InsertManyAsync(contacts);
         }
+        
+        
+        
     }
 
+        // Hàm chuyển đổi tên có dấu thành tên không dấu
+        static string RemoveDiacritics(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            string formD = text.Normalize(NormalizationForm.FormD);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char ch in formD)
+            {
+                UnicodeCategory uc = CharUnicodeInfo.GetUnicodeCategory(ch);
+                if (uc != UnicodeCategory.NonSpacingMark)
+                    stringBuilder.Append(ch);
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
 }

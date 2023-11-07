@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.AuditLogging;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Uow;
 
 namespace HRMapp.Departments;
@@ -29,12 +30,16 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
     private readonly IAuditLogRepository _auditLogRepository;
     private readonly IContactRepository _contactRepository;
     private readonly IEmployeeRepository _ownerRepository;
+    private readonly IEmployeeHistoryRepository _employeeHistoryRepository
+        ;
 
     public DepartmentAppService(IDepartmentRepository repository
         , IEmployeeRepository ownerRepository,
         IContactRepository contactRepository,
-        IAuditLogRepository auditLogRepository) : base(repository)
+        IAuditLogRepository auditLogRepository,
+        IEmployeeHistoryRepository employeeHistoryRepository) : base(repository)
     {
+        _employeeHistoryRepository = employeeHistoryRepository;
         _auditLogRepository = auditLogRepository;
         _repository = repository;
         _ownerRepository = ownerRepository;
@@ -169,13 +174,20 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         foreach (var em in employees)
         {
             em.DepartmentId = department.Id;
+            await _ownerRepository.UpdateAsync(em);
+            var newDepartmentName = (await _repository.GetQueryableAsync()).Where(x=>x.Id == department.Id).First().Name;
+            var emHistory = new EmployeeHistory(GuidGenerator.Create(),CurrentTenant.Id,em.Id,DateTime.Now, DateTime.Now, "Điều chuyển phòng ban","TH Group", "Chuyển đến " +newDepartmentName);
+            await _employeeHistoryRepository.InsertAsync(emHistory);
         }
             
-        await _ownerRepository.UpdateManyAsync(employees);
 
         return ObjectMapper.Map<Department,DepartmentDto>(department);
     } 
 
+    public async Task<int> DepartmentCountAsync()
+    {
+        return await _repository.CountAsync();
+    }
     [UnitOfWork]
     public async Task<string> UpdateDepartmentWithManyEmployeeAsync(Guid departmentId,CreateDepartmentAndAddEmployee input)
     {
@@ -194,10 +206,15 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
             .Where(x => input.employeeId.Contains(x.Id)).ToList();
         /*if (departmentId != employees[0].DepartmentId)
         {*/
-        var intersectEmployee = employeeinDepartment.Intersect(employees);
         foreach (var em in employees)
         {
-            em.DepartmentId = departmentId;
+            if (em.DepartmentId != departmentId)
+            {
+                em.DepartmentId = departmentId;
+                var newDepartmentName = (await _repository.GetQueryableAsync()).Where(x=>x.Id == departmentId).First().Name;
+                var emHistory = new EmployeeHistory(GuidGenerator.Create(),CurrentTenant.Id,em.Id,DateTime.Now, DateTime.Now, "Điều chuyển phòng ban","TH Group", "Chuyển đến " +newDepartmentName);
+                await _employeeHistoryRepository.InsertAsync(emHistory);
+            }
         }              
         foreach (var em in employeeinDepartment)
         {
@@ -233,6 +250,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
                     .Select(a => ParseToGuidCheckException(a.OriginalValue)).ToList().IsNullOrEmpty()?x.EntityChange.PropertyChanges
                     .Select(a => ParseToGuidCheckException(a.OriginalValue)).ToList()[0]: Guid.Empty
         }).ToList();
+        
 
         var result = ownerchange.Join
             (employee,

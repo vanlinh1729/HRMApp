@@ -9,6 +9,7 @@ using HRMapp.Employees;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
 namespace HRMapp.Contracts;
 
@@ -85,10 +86,10 @@ public class ContractAppService : CrudAppService<Contract, ContractDto, Guid, Co
     {
         var queryable = await _repository.GetQueryableAsync();
         var query = from Contract in queryable
-            where Contract.Id == ContractId
             join employee in await _employeeRepository.GetQueryableAsync() on Contract.EmployeeId equals
                 employee.Id into employeeinContract
             from employeeinContracts in employeeinContract.DefaultIfEmpty()
+            where Contract.Id == ContractId
             select new ContractDto()
             {
                 Id = Contract.Id,
@@ -105,6 +106,10 @@ public class ContractAppService : CrudAppService<Contract, ContractDto, Guid, Co
         return queryResult;
     }
 
+    public async Task<int> ContractCountAsync()
+    {
+        return await _repository.CountAsync();
+    }
     
     [Authorize(HRMappPermissions.Contract.Default)]
     public async Task<ListResultDto<SelectResultDto>> GetListEmployees()

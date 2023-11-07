@@ -1,0 +1,38 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using HRMapp.Localization
+@inject IHtmlLocalizer<HRMappResource> L
+@model HRMapp.Web.Pages.Attendents.AttendentForMonth.ExportAllAttendentForMonthModalModel
+@{
+    Layout = null;
+}
+@section scripts
+{
+    <abp-script src="/Pages/Attendents/AttendentForMonth/index.js" />
+}
+
+<abp-modal size="ExtraLarge">
+    <abp-modal-header title="@L["AttendentForMonth"].Value"></abp-modal-header>
+    <abp-modal-body id="viewAttendentforMonth">
+        <div class="text-center mb-3"> <!-- Center-align the content -->
+            <h2 class="fw-bold">THGroup</h2> <!-- Apply bold font and larger size -->
+            <h3 id="AttendentMonth"></h3> <!-- Text "Bảng lương tháng" --></div>
+        <abp-table hoverable-rows="true" responsive-sm="true" class="table ta table-bordered">
+            <thead>
+            <tr>
+                <th scope="Column">@L["EmployeeName"]</th>
+                <th scope="Column">@L["DepartmentName"]</th>
+                <th scope="Column">@L["AttendentForMonthMonth"]</th>
+                <th scope="Column">@L["AttendentForMonthCount"]</th>
+            </tr>
+            </thead>
+            <tbody id="viewAttendentforMonthBody">
+
+            </tbody>
+        </abp-table>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)">
+        <button class="btn btn-primary" id="exportAttendentForMonthPdfButton">Export to PDF</button>
+    </abp-modal-footer>
+</abp-modal>
