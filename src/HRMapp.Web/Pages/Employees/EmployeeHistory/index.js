@@ -40,12 +40,15 @@ $(function () {
         scrollCollapse: true,
         order: [[0, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
-        dom: 'Bfrtip',
+        dom: 'Bfrtilp',
         buttons: [
             'copyHtml5',
             'excelHtml5',
-            'csvHtml5',
             'pdfHtml5'
+        ],
+        lengthMenu: [
+            [10, 25, 50, 9999999],
+            [10, 25, 50, 'All']
         ],
         columnDefs: [
             {
@@ -64,7 +67,7 @@ $(function () {
                 title: l('EmployeeHistoryStart'),
                 data: "start",
                 "render": function (data, type, full, meta) {
-                    return data != null ? moment(data).format("dd-MM-YYYY") : "";
+                    return data != null ? moment(data).format("DD-MM-YYYY") : "";
                 }
             },
             {
@@ -72,7 +75,7 @@ $(function () {
                 title: l('EmployeeHistoryEnd'),
                 data: "end",
                 "render": function (data, type, full, meta) {
-                    return data != null ? moment(data).format("dd-MM-YYYY") : "";
+                    return data != null ? moment(data).format("DD-MM-YYYY") : "";
                 }
             },
             {

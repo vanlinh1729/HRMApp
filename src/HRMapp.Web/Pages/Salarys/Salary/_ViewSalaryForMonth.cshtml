@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using HRMapp.Localization
+@using HRMapp.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@inject IHtmlLocalizer<HRMappResource> L
+
+@model HRMapp.Web.Pages.Salarys.Salary.ExportSalaryForMonthModel
+<abp-modal size="Large">
+    <abp-modal-header title="@L["Salary"].Value"></abp-modal-header>
+    <abp-modal-body>
+     <div class="text-center mb-3"> <!-- Center-align the content -->
+                <h2 class="fw-bold">THGroup</h2> <!-- Apply bold font and larger size -->
+                <h3>Bảng lương tháng @Model.ViewMonthModel.AttendentForMonthMonth</h3> <!-- Text "Bảng lương tháng" --></div>
+            
+            <abp-table hoverable-rows="true" responsive-sm="true" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="Column">@L["EmployeeName"]</th>
+                    <th scope="Column">@L["DepartmentName"]</th>
+                    <th scope="Column">@L["AttendentForMonthMonth"]</th>
+                    <th scope="Column">@L["AttendentForMonthCount"]</th>
+                    <th scope="Column">@L["CoefficientSalary"]</th>
+                    <th scope="Column">@L["TotalSalary"]</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in @Model.ViewModel.ListSalarys)
+                {
+                    <tr>
+                        <td>@item.EmployeeName</td>
+                        <td>
+                            @item.DepartmentName
+                        </td> <td>
+                            @item.AttendentForMonthMonth.ToString("MM-yyyy")
+                        </td> <td>
+                            @item.AttendentForMonthCount
+                        </td> <td>
+                            @item.CoefficientSalary
+                        </td> <td>
+                            @item.TotalSalary
+                        </td> 
+                    </tr>
+                }
+            </abp-table>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)">
+            <button class="btn btn-primary" id="exportPdfButton">Export to PDF</button>
+        </abp-modal-footer>
+</abp-modal>
+
+         
+
+  
+
+
+

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using HRMapp.Contacts.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -13,5 +14,5 @@ public interface IContactAppService :
         CreateUpdateContactDto,
         CreateUpdateContactDto>
 {
-
+    Task<int> ContactCountAsync();
 }

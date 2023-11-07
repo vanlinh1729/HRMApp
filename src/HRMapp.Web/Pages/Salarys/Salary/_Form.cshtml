@@ -9,8 +9,10 @@
 <abp-select  asp-for="ViewModel.EmployeeId" asp-items="@Model.Employees" label="@L["Employee"].Value">
         <option value="">@L["NoOption"]</option>
 </abp-select>
-<abp-input asp-for="ViewModel.AttendentForMonthMonth"></abp-input>
+<abp-input asp-for="ViewModel.AttendentForMonthMonth" value="@DateTime.Now.ToString("yyyy-MM-dd")" type="date" abp-data-datepicker="false"></abp-input>
+@*
 <abp-input asp-for="ViewModel.TotalSalary"></abp-input>
+*@
 
          
 

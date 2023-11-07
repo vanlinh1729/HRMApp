@@ -6,6 +6,12 @@
 @inject IHtmlLocalizer<HRMappResource> L
 
 @model HRMapp.Web.Pages.Employees.EmployeeHistory.CreateOrEditModalModel
+@*
+<abp-select  asp-for="ViewModel.EmployeeId" asp-items="@Model.Employees" label="@L["Employee"].Value">
+        <option value="">@L["NoOption"]</option>
+</abp-select>
+*@
+
 <abp-select  asp-for="ViewModel.EmployeeId" asp-items="@Model.Employees" label="@L["Employee"].Value">
         <option value="">@L["NoOption"]</option>
 </abp-select>

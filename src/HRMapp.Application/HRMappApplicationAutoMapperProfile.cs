@@ -77,6 +77,7 @@ public class HRMappApplicationAutoMapperProfile : Profile
 
         CreateMap<Contact, ContactDto>();
         CreateMap<Contract, ContractDto>();
+        CreateMap<CreateUpdateAttendentDto , CreateUpdateAttendentForMonthDto>();
         CreateMap<Salary, SalaryDto>();
         CreateMap<Attendent, AttendentDto >();
         CreateMap<AttendentLine, AttendentLineDto >();

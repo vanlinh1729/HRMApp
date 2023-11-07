@@ -29,6 +29,10 @@ public class SalaryFilterInput
     [Display(Name = "SalaryAttendentForMonthId")]
     public Guid? AttendentForMonthId { get; set; }
     
+     [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "SalaryAttendentForMonthId")]
+    public float? AttendentForMonthCount { get; set; }
+    
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "SalaryAttendentForMonthId")]
     public DateTime? AttendentForMonthMonth { get; set; }

@@ -80,5 +80,7 @@ public class HRMappWebAutoMapperProfile : Profile
         CreateMap<CreateEditAttendentLineViewModel, CreateUpdateAttendentLineDto>();
 
         CreateMap<CreateEditDepartmentViewModel, CreateDepartmentAndAddEmployee>();
+        CreateMap<CreateManySalaryViewModel , CreateManySalaryDto>();
+        CreateMap<CreateManyAttendentForMonthViewModel , CreateManyAttendentForMonthDto>();
     }
 }

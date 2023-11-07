@@ -26,8 +26,7 @@ public class ViewModalModel : HRMappPageModel
 
     public virtual async Task OnGetAsync()
     {
-        var dto = await _service.GetAsync(Id);
-        if (dto != null)
-            ViewModel = dto;
+        var dto = await _service.GetAttendentForMonthDetail(Id);
+        ViewModel = dto;
     }
 }

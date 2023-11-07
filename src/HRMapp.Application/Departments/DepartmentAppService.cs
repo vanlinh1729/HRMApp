@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.AuditLogging;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Uow;
 
 namespace HRMapp.Departments;
@@ -29,12 +30,16 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
     private readonly IAuditLogRepository _auditLogRepository;
     private readonly IContactRepository _contactRepository;
     private readonly IEmployeeRepository _ownerRepository;
+    private readonly IEmployeeHistoryRepository _employeeHistoryRepository
+        ;
 
     public DepartmentAppService(IDepartmentRepository repository
         , IEmployeeRepository ownerRepository,
         IContactRepository contactRepository,
-        IAuditLogRepository auditLogRepository) : base(repository)
+        IAuditLogRepository auditLogRepository,
+        IEmployeeHistoryRepository employeeHistoryRepository) : base(repository)
     {
+        _employeeHistoryRepository = employeeHistoryRepository;
         _auditLogRepository = auditLogRepository;
         _repository = repository;
         _ownerRepository = ownerRepository;
@@ -169,13 +174,20 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         foreach (var em in employees)
         {
             em.DepartmentId = department.Id;
+            await _ownerRepository.UpdateAsync(em);
+            var newDepartmentName = (await _repository.GetQueryableAsync()).Where(x=>x.Id == department.Id).First().Name;
+            var emHistory = new EmployeeHistory(GuidGenerator.Create(),CurrentTenant.Id,em.Id,DateTime.Now, DateTime.Now, "Điều chuyển phòng ban","TH Group", "Chuyển đến " +newDepartmentName);
+            await _employeeHistoryRepository.InsertAsync(emHistory);
         }
             
-        await _ownerRepository.UpdateManyAsync(employees);
 
         return ObjectMapper.Map<Department,DepartmentDto>(department);
     } 
 
+    public async Task<int> DepartmentCountAsync()
+    {
+        return await _repository.CountAsync();
+    }
     [UnitOfWork]
     public async Task<string> UpdateDepartmentWithManyEmployeeAsync(Guid departmentId,CreateDepartmentAndAddEmployee input)
     {
@@ -194,10 +206,15 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
             .Where(x => input.employeeId.Contains(x.Id)).ToList();
         /*if (departmentId != employees[0].DepartmentId)
         {*/
-        var intersectEmployee = employeeinDepartment.Intersect(employees);
         foreach (var em in employees)
         {
-            em.DepartmentId = departmentId;
+            if (em.DepartmentId != departmentId)
+            {
+                em.DepartmentId = departmentId;
+                var newDepartmentName = (await _repository.GetQueryableAsync()).Where(x=>x.Id == departmentId).First().Name;
+                var emHistory = new EmployeeHistory(GuidGenerator.Create(),CurrentTenant.Id,em.Id,DateTime.Now, DateTime.Now, "Điều chuyển phòng ban","TH Group", "Chuyển đến " +newDepartmentName);
+                await _employeeHistoryRepository.InsertAsync(emHistory);
+            }
         }              
         foreach (var em in employeeinDepartment)
         {
@@ -217,7 +234,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         var employee = await _ownerRepository.GetListAsync();
         var entityChange =
             await _auditLogRepository.GetEntityChangesWithUsernameAsync(departmentId.ToString(),
-                "Hrm.Departments.Department");
+                "HRMapp.Departments.Department");
         var ownerchange = entityChange.Select(x => new
         {
             x.UserName,
@@ -233,6 +250,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
                     .Select(a => ParseToGuidCheckException(a.OriginalValue)).ToList().IsNullOrEmpty()?x.EntityChange.PropertyChanges
                     .Select(a => ParseToGuidCheckException(a.OriginalValue)).ToList()[0]: Guid.Empty
         }).ToList();
+        
 
         var result = ownerchange.Join
             (employee,
@@ -247,6 +265,44 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
                     { UserName = x.username, ChangeTime = x.changetime, NewValue = x.newvalue, OriginalValue = y.Name })
             .ToList();
         return result;
+    }
+    
+    public async Task<PagedResultDto<DepartmentWithDetailDto>> GetListUsersDepartment(DepartmentDetailById input)
+    {
+        var employees = await _ownerRepository.GetQueryableAsync();
+        var employeesDepartment = from employee in employees
+            join department in await _repository.GetQueryableAsync() on employee.DepartmentId equals department.Id into
+                emmployedepartment
+            from departments in emmployedepartment.DefaultIfEmpty()
+            join contact in await _contactRepository.GetQueryableAsync() on employee.ContactId equals contact.Id into
+                emmployedcontact
+            from contacts in emmployedcontact.DefaultIfEmpty()
+            /*into  departmentowner
+
+            from  owner in departmentowner.DefaultIfEmpty()
+            */
+            where departments.Id == input.Id && departments.OwnerId != employee.Id
+            select new
+            {
+                employee.Id,
+                EmployeeName = employee.Name,
+                contacts.Email,
+                contacts.PhoneNumber
+            };
+        var resultObj = employeesDepartment.Select(x => new DepartmentWithDetailDto
+        {
+            Id = x.Id,
+            EmployeeName = x.EmployeeName,
+            Email = x.Email,
+            PhoneNumber = x.PhoneNumber
+        });
+        /*.OrderBy(NormalizeSorting(input.Sorting))
+        .Skip(input.SkipCount)
+        .Take(input.MaxResultCount);;*/
+        var result = resultObj.Skip(input.SkipCount)
+            .Take(input.MaxResultCount).ToList();
+        var totalcount = resultObj.Count();
+        return new PagedResultDto<DepartmentWithDetailDto>(totalcount, result);
     }
      public async Task<PagedResultDto<DepartmentWithDetailDto>> GetListUsersDepartmentEdit(DepartmentDetailById input)
     {
@@ -285,11 +341,14 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
                 EmployeeName = x.EmployeeName,
                 PhoneNumber = x.PhoneNumber
             });
-        var result = iQueryable.Skip(input.SkipCount)
+        var totalcount = iQueryable.Count();
+
+        var result = iQueryable
+                .OrderBy((x) => x.EmployeeName)
+                .Skip(input.SkipCount)
             .Take(input.MaxResultCount).ToList();
         ;
 
-        var totalcount = iQueryable.Count();
         return new PagedResultDto<DepartmentWithDetailDto>(totalcount, result);
     }
 

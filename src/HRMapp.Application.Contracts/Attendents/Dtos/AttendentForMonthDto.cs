@@ -8,6 +8,7 @@ public class AttendentForMonthDto : FullAuditedEntityDto<Guid>
 {
     
     public string EmployeeName { get; set; }
+    public string DepartmentName { get; set; }
     
     public Guid EmployeeId { get; set; }
 

@@ -15,7 +15,7 @@ public class HRMappPermissionDefinitionProvider : PermissionDefinitionProvider
         var employeePermission = myGroup.AddPermission(HRMappPermissions.Employee.Default, L("Permission:Employee"));
         employeePermission.AddChild(HRMappPermissions.Employee.Create, L("Permission:Create"));
         employeePermission.AddChild(HRMappPermissions.Employee.Update, L("Permission:Update"));
-        employeePermission.AddChild(HRMappPermissions.Employee.Delete, L("Permission:Delete"));
+        employeePermission.AddChild(HRMappPermissions.Employee.Delete, L("Permission:Xoa"));
 
         var departmentPermission = myGroup.AddPermission(HRMappPermissions.Department.Default, L("Permission:Department"));
         departmentPermission.AddChild(HRMappPermissions.Department.Create, L("Permission:Create"));

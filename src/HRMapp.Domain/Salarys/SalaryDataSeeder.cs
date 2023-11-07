@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -86,4 +86,4 @@ public class SalaryDataSeeder
             await _salaryRepository.InsertManyAsync(salaries);
         }
     }
-}
+}*/

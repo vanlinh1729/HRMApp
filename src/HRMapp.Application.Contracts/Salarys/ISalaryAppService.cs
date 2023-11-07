@@ -17,5 +17,7 @@ public interface ISalaryAppService :
 {
 
     Task<ListResultDto<SelectResultDto>> GetListEmployeeAsync();
+    Task<SalaryDto> CreateManySalaryAsync(CreateManySalaryDto input);
     Task<SalaryDto> GetSalaryDetail(Guid salaryId);
+    Task<SalaryForMonthDto> GetListSalaryForMonthAsync(CreateManySalaryDto input);
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using HRMapp.Contacts;
 using HRMapp.Departments;
@@ -10,6 +11,7 @@ using HRMapp.Users;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.AuditLogging;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 
@@ -25,14 +27,20 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
     private readonly IRepository<IdentityUser, Guid> _user; 
 
     private readonly IEmployeeRepository _repository;
+    private readonly IEmployeeHistoryRepository _employeeHistoryRepository;
+    private readonly IAuditLogRepository _auditLogRepository;
 
     public EmployeeAppService(IEmployeeRepository repository
         , IRepository<HrmUser, Guid> userRepository
         , IRepository<Contact, Guid> contactRepository
         , IDepartmentRepository departmentRepository
-        ,IRepository<IdentityUser, Guid> user
+        ,IEmployeeHistoryRepository employeeHistoryRepository
+        ,IRepository<IdentityUser, Guid> user,
+        IAuditLogRepository auditLogRepository
     ) : base(repository)
     {
+        _auditLogRepository = auditLogRepository;
+        _employeeHistoryRepository = employeeHistoryRepository;
         _repository = repository;
         _userRepository = userRepository;
         _contactRepository = contactRepository;
@@ -165,6 +173,43 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
 
         return queryResult;
     }
+    public async Task<CVOfEmployeeDto> GetCVofEmployee(Guid employeeId)
+    {
+        var employeehistory = (await _employeeHistoryRepository.GetListAsync()).Where(x => x.EmployeeId == employeeId).ToList();
+        var queryable = await _repository.GetQueryableAsync();
+        var query = from employee in queryable
+            where employee.Id == employeeId
+            join user in await _userRepository.GetQueryableAsync() on employee.UserId equals user.Id into
+                employeeuser
+            from user in employeeuser.DefaultIfEmpty()
+            join contact in await _contactRepository.GetQueryableAsync() on employee.ContactId equals
+                contact.Id into employeecontact
+            from contact in employeecontact.DefaultIfEmpty()
+            join department in await _departmentRepository.GetQueryableAsync() on employee.DepartmentId equals
+                department.Id into employeedepartment
+            from department in employeedepartment.DefaultIfEmpty()
+            select new CVOfEmployeeDto
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                OtherName = employee.OtherName,
+                UserName = user.UserName,
+                UserId = employee.UserId,
+                ContactName = contact.Name,
+                ContactId = employee.ContactId,
+                DepartmentName = department.Name,
+                ContactAddress = contact.Address,
+                DepartmentId = employee.DepartmentId,
+                Status = employee.Status,
+                Gender = contact.Gender,
+                BirthDay = contact.BirthDay,
+                Email = contact.Email,
+                PhoneNumber = contact.PhoneNumber,
+                EmployeeHistories =ObjectMapper.Map<List<EmployeeHistory>, List<EmployeeHistoryDto>>(employeehistory)
+            };
+        var queryResult = AsyncExecuter.FirstAsync(query).Result;
+        return queryResult;
+    }
 
     [Authorize(HRMappPermissions.Employee.Default)]
     public async Task<ListResultDto<SelectResultDto>> GetListHrmUserAsync()
@@ -189,6 +234,33 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
     public override Task<EmployeeDto> GetAsync(Guid id)
     {
         return base.GetAsync(id);
+    }
+    
+    [Authorize(HRMappPermissions.Employee.Default)]
+    public async Task<int> EmployeeCountAsync()
+    {
+        return await _repository.CountAsync();
+    }
+
+    public async override Task<EmployeeDto> UpdateAsync(Guid id, CreateUpdateEmployeeDto input)
+    {
+        var employee = await _repository.GetAsync(id);
+        if (input.DepartmentId != null)
+        {
+            var newDepartmentName = (await _departmentRepository.GetQueryableAsync()).Where(x=>x.Id == input.DepartmentId).First().Name;
+            var emHistory = new EmployeeHistory(GuidGenerator.Create(),CurrentTenant.Id,id,DateTime.Now, DateTime.Now, "Điều chuyển phòng ban","TH Group", "Chuyển đến " +newDepartmentName);
+            await _employeeHistoryRepository.InsertAsync(emHistory);
+        }
+
+        employee.Name = input.Name;
+        employee.ContactId = input.ContactId;
+        employee.Status = input.Status;
+        employee.UserId = input.UserId;
+        employee.OtherName = input.OtherName;
+        employee.DepartmentId = input.DepartmentId;
+        await _repository.UpdateAsync(employee);
+
+        return new EmployeeDto();
     }
 
     private static string NormalizeSorting(string sorting)

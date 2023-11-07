@@ -12,4 +12,6 @@ public class AttendentForMonthGetListInput : PagedAndSortedResultRequestDto
 
     public DateTime? Month { get; set; }
     public float? Count { get; set; }
+    public int MaxResultCount { get; set; } = (int)999999999;
+
 }

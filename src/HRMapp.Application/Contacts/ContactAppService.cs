@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HRMapp.Permissions;
 using HRMapp.Contacts.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
 namespace HRMapp.Contacts;
 
@@ -36,5 +37,9 @@ public class ContactAppService : CrudAppService<Contact, ContactDto, Guid, Conta
             .WhereIf(!input.PhoneNumber.IsNullOrWhiteSpace(), x => x.PhoneNumber.Contains(input.PhoneNumber))
             .WhereIf(!input.Address.IsNullOrWhiteSpace(), x => x.Address.Contains(input.Address))
             ;
+    }
+    public async Task<int> ContactCountAsync()
+    {
+        return await _repository.CountAsync();
     }
 }

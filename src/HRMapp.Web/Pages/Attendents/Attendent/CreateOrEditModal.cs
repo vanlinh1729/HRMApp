@@ -32,9 +32,7 @@ public class CreateOrEditModalModel : HRMappPageModel
         if (!IsCreate())
         {
             var dto = await _service.GetAsync(Id);
-            /*
             ViewModel = ObjectMapper.Map<AttendentDto, CreateEditAttendentViewModel>(dto);
-        */
         }
         else
         {
