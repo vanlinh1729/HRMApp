@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HRMapp.Permissions;
 using HRMapp.Contacts.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
@@ -38,6 +39,7 @@ public class ContactAppService : CrudAppService<Contact, ContactDto, Guid, Conta
             .WhereIf(!input.Address.IsNullOrWhiteSpace(), x => x.Address.Contains(input.Address))
             ;
     }
+    [Authorize(HRMappPermissions.Contact.Default)]
     public async Task<int> ContactCountAsync()
     {
         return await _repository.CountAsync();

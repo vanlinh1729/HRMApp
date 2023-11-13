@@ -26,4 +26,10 @@
     <Content Remove="**\*generate-proxy.json" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer">
+      <Version>7.0.13</Version>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>

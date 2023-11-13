@@ -29,4 +29,10 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.10" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer">
+      <Version>7.0.13</Version>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>

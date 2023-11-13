@@ -106,6 +106,7 @@ public class ContractAppService : CrudAppService<Contract, ContractDto, Guid, Co
         return queryResult;
     }
 
+    [Authorize(HRMappPermissions.Contract.Default)]
     public async Task<int> ContractCountAsync()
     {
         return await _repository.CountAsync();

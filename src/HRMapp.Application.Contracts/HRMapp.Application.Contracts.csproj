@@ -22,4 +22,10 @@
     <PackageReference Include="Volo.Abp.SettingManagement.Application.Contracts" Version="7.4.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer">
+      <Version>7.0.13</Version>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>

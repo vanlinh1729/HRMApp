@@ -41,6 +41,10 @@
             <abp-column size-md="_6" class="text-end">
                 @if (await Authorization.IsGrantedAsync(HRMappPermissions.Salary.Create))
                 {
+                    <abp-button id="ExportSalaryForDepartmentButton"
+                                text="@L["ExportSalaryForMonthForDepartment"].Value"
+                                icon="plus"
+                                button-type="Primary"/> 
                     <abp-button id="ExportSalaryButton"
                                 text="@L["ExportSalaryForMonth"].Value"
                                 icon="plus"
