@@ -319,6 +319,46 @@ public class SalaryAppService : CrudAppService<Salary, SalaryDto, Guid, SalaryGe
          return result;
     }
 
+          
+        [UnitOfWork]
+        public async Task<SalaryForMonthDto> GetListSalaryForMonthForDepartmentAsync(CreateManySalaryForMonthDto input)
+    {
+         var listSalary = from salary in (await Repository.GetQueryableAsync())
+            join attendentformonth in await _attendentForMonthRepository.GetQueryableAsync() on salary.AttendentForMonthId equals attendentformonth.Id
+                into salaryAttendentForMonth
+            from salaryAttendentForMonths in salaryAttendentForMonth.DefaultIfEmpty()
+            join employee in await _employeeRepository.GetQueryableAsync() on salary.EmployeeId equals employee.Id
+                into Salaryemployee
+            from employees in Salaryemployee.DefaultIfEmpty()
+            join de in await _departmentRepository.GetQueryableAsync() on employees.DepartmentId equals de.Id
+                into emde
+            from emdes in emde.DefaultIfEmpty()
+            join contract in await _contractRepository.GetQueryableAsync() on employees.Id equals contract.EmployeeId
+                into contractem
+            from contractems in contractem.DefaultIfEmpty()
+            where salaryAttendentForMonths.Month.Month == input.AttendentForMonthMonth.Month 
+                && salaryAttendentForMonths.Month.Year == input.AttendentForMonthMonth.Year 
+                && employees.DepartmentId == input.DepartmentId
+               select new SalaryDto()
+            {
+            Id = salary.Id,
+            EmployeeId = salary.EmployeeId,
+            CoefficientSalary = contractems.CoefficientSalary,
+            EmployeeName = employees.Name,
+            DepartmentName = emdes.Name,
+            AttendentForMonthCount = salaryAttendentForMonths.Count,
+            AttendentForMonthId = salary.AttendentForMonthId,
+            AttendentForMonthMonth = salaryAttendentForMonths.Month,
+            TotalSalary = salary.TotalSalary
+            };
+         
+         var queryResult = await AsyncExecuter.ToListAsync(listSalary);
+         var result = new SalaryForMonthDto();
+         result.ListSalarys = queryResult;
+         return result;
+    }
+
+        
 
     private static string NormalizeSorting(string sorting)
     {

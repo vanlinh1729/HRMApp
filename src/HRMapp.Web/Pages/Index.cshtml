@@ -1,8 +1,13 @@
 ﻿@page
+@using System.Net
 @using Microsoft.AspNetCore.Mvc.Localization
 @using HRMapp.Localization
+@using HRMapp.Permissions
+@using Microsoft.AspNetCore.Authorization
 @using Volo.Abp.Users
 @model HRMapp.Web.Pages.IndexModel
+@inject IAuthorizationService Authorization
+
 @inject IHtmlLocalizer<HRMappResource> L
 @inject ICurrentUser CurrentUser
 @section styles {
@@ -41,7 +46,9 @@
             }
         </div>
 
-        <div class="card ">
+         @if (CurrentUser.IsAuthenticated)
+                   {
+                      <div class="card ">
             <div class="card-body shadow p-2 mb-5 rounded">
                 <div class="p-md-3">
                     <!-- Main content -->
@@ -101,4 +108,6 @@
                 </div>
             </div>
         </div>
-    </div>
+                   }
+     
+ </div>

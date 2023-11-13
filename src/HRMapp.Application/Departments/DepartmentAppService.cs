@@ -184,6 +184,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         return ObjectMapper.Map<Department,DepartmentDto>(department);
     } 
 
+    [Authorize(HRMappPermissions.Department.Default)]
     public async Task<int> DepartmentCountAsync()
     {
         return await _repository.CountAsync();

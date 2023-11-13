@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/hrmthg/providers/Microsoft.ServiceLinker/linkers/ConnectionStrings_C6063C5EDC",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/hrmapp/databases/HRMapp",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings"
+    },
+    "mssql2": {
+      "ignored": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:Default"
+    }
+  }
+}
