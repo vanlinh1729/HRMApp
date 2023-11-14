@@ -24,10 +24,10 @@ $(function () {
     var l = abp.localization.getResource('HRMapp');
 
     var service = hRMapp.contacts.contact;
-    var host_name = "https://localhost:44350";
-    var createModal = new abp.ModalManager(host_name + '/Contacts/Contact/CreateModal');
-    var editModal = new abp.ModalManager(host_name + '/Contacts/Contact/EditModal');
-    var viewModal = new abp.ModalManager(host_name + '/Contacts/Contact/ViewModal');
+    var host_name = abp.appPath;
+    var createModal = new abp.ModalManager(host_name + 'Contacts/Contact/CreateModal');
+    var editModal = new abp.ModalManager(host_name + 'Contacts/Contact/EditModal');
+    var viewModal = new abp.ModalManager(host_name + 'Contacts/Contact/ViewModal');
 
     var dataTable = $('#ContactTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,

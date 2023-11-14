@@ -38,27 +38,31 @@
             <abp-column size-md="_6">
                 <abp-card-title>@L["Salary"]</abp-card-title>
             </abp-column>
-            <abp-column size-md="_6" class="text-end">
-                @if (await Authorization.IsGrantedAsync(HRMappPermissions.Salary.Create))
-                {
-                    <abp-button id="ExportSalaryForDepartmentButton"
-                                text="@L["ExportSalaryForMonthForDepartment"].Value"
-                                icon="plus"
-                                button-type="Primary"/> 
-                    <abp-button id="ExportSalaryButton"
-                                text="@L["ExportSalaryForMonth"].Value"
-                                icon="plus"
-                                button-type="Primary"/> 
-                    <abp-button id="NewManySalaryButton"
-                                text="@L["CreateManySalary"].Value"
-                                icon="plus"
-                                button-type="Primary"/>
-                    <abp-button id="NewSalaryButton"
-                                text="@L["CreateSalary"].Value"
-                                icon="plus"
-                                button-type="Primary"/>
-                }
-            </abp-column>
+           <abp-column size-md="_6" class="text-end">
+               @if (await Authorization.IsGrantedAsync(HRMappPermissions.Salary.Create))
+               {
+                   <abp-button id="ExportSalaryForDepartmentButton"
+                               text="@L["ExportSalaryForMonthForDepartment"].Value"
+                               icon="plus"
+                               button-type="Primary"
+                               class="mb-2 mr-2"/> <!-- Add margin to the button -->
+                   <abp-button id="ExportSalaryButton"
+                               text="@L["ExportSalaryForMonth"].Value"
+                               icon="plus"
+                               button-type="Primary"
+                               class="mb-2 mr-2"/> <!-- Add margin to the button -->
+                   <abp-button id="NewManySalaryButton"
+                               text="@L["CreateManySalary"].Value"
+                               icon="plus"
+                               button-type="Primary"
+                               class="mb-2 mr-2"/> <!-- Add margin to the button -->
+                   <abp-button id="NewSalaryButton"
+                               text="@L["CreateSalary"].Value"
+                               icon="plus"
+                               button-type="Primary"
+                               class="mb-2 mr-2"/> <!-- Add margin to the button -->
+               }
+           </abp-column>
         </abp-row>
     </abp-card-header>
     <abp-card-body>

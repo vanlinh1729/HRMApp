@@ -24,10 +24,10 @@ $(function () {
     var l = abp.localization.getResource('HRMapp');
 
     var service = hRMapp.contracts.contract;
-    var host_name = "https://localhost:44350";
-    var createModal = new abp.ModalManager(host_name + '/Contracts/Contract/CreateModal');
-    var editModal = new abp.ModalManager(host_name + '/Contracts/Contract/EditModal');
-    var viewModal = new abp.ModalManager(host_name + '/Contracts/Contract/ViewModal');
+    var host_name = abp.appPath;
+    var createModal = new abp.ModalManager(host_name + 'Contracts/Contract/CreateModal');
+    var editModal = new abp.ModalManager(host_name + 'Contracts/Contract/EditModal');
+    var viewModal = new abp.ModalManager(host_name + 'Contracts/Contract/ViewModal');
 
     var dataTable = $('#ContractTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,

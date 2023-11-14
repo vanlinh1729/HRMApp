@@ -2,11 +2,11 @@ var dataTable;
 var dateformat = abp.localization.currentCulture.dateTimeFormat.shortDatePattern.toUpperCase();
 var l = abp.localization.getResource('HRMapp');
 var service = hRMapp.attendents.attendent;
-var host_name = "https://localhost:44350";
+var host_name = abp.appPath;
 
-var createModal = new abp.ModalManager(host_name + '/Attendents/Attendent/CreateModal');
-var editModal = new abp.ModalManager(host_name + '/Attendents/Attendent/EditModal');
-var viewModal = new abp.ModalManager(host_name + '/Attendents/Attendent/ViewModal');
+var createModal = new abp.ModalManager(host_name + 'Attendents/Attendent/CreateModal');
+var editModal = new abp.ModalManager(host_name + 'Attendents/Attendent/EditModal');
+var viewModal = new abp.ModalManager(host_name + 'Attendents/Attendent/ViewModal');
 
 $(function () {
 

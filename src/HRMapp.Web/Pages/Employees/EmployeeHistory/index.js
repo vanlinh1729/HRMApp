@@ -26,10 +26,10 @@ $(function () {
     var l = abp.localization.getResource('HRMapp');
 
     var service = hRMapp.employees.employeeHistory;
-    var host_name = "https://localhost:44350";
-    var createModal = new abp.ModalManager(host_name + '/Employees/EmployeeHistory/CreateModal');
-    var editModal = new abp.ModalManager(host_name + '/Employees/EmployeeHistory/EditModal');
-    var viewModal = new abp.ModalManager(host_name + '/Employees/EmployeeHistory/ViewModal');
+    var host_name = abp.appPath;
+    var createModal = new abp.ModalManager(host_name + 'Employees/EmployeeHistory/CreateModal');
+    var editModal = new abp.ModalManager(host_name + 'Employees/EmployeeHistory/EditModal');
+    var viewModal = new abp.ModalManager(host_name + 'Employees/EmployeeHistory/ViewModal');
 
     var dataTable = $('#EmployeeHistoryTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
