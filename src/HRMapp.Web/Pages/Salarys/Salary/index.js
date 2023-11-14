@@ -274,6 +274,23 @@ $(function () {
         });
         
     })
+    viewSalaryforMonthForDepartment.onOpen(function (){
+
+        console.log("ab123c da mo modal");
+        $('#exportSalaryForMonthDepartmentPdfButton').on('click', function () {
+            var element = $(".modal-body").html();
+            console.log("danhannut");
+            var opt = {
+                margin: 10,
+                filename: 'BangLuongPhongBan'+jQuery.now()+'.pdf',
+                image: {type: 'jpeg', quality: 1},
+                html2canvas: {scale: 2},
+                jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+        
+    })
 
     viewModal.onOpen(function () {
         console.log("ab123c da mo modal");
