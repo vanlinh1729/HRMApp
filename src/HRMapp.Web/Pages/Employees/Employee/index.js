@@ -20,11 +20,11 @@ $(function () {
     };
 
     var l = abp.localization.getResource('HRMapp');
-    var host_name = "https://localhost:44350";
+    var host_name = abp.appPath;
     var service = hRMapp.employees.employee;
-    var createModal = new abp.ModalManager(host_name + '/Employees/Employee/CreateModal');
-    var editModal = new abp.ModalManager(host_name + '/Employees/Employee/EditModal');
-    var viewModal = new abp.ModalManager(host_name + '/Employees/Employee/ViewModal');
+    var createModal = new abp.ModalManager(host_name + 'Employees/Employee/CreateModal');
+    var editModal = new abp.ModalManager(host_name + 'Employees/Employee/EditModal');
+    var viewModal = new abp.ModalManager(host_name + 'Employees/Employee/ViewModal');
 
     var dataTable = $('#EmployeeTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,

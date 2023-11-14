@@ -22,14 +22,14 @@ $(function () {
     };
 
     var l = abp.localization.getResource('HRMapp');
-    var host_name = "https://localhost:44350";
+    var host_name = abp.appPath;
     var service = hRMapp.attendentForMonths.attendentForMonth;
-    var createModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/CreateModal');
-    var createManyModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/CreateManyAttendenForMonthModal');
-    var editModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/EditModal');
-    var viewModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/ViewModal');
-    var exportAll = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/ExportAllAttendentForMonthModal');
-    var viewAllModal = new abp.ModalManager(host_name + '/Attendents/AttendentForMonth/ViewAllAttendentForMonthModal');
+    var createModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/CreateModal');
+    var createManyModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/CreateManyAttendenForMonthModal');
+    var editModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/EditModal');
+    var viewModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/ViewModal');
+    var exportAll = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/ExportAllAttendentForMonthModal');
+    var viewAllModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/ViewAllAttendentForMonthModal');
 
     var dataTable = $('#AttendentForMonthTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -142,11 +142,14 @@ $(function () {
             url: '/api/app/attendent-for-month/many-attendent-for-month',
             method: 'GET',
             data: {  Month: date  },
-            success: function(data) {
+            success:  function(data) {
+                console.log("Received data:", data);
+
                 if (data) {
-                    // Điền dữ liệu vào modal
+                    console.log("Data is truthy. Filling modal...");
                     fillModalWithData(data);
-                    // Mở modal
+                } else {
+                    console.log("Data is falsy. Cannot fill modal.");
                 }
             },
             error: function(error) {

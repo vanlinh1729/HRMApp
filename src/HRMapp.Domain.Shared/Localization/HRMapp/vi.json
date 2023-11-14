@@ -316,7 +316,8 @@
     "EditContact" : "Sửa liên lạc",
     "ExportAllAttendentForMonthModal" : "Xuất tất cả chấm công theo tháng",
     "CreateAllAttendentForMonthInMonth" : "Xuất tất cả chấm công theo tháng",
-    "ExportSalaryForMonth" : "Xuất tất cả bảng lương theo tháng"
+    "ExportSalaryForMonth" : "Xuất tất cả bảng lương theo tháng",
+    "ExportSalaryForMonthForDepartment" : "Xuất bảng lương theo phòng ban"
     
     
     

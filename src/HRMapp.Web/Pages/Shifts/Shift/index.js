@@ -24,10 +24,10 @@ $(function () {
     var l = abp.localization.getResource('HRMapp');
 
     var service = hRMapp.shifts.shift;
-    var host_name = "https://localhost:44350";
-    var createModal = new abp.ModalManager(host_name + '/Shifts/Shift/CreateModal');
-    var editModal = new abp.ModalManager(host_name + '/Shifts/Shift/EditModal');
-    var viewModal = new abp.ModalManager(host_name + '/Shifts/Shift/ViewModal');
+    var host_name = abp.appPath;
+    var createModal = new abp.ModalManager(host_name + 'Shifts/Shift/CreateModal');
+    var editModal = new abp.ModalManager(host_name + 'Shifts/Shift/EditModal');
+    var viewModal = new abp.ModalManager(host_name + 'Shifts/Shift/ViewModal');
 
     var dataTable = $('#ShiftTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,

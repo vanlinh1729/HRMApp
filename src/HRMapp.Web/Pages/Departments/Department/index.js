@@ -28,13 +28,13 @@ $(function () {
 
     var l = abp.localization.getResource('HRMapp');
     var DepartmentId = '';
-    var host_name = "https://localhost:44350";
+    var host_name = abp.appPath;
     var service = hRMapp.departments.department;
-    var createModal = new abp.ModalManager(host_name + '/Departments/Department/CreateModal');
-    var editModal = new abp.ModalManager(host_name + '/Departments/Department/EditModal');
-    var editOwnerModal = new abp.ModalManager(host_name + '/Departments/Department/EditOwnerModal');
-    var viewModal = new abp.ModalManager(host_name + '/Departments/Department/ViewModal');
-    var updateEmployeeModal = new abp.ModalManager(host_name + '/Departments/Department/UpdateEmployee');
+    var createModal = new abp.ModalManager(host_name + 'Departments/Department/CreateModal');
+    var editModal = new abp.ModalManager(host_name + 'Departments/Department/EditModal');
+    var editOwnerModal = new abp.ModalManager(host_name + 'Departments/Department/EditOwnerModal');
+    var viewModal = new abp.ModalManager(host_name + 'Departments/Department/ViewModal');
+    var updateEmployeeModal = new abp.ModalManager(host_name + 'Departments/Department/UpdateEmployee');
     var dataTable = $('#DepartmentTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
         serverSide: true,
