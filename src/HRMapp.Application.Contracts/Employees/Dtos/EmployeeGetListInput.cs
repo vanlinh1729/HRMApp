@@ -26,6 +26,7 @@ public class EmployeeGetListInput : PagedAndSortedResultRequestDto
 
 
     public StatusEmployee? Status { get; set; }
+    public EmployeePosition? EmployeePosition { get; set; }
     
     public int MaxResultCount { get; set; } = (int)999999999;
 

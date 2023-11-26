@@ -19,8 +19,10 @@ public class Contact: FullAuditedEntity<Guid>,IMultiTenant
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public string Address { get; set; }
+    public string Education { get; set; }
+    public string Language { get; set; }
 
-    public Contact(Guid id, Guid? tenantId, string name, Gender gender, DateTime? birthDay, bool active, string email, string phoneNumber, string address) : base(id)
+    public Contact(Guid id, Guid? tenantId, string name, Gender gender, DateTime? birthDay, bool active, string email, string phoneNumber, string address, string education, string language) : base(id)
     {
         TenantId = tenantId;
         Name = name;
@@ -30,6 +32,8 @@ public class Contact: FullAuditedEntity<Guid>,IMultiTenant
         Email = email;
         PhoneNumber = phoneNumber;
         Address = address;
+        Education = education;
+        Language = language;
     }
 
    

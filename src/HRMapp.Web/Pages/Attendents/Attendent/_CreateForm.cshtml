@@ -1,0 +1,52 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using HRMapp.Localization
+@using HRMapp.Localization
+@inject IHtmlLocalizer<HRMappResource> L
+
+@model HRMapp.Web.Pages.Attendents.Attendent.CreateModalModel
+@{
+    Layout = null;
+}
+<div class="row">
+    <abp-input asp-for="ViewCreateModel.Date"></abp-input>
+    <abp-select asp-for="ViewCreateModel.Type" label="@L["TypeLine"].Value"> </abp-select>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="dataTable_filters" style=" float: right; margin-bottom: 10px;">
+            <label style="display: inline-block; margin-right: 10px;">Lọc theo phòng ban</label>
+            <div id="searchContainer" style="display: inline-block;">
+                <select id="searchSelect" class="form-control form-control-sm" aria-controls="AllEmployeeTable">
+                    <option value="">Tất cả</option>
+                </select>
+            </div>
+
+        </div>
+        <abp-table hoverable-rows="true" id="AllEmployeeTable" responsive-sm="true" class="table table-bordered"/>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="align-content-center row">
+            <h2>Nhân viên vắng mặt</h2>
+        </div>
+        <abp-table id="EmployeeAbsent" hoverable-rows="true" responsive-sm="true" class="mt-0 table table-bordered">
+            <thead>
+            <tr>
+                <th scope="Column">@L["EmployeeName"]</th>
+                <th scope="Column">@L["Action"]</th>
+    
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </abp-table>
+    </div>
+
+</div>
+
+
+
+

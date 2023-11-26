@@ -27,4 +27,7 @@ public class CVofEmployeeViewModel
 
     [Display(Name = "EmployeeStatus")]
     public StatusEmployee Status { get; set; }
+    
+    [Display(Name = "EmployeePosition")]
+    public EmployeePosition EmployeePosition { get; set; }
 }

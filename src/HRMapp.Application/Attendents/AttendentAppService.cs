@@ -5,7 +5,9 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using HRMapp.Permissions;
 using HRMapp.Attendents.Dtos;
+using HRMapp.Departments;
 using HRMapp.Employees;
+using HRMapp.Employees.Dtos;
 using HRMapp.Shifts;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
@@ -26,6 +28,7 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
 
     private readonly IAttendentLineRepository _attendentLineRepository;
     private readonly IEmployeeRepository _employeeRepository;
+    private IDepartmentRepository _departmentRepository;
     private readonly IAttendentLineAppService _attendentLineAppService;
     private readonly IAttendentForMonthAppService _attendentForMonthAppService;
     private readonly IAttendentRepository _repository;
@@ -34,11 +37,13 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
     public AttendentAppService(IAttendentRepository repository
         , IEmployeeRepository employeeRepository,
         IAttendentLineRepository attendentLineRepository,
+        IDepartmentRepository departmentRepository,
         IShiftRepository shiftRepository,
         IAttendentLineAppService attendentLineAppService,
         IAttendentForMonthAppService attendentForMonthAppService
     ) : base(repository)
     {
+        _departmentRepository = departmentRepository;
         _attendentForMonthAppService = attendentForMonthAppService;
         _attendentLineAppService = attendentLineAppService;
         _shiftRepository = shiftRepository;
@@ -111,11 +116,18 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
         );
     }
     
-    [Authorize(HRMappPermissions.Employee.Default)]
+    [Authorize(HRMappPermissions.Attendent.Default)]
     public async Task<ListResultDto<SelectResultDto>> GetListEmployeeAsync()
     {
         var obj = await _employeeRepository.GetListAsync();
         return new ListResultDto<SelectResultDto>(ObjectMapper.Map<List<Employee>, List<SelectResultDto>>(obj));
+    }
+    
+   [Authorize(HRMappPermissions.Attendent.Default)]
+    public async Task<ListResultDto<SelectResultDto>> GetListDepartmentAsync()
+    {
+        var obj = await _departmentRepository.GetListAsync();
+        return new ListResultDto<SelectResultDto>(ObjectMapper.Map<List<Department>, List<SelectResultDto>>(obj));
     }
 
 
@@ -258,7 +270,56 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
         att4m.Month = month;
         await _attendentForMonthAppService.CreateAsync(att4m);
     }
-
+    
+    [UnitOfWork]
+    public async Task<AttendentDto> CreateManyAttendentAsync(CreateManyAttendentDto input)
+    {
+       
+        List<Employee> employees = (await _employeeRepository.GetQueryableAsync())
+            .Where(x => !input.employeeId.Contains(x.Id)).ToList();        
+        foreach (var em in employees)
+        {
+            var employeeInput = new CreateUpdateAttendentDto();
+            employeeInput.EmployeeId = em.Id;
+            employeeInput.Date = input.Date;
+            employeeInput.Type = input.Type;
+            await CreateAsync(employeeInput);
+        }
+        
+        return new AttendentDto();
+    } 
+    
+    [UnitOfWork]
+    public async Task<PagedResultDto<EmployeeWithDetailsDto>> GetAllEmployeeIntoAttendent(AllEmployeeDto input)
+    {
+        var employees = await _employeeRepository.GetQueryableAsync();
+        var employeesDepartment = from employee in employees
+            join department in await _departmentRepository.GetQueryableAsync() on employee.DepartmentId equals department.Id
+            into emde
+            from emdes in emde.DefaultIfEmpty() 
+            select new
+            {
+                employee.Id,
+                EmployeeName = employee.Name,
+                DepartmentName = emdes.Name
+            };
+        var resultObj = employeesDepartment
+            .WhereIf(!input.DepartmentName.IsNullOrEmpty(),
+                x => x.DepartmentName.ToLower().Contains(input.DepartmentName.ToLower()))
+            .Select(x => new EmployeeWithDetailsDto()
+        {
+            Id = x.Id,
+            Name = x.EmployeeName,
+            DepartmentName = x.DepartmentName
+        });
+        var result = resultObj
+            .OrderBy((x) => x.DepartmentName)
+            .Skip(input.SkipCount)
+            .Take(input.MaxResultCount).ToList();
+        ;
+        var totalcount = resultObj.Count(); 
+        return new PagedResultDto<EmployeeWithDetailsDto>(totalcount, result);
+    }
     private static string NormalizeSorting(string sorting)
     {
         if (sorting.IsNullOrEmpty())

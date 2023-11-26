@@ -14,7 +14,6 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
-
 namespace HRMapp.Employees;
 
 
@@ -95,6 +94,7 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
                 DepartmentName = department.Name,
                 DepartmentId = employee.DepartmentId,
                 Status = employee.Status,
+                EmployeePosition = employee.EmployeePosition,
                 Gender = contact.Gender,
                 BirthDay = contact.BirthDay,
                 Email = contact.Email,
@@ -112,6 +112,7 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
             .WhereIf(!input.DepartmentName.IsNullOrWhiteSpace(),
                 x => x.DepartmentName.ToLower().Contains(input.DepartmentName.ToLower()))
             .WhereIf(input.Status != null, x => x.Status == input.Status)
+            .WhereIf(input.EmployeePosition != null, x => x.EmployeePosition == input.EmployeePosition)
             .OrderBy(x=>NormalizeSorting(input.Sorting))
             .Skip(input.SkipCount)
             .Take(input.MaxResultCount);
@@ -163,7 +164,7 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
                 DepartmentName = department.Name,
                 DepartmentId = employee.DepartmentId,
                 Status = employee.Status,
-              
+                EmployeePosition = employee.EmployeePosition,
                 Gender = contact.Gender,
                 BirthDay = contact.BirthDay,
                 Email = contact.Email,
@@ -201,6 +202,7 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
                 ContactAddress = contact.Address,
                 DepartmentId = employee.DepartmentId,
                 Status = employee.Status,
+                EmployeePosition = employee.EmployeePosition,
                 Gender = contact.Gender,
                 BirthDay = contact.BirthDay,
                 Email = contact.Email,
@@ -255,6 +257,7 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
         employee.Name = input.Name;
         employee.ContactId = input.ContactId;
         employee.Status = input.Status;
+        employee.EmployeePosition = input.EmployeePosition;
         employee.UserId = input.UserId;
         employee.OtherName = input.OtherName;
         employee.DepartmentId = input.DepartmentId;
@@ -262,6 +265,13 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
 
         return new EmployeeDto();
     }
+
+    /*
+    public async Task<EmployeeDto> ImportEmployeeFromExcelAsync(IFormFile excel)
+    {
+        
+    }
+    */
 
     private static string NormalizeSorting(string sorting)
     {

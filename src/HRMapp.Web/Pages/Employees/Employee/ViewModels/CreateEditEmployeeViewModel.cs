@@ -26,5 +26,8 @@ public class CreateEditEmployeeViewModel
     public Guid? DepartmentId { get; set; }
 
     [Display(Name = "EmployeeStatus")]
-    public StatusEmployee Status { get; set; }
+    public StatusEmployee Status { get; set; } 
+    
+    [Display(Name = "EmployeePosition")]
+    public EmployeePosition EmployeePosition { get; set; }
 }

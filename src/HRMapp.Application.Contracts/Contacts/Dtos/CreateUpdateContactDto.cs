@@ -18,4 +18,6 @@ public class CreateUpdateContactDto
     public string PhoneNumber { get; set; }
 
     public string Address { get; set; }
+    public string Education { get; set; }
+    public string Language { get; set; }
 }

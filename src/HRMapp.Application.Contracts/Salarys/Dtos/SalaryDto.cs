@@ -6,7 +6,7 @@ namespace HRMapp.Salarys.Dtos;
 [Serializable]
 public class SalaryDto : FullAuditedEntityDto<Guid>
 {
-    
+    public int Count { get; set; }
     public string DepartmentName { get; set; }
     public decimal CoefficientSalary { get; set; }
     public Guid EmployeeId { get; set; }

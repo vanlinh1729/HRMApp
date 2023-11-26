@@ -37,6 +37,8 @@ public class ContactAppService : CrudAppService<Contact, ContactDto, Guid, Conta
             .WhereIf(!input.Email.IsNullOrWhiteSpace(), x => x.Email.Contains(input.Email))
             .WhereIf(!input.PhoneNumber.IsNullOrWhiteSpace(), x => x.PhoneNumber.Contains(input.PhoneNumber))
             .WhereIf(!input.Address.IsNullOrWhiteSpace(), x => x.Address.Contains(input.Address))
+            .WhereIf(!input.Education.IsNullOrWhiteSpace(), x => x.Address.Contains(input.Education))
+            .WhereIf(!input.Language.IsNullOrWhiteSpace(), x => x.Address.Contains(input.Language))
             ;
     }
     [Authorize(HRMappPermissions.Contact.Default)]

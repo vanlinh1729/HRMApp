@@ -87,7 +87,7 @@ public class ContactDataSeeder
                 string email = $"{RemoveDiacritics(name.Replace(" ","")).ToLower()}@abp.io.vn"; // Generate email based on name
                 string phone = "0933146147"; // Sample phone number
 
-                Contact contact = new Contact(_guidGenerator.Create(), tenantId, name, Gender.Male, randomDate, true, email, phone, "Việt Nam");
+                Contact contact = new Contact(_guidGenerator.Create(), tenantId, name, Gender.Male, randomDate, true, email, phone, "Việt Nam", "Đại học", "Tiếng Việt, Tiếng Anh");
                 contacts.Add(contact);
             }
             await _contactRepository.InsertManyAsync(contacts);

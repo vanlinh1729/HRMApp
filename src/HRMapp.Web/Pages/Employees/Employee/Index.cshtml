@@ -48,6 +48,13 @@
                                 text="@L["CreateEmployee"].Value"
                                 icon="plus"
                                 button-type="Primary"/>
+                    <form method="POST" enctype="multipart/form-data" class="mt-2" asp-page-handler="Import">
+                        <div>
+                            <input class="form-control form-control-sm" style="width:220px;display: inline-block;" type="file" name="excel"/>
+                            <abp-button button-type="Primary" style="display: inline-block;" type="Submit">Import from excel</abp-button>
+                        </div>
+                        
+                    </form>         
                 }
             </abp-column>
         </abp-row>
@@ -56,7 +63,7 @@
         <abp-row class="mb-3">
             <abp-column size-md="_6">
                 <abp-button button-type="Primary" abp-collapse-id="EmployeeCollapse">@L["TableFilter"] </abp-button>
-            </abp-column>
+                </abp-column>
 
             <abp-column size-md="_6" class="text-end">
                 <abp-dropdown >
@@ -107,6 +114,11 @@
 
                                 <input class="customcolumn" id="8" checked="true" type="checkbox">@L["Status"]</input>
 
+                            </li> 
+                            <li >
+
+                                <input class="customcolumn" id="9" checked="true" type="checkbox">@L["EmployeePosition"]</input>
+
                             </li>
 
                         </ul>
@@ -123,6 +135,7 @@
                 <abp-input asp-for="@Model.EmployeeFilter.ContactName"></abp-input>
                 <abp-input asp-for="@Model.EmployeeFilter.DepartmentName"></abp-input>
                 <abp-select asp-for="@Model.EmployeeFilter.Status"> </abp-select>
+                <abp-select asp-for="@Model.EmployeeFilter.EmployeePosition"> </abp-select>
             </form>
             <hr/>
         </abp-collapse-body>

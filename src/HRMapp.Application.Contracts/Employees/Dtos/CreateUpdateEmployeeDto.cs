@@ -16,5 +16,6 @@ public class CreateUpdateEmployeeDto
     public Guid? DepartmentId { get; set; }
 
     public StatusEmployee Status { get; set; }
+    public EmployeePosition EmployeePosition { get; set; }
 
 }

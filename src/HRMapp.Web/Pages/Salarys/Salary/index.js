@@ -1,7 +1,9 @@
 
 
 $(function () {
-
+    var date ;
+    var id ;
+    var datesalary;
     $("#SalaryFilter :input").on('input', function () {
         dataTable.ajax.reload();
     });
@@ -58,11 +60,21 @@ $(function () {
         ],
         columnDefs: [
             {
+                width: "1%",
+                title: l('IndexOfRecord'),
+                data: "count"
+            },
+            {
                 title: l('EmployeeName'),
                 data: "employeeName",
                 render: function(data, type, row){
                     return data ? "<a href='javascript:void(0);' class='ViewSalaryBtn' data-id='"+row.id+"'  style=\"text-decoration: none\">"+data+"</a>" : "";
                 }
+            },
+            {
+                width: "1%",
+                title: l('DepartmentName'),
+                data: "departmentName"
             },
             
             {
@@ -140,86 +152,75 @@ $(function () {
     exportSalary.onResult(function (e) {
         e.preventDefault();
         console.log("abc");
-        var date = $("#ViewMonthModel_AttendentForMonthMonth").val();
-        // Gọi AJAX để lấy dữ liệu từ server
         viewSalaryforMonth.open();
-        $.ajax({
-            url: '/api/app/salary/salary-for-month',
-            method: 'GET',
-            data: {  AttendentForMonthMonth: date  },
-            success:  function(data) {
-                console.log("Received data:", data);
-
-                if (data) {
-                    console.log("Data is truthy. Filling modal...");
-                    fillModalWithData(data);
-                } else {
-                    console.log("Data is falsy. Cannot fill modal.");
-                }
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
- 
+        datesalary = $("#ViewMonthModel_AttendentForMonthMonth").val();
     });
 
     exportSalaryForDepartment.onResult(function (e) {
         e.preventDefault();
-        console.log("abc");
-        var date = $("#ViewDepartmentModel_AttendentForMonthMonth").val();
-        var id = $("#ViewDepartmentModel_DepartmentId").val();
-        console.log(id);
-        console.log(date);
+        date = $("#ViewDepartmentModel_AttendentForMonthMonth").val();
+        id = $("#ViewDepartmentModel_DepartmentId").val();
+        console.log(date + id);
 
-        // Gọi AJAX để lấy dữ liệu từ server
         viewSalaryforMonthForDepartment.open();
-        $.ajax({
-            url: '/api/app/salary/salary-for-month-for-department',
-            method: 'GET',
-            data: {
-                AttendentForMonthMonth: date, DepartmentId :id
-            } ,
-            success:  function(data) {
-                console.log("Received data:", data);
-
-                if (data) {
-                    console.log("Data is truthy. Filling modal...");
-                    fillModalWithDatas(data);
-                } else {
-                    console.log("Data is falsy. Cannot fill modal.");
-                }
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-
+        
     });
+    // function fillModalWithDatas(data) {
+    //     $('#viewSalaryforMonthForDepartmentBody').empty(); // Xóa dữ liệu cũ trong bảng
+    //
+    //     console.log(data);
+    //     // Duyệt qua danh sách đối tượng và thêm dữ liệu vào bảng trong modal
+    //     for (var i = 0; i < data.listSalarys.length; i++) {
+    //         var item = data.listSalarys[i];
+    //         var departmentNames = item.departmentName != null ? item.departmentName : ''
+    //         var month = moment(item.attendentForMonthMonth).format("MM-YYYY")
+    //         var row = '<tr>' +
+    //             '<td>' + item.employeeName + '</td>' +
+    //             '<td>' + departmentNames + '</td>' +
+    //             '<td>' + month + '</td>' +
+    //             '<td>' + item.attendentForMonthCount + '</td>' +
+    //             '<td>' + item.coefficientSalary + '</td>' +
+    //             '<td>' + item.totalSalary + '</td>' +
+    //             '</tr>';
+    //         $('#viewSalaryforMonthForDepartmentBody').append(row);
+    //     }
+    //
+    //     // Cập nhật thông tin về tháng lương trong phần tử có ID là #SalaryMonth (ví dụ: lấy thông tin từ phần tử đầu tiên trong danh sách)
+    //     if (data.listSalarys.length > 0) {
+    //         $("#SalaryMonthDepartment").text("Bảng lương tháng "+moment(data.listSalarys[0].attendentForMonthMonth).format("MM-YYYY") + " "+data.listSalarys[0].departmentName);
+    //     } else {
+    //         // Nếu không có dữ liệu, có thể cập nhật thông báo hoặc giá trị mặc định
+    //         $("#SalaryMonthDepartment").text("Không có dữ liệu cho tháng này");
+    //     }
+    // }
+
+
     function fillModalWithDatas(data) {
-        $('#viewSalaryforMonthForDepartmentBody').empty(); // Xóa dữ liệu cũ trong bảng
+        $('#viewSalaryforMonthForDepartmentBody').empty(); // Clear existing data in the table
 
-        // Duyệt qua danh sách đối tượng và thêm dữ liệu vào bảng trong modal
-        for (var i = 0; i < data.listSalarys.length; i++) {
-            var item = data.listSalarys[i];
-            var departmentNames = item.departmentName != null ? item.departmentName : ''
-            var month = moment(item.attendentForMonthMonth).format("MM-YYYY")
-            var row = '<tr>' +
-                '<td>' + item.employeeName + '</td>' +
-                '<td>' + departmentNames + '</td>' +
-                '<td>' + month + '</td>' +
-                '<td>' + item.attendentForMonthCount + '</td>' +
-                '<td>' + item.coefficientSalary + '</td>' +
-                '<td>' + item.totalSalary + '</td>' +
-                '</tr>';
-            $('#viewSalaryforMonthForDepartmentBody').append(row);
-        }
+        console.log("Received data for filling modal:", data);
 
-        // Cập nhật thông tin về tháng lương trong phần tử có ID là #SalaryMonth (ví dụ: lấy thông tin từ phần tử đầu tiên trong danh sách)
         if (data.listSalarys.length > 0) {
-            $("#SalaryMonthDepartment").text("Bảng lương tháng "+moment(data.listSalarys[0].attendentForMonthMonth).format("MM-YYYY") + " "+data.listSalarys[0].departmentName);
+            // Iterate through the listSalarys array and append rows to the table
+            for (var i = 0; i < data.listSalarys.length; i++) {
+                var item = data.listSalarys[i];
+                var departmentNames = item.departmentName != null ? item.departmentName : '';
+                var month = moment(item.attendentForMonthMonth).format("MM-YYYY");
+                var row = '<tr>' +
+                    '<td>' + item.employeeName + '</td>' +
+                    '<td>' + departmentNames + '</td>' +
+                    '<td>' + month + '</td>' +
+                    '<td>' + item.attendentForMonthCount + '</td>' +
+                    '<td>' + item.coefficientSalary + '</td>' +
+                    '<td>' + item.totalSalary + '</td>' +
+                    '</tr>';
+                $('#viewSalaryforMonthForDepartmentBody').append(row);
+            }
+
+            // Update information about the salary month
+            $("#SalaryMonthDepartment").text("Bảng lương tháng " + moment(data.listSalarys[0].attendentForMonthMonth).format("MM-YYYY") + " " + data.listSalarys[0].departmentName);
         } else {
-            // Nếu không có dữ liệu, có thể cập nhật thông báo hoặc giá trị mặc định
+            // If no data is available, update a message or set a default value
             $("#SalaryMonthDepartment").text("Không có dữ liệu cho tháng này");
         }
     }
@@ -259,6 +260,26 @@ $(function () {
     });
     viewSalaryforMonth.onOpen(function (){
 
+        // Gọi AJAX để lấy dữ liệu từ server
+
+        $.ajax({
+            url: '/api/app/salary/salary-for-month',
+            method: 'GET',
+            data: {  AttendentForMonthMonth: datesalary  },
+            success:  function(data) {
+                console.log("Received data:", data);
+
+                if (data) {
+                    console.log("Data is truthy. Filling modal...");
+                    fillModalWithData(data);
+                } else {
+                    console.log("Data is falsy. Cannot fill modal.");
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
         console.log("ab123c da mo modal");
         $('#exportSalaryPdfButton').on('click', function () {
             var element = $(".modal-body").html();
@@ -275,8 +296,28 @@ $(function () {
         
     })
     viewSalaryforMonthForDepartment.onOpen(function (){
+        
+        console.log("ngay+id" + date + id);
+        $.ajax({
+            url: '/api/app/salary/salary-for-month-for-department',
+            method: 'GET',
+            data: {
+                AttendentForMonthMonth: date, DepartmentId :id
+            } ,
+            success: function(data) {
+                console.log("Received data:", data);
 
-        console.log("ab123c da mo modal");
+                if (data && data.listSalarys) {
+                    console.log("Data is truthy. Filling modal...");
+                    fillModalWithDatas(data); // Pass the listSalarys array to the function
+                } else {
+                    console.log("Data is falsy or does not contain listSalarys. Cannot fill modal.");
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
         $('#exportSalaryForMonthDepartmentPdfButton').on('click', function () {
             var element = $(".modal-body").html();
             console.log("danhannut");

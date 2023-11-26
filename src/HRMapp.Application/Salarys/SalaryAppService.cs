@@ -14,6 +14,7 @@ using HRMapp.Salarys.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Uow;
 
@@ -70,6 +71,9 @@ public class SalaryAppService : CrudAppService<Salary, SalaryDto, Guid, SalaryGe
             join employee in await _employeeRepository.GetQueryableAsync() on salary.EmployeeId equals
                 employee.Id into salaryemployee
             from salaryemployees in salaryemployee.DefaultIfEmpty()
+            join department in await _departmentRepository.GetQueryableAsync() on salaryemployees.DepartmentId equals department.Id
+                into employeeDepartments
+            from emdes in employeeDepartments.DefaultIfEmpty()
             join attendentformonth in await _attendentForMonthRepository.GetQueryableAsync() on salary.AttendentForMonthId equals attendentformonth.Id
             into salaryattendentformonth
             from salaryattendentformonths in salaryattendentformonth.DefaultIfEmpty()
@@ -78,30 +82,34 @@ public class SalaryAppService : CrudAppService<Salary, SalaryDto, Guid, SalaryGe
             {
                 Id = salary.Id,
                 EmployeeName = salaryemployees.Name,
+                DepartmentName = emdes.Name,
                 EmployeeId = salary.EmployeeId,
                 AttendentForMonthId = salary.AttendentForMonthId,
                 AttendentForMonthCount = salaryattendentformonths.Count,
                 AttendentForMonthMonth = salaryattendentformonths.Month,
                 TotalSalary = salary.TotalSalary
+                
             };
     
         query = query
             .WhereIf(!input.EmployeeName.IsNullOrWhiteSpace(), x => x.EmployeeName.ToLower().Contains(input.EmployeeName.ToLower()))
             .WhereIf(input.AttendentForMonthMonth!=null, x => x.AttendentForMonthMonth.Month == input.AttendentForMonthMonth.GetValueOrDefault().Month && x.AttendentForMonthMonth.Year == input.AttendentForMonthMonth.GetValueOrDefault().Year)
+            .WhereIf(!input.DepartmentName.IsNullOrWhiteSpace(), x => x.DepartmentName.ToLower().Contains(input.DepartmentName.ToLower()))
             .OrderBy(x=>NormalizeSorting(input.Sorting))
             .Skip(input.SkipCount)
             .Take(input.MaxResultCount);
         var queryResult = await AsyncExecuter.ToListAsync(query);
-        var salaryDtos = queryResult.Select(x => new SalaryDto()
+        var salaryDtos = queryResult.Select((x, index) => new SalaryDto()
         {
             Id = x.Id,
+            Count = index + 1,
             EmployeeId = x.EmployeeId,
             EmployeeName = x.EmployeeName,
+            DepartmentName = x.DepartmentName,
             AttendentForMonthCount = x.AttendentForMonthCount,
             AttendentForMonthId = x.AttendentForMonthId,
             AttendentForMonthMonth = x.AttendentForMonthMonth,
             TotalSalary = x.TotalSalary
-           
         }).ToList();
         var totalCount = await Repository.CountAsync();
         return new PagedResultDto<SalaryDto>(

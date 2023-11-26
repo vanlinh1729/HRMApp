@@ -1,5 +1,6 @@
 $(function () {
 
+    var date;
     $("#AttendentForMonthFilter :input").on('input', function () {
         dataTable.ajax.reload();
     });
@@ -134,28 +135,10 @@ $(function () {
     exportAll.onResult(function (e) {
         e.preventDefault();
         console.log("abc");
-        var date = $("#ViewMonthModel_Month").val();
+        date = $("#ViewMonthModel_Month").val();
         // Gọi AJAX để lấy dữ liệu từ server
         viewAllModal.open();
-
-        $.ajax({
-            url: '/api/app/attendent-for-month/many-attendent-for-month',
-            method: 'GET',
-            data: {  Month: date  },
-            success:  function(data) {
-                console.log("Received data:", data);
-
-                if (data) {
-                    console.log("Data is truthy. Filling modal...");
-                    fillModalWithData(data);
-                } else {
-                    console.log("Data is falsy. Cannot fill modal.");
-                }
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
+        
 
     });
 
@@ -221,6 +204,24 @@ $(function () {
         });
     });
     viewAllModal.onOpen(function () {
+        $.ajax({
+            url: '/api/app/attendent-for-month/many-attendent-for-month',
+            method: 'GET',
+            data: {  Month: date  },
+            success:  function(data) {
+                console.log("Received data:", data);
+
+                if (data) {
+                    console.log("Data is truthy. Filling modal...");
+                    fillModalWithData(data);
+                } else {
+                    console.log("Data is falsy. Cannot fill modal.");
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
         console.log("ab123c da mo modal");
         $('#exportAttendentForMonthPdfButton').on('click', function () {
             var element = $(".modal-body").html();

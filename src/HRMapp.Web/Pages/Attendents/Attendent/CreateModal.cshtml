@@ -3,15 +3,15 @@
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
 @using HRMapp.Localization
 @inject IHtmlLocalizer<HRMappResource> L
-@model HRMapp.Web.Pages.Attendents.Attendent.EditModalModel
+@model HRMapp.Web.Pages.Attendents.Attendent.CreateModalModel
 @{
     Layout = null;
 }
     <form  asp-page="/Attendents/Attendent/CreateModal">
-    <abp-modal>
+    <abp-modal size="ExtraLarge">
         <abp-modal-header title="@L["CreateAttendent"].Value"></abp-modal-header>
         <abp-modal-body>
-            @await Html.PartialAsync("_Form")
+            @await Html.PartialAsync("_CreateForm")
         </abp-modal-body>
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
     </abp-modal>

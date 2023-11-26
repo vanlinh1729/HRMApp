@@ -38,14 +38,16 @@ public class Employee : FullAuditedAggregateRoot<Guid>, IMultiTenant
     [CanBeNull]
     public Guid? DepartmentId { get; set; }
     [DisableAuditing]
-
+    public EmployeePosition EmployeePosition { get; set; }
+    
+    [DisableAuditing] 
     public ICollection<EmployeeHistory> EmployeeHistories { get; set; }
 
     
     [DefaultValue("Offline")]
     public StatusEmployee Status { get; set; }
 
-    public Employee(Guid id, Guid? tenantId, string name, string otherName, Guid? userId, Guid? contactId, Guid? departmentId, StatusEmployee status) : base(id)
+    public Employee(Guid id, Guid? tenantId, string name, string otherName, Guid? userId, Guid? contactId, Guid? departmentId, StatusEmployee status, EmployeePosition employeePosition) : base(id)
     {
         TenantId = tenantId;
         Name = name;
@@ -54,6 +56,7 @@ public class Employee : FullAuditedAggregateRoot<Guid>, IMultiTenant
         ContactId = contactId;
         DepartmentId = departmentId;
         Status = status;
+        EmployeePosition = employeePosition;
         EmployeeHistories = new Collection<EmployeeHistory>();
     }
 
