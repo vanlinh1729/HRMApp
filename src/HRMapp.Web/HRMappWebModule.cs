@@ -110,6 +110,21 @@ public class HRMappWebModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
+        context.Services.AddAuthentication()
+            .AddGoogle(options =>
+            {
+                options.ClientId = configuration.GetSection("GoogleClientID")["ID"];
+                options.ClientSecret =  configuration.GetSection("GoogleClientID")["Key"];
+            })
+            .AddFacebook(facebook =>
+            {
+                facebook.AppId = configuration.GetSection("FacebookClientID")["ID"];
+                facebook.AppSecret = configuration.GetSection("FacebookClientID")["Key"];
+                facebook.Scope.Add("email");
+                facebook.Scope.Add("public_profile");
+            });
+
+        
         ConfigureAuthentication(context);
         ConfigureUrls(configuration);
         ConfigureBundles();
