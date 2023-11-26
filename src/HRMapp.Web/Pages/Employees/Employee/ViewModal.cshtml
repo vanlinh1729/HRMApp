@@ -1,4 +1,5 @@
 @page
+@using HRMapp.Contacts
 @using HRMapp.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
@@ -7,35 +8,71 @@
 @{
     Layout = null;
 }
+
 @section scripts
 {
-    <abp-script src="/Pages/Employees/Employee/index.js" />
+    <abp-script src="/Pages/Employees/Employee/index.js"/>
 }
+
 <abp-modal size="Large">
     <abp-modal-header title="@L["EmployeeCV"].Value"></abp-modal-header>
     <abp-modal-body>
-        <div class="container" style="padding: 20px;">
-            <header style="text-align: center;">
-                <img src="/images/user-icon.jpg" style="width: 100px; border-radius: 50%;" alt="Ảnh đại diện">
-                <h1 style="font-size: 28px; margin: 10px 0;">@Model.ViewModel.Name</h1>
-                <p style="font-size: 16px; margin: 5px 0;">
-                    <i class="fas fa-phone" style="margin-right: 5px;"></i> @Model.ViewModel.Gender
-                </p>
-                <p style="font-size: 16px; margin: 5px 0;">
-                    <i class="fas fa-phone" style="margin-right: 5px;"></i> @Model.ViewModel.PhoneNumber
-                </p>
-                <p style="font-size: 16px; margin: 5px 0;">
-                    <i class="fas fa-envelope" style="margin-right: 5px;"></i> @Model.ViewModel.Email
-                </p>
-                <p style="font-size: 16px; margin: 5px 0;">
-                    <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> @Model.ViewModel.ContactAddress
-                </p> 
-                <p style="font-size: 16px; margin: 5px 0;">
-                    <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> @Model.ViewModel.DepartmentName
-                </p>
-                <p style="font-size: 16px; margin: 5px 0;">
-                    <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> @Model.ViewModel.EmployeePosition
-                </p>
+        <div class="container row" style="padding: 20px;">
+            <header style="">
+                <div class="row text-center">
+                    <!-- Added text-center class here -->
+                    <img src="/images/user-icon.jpg" style="width: 100px; border-radius: 50%;" alt="Ảnh đại diện" class="mx-auto"> <!-- Added mx-auto class here -->
+                    <h1 style="font-size: 28px; margin: 10px 0;">@Model.ViewModel.Name</h1>
+                </div>
+
+                <div class="row" style="margin-left:50px;padding: 20px">
+                    <div class="col">
+                        <div class="row">
+                            <p style="font-size: 16px; margin: 5px 0;">
+                                <i class="fas fa-venus-mars" style="margin-right: 5px;"></i> Giới tính:
+                                @if (@Model.ViewModel.Gender == Gender.Male)
+                                {@L["Male"].Value
+                                }
+                                @if (@Model.ViewModel.Gender == Gender.Female)
+                                {@L["Female"].Value
+                                }
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p style="font-size: 16px; margin: 5px 0;">
+                                <i class="fas fa-phone" style="margin-right: 5px;"></i> Số điện thoại: @Model.ViewModel.PhoneNumber
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p style="font-size: 16px; margin: 5px 0;">
+                                <i class="fas fa-envelope" style="margin-right: 5px;"></i> Email: @Model.ViewModel.Email
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p style="font-size: 16px; margin: 5px 0;">
+                                <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> Địa chỉ: @Model.ViewModel.ContactAddress
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <p style="font-size: 16px; margin: 5px 0;">
+                                <i class="fa fa-building" style="margin-right: 5px;"></i> Phòng ban: @Model.ViewModel.DepartmentName
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p style="font-size: 16px; margin: 5px 0;">
+                                <i class="fas fa-briefcase" style="margin-right: 5px;"></i>@L["Position"]: @L[Model.ViewModel.EmployeePosition.ToString()].Value
+
+                            </p>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
             </header>
 
             <main style="padding: 20px; background-color: #f9f9f9; border-radius: 5px; margin-top: 20px;">
@@ -50,7 +87,7 @@
                                 var item = Model.ViewModel.EmployeeHistories[i];
                                 if (i > 0)
                                 {
-                                    <hr style="margin: 20px 0; border: 2px solid #2b3035;" />
+                                    <hr style="margin: 20px 0; border: 2px solid #2b3035;"/>
                                 }
                                 <div style="margin-bottom: 20px; display: flex; justify-content: space-between;">
                                     <div>
@@ -77,4 +114,3 @@
         <button class="btn btn-primary" id="exportPdfButton">Export to PDF</button>
     </abp-modal-footer>
 </abp-modal>
-

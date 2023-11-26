@@ -26,6 +26,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
         <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+        
+         @if (ViewData["ReloadDatatable"] as bool? == true)
+            {
+                <script>
+                        $('#EmployeeTable').DataTable().ajax.reload();
+                </script>
+            }
 }
 @section styles
 {
@@ -48,13 +55,7 @@
                                 text="@L["CreateEmployee"].Value"
                                 icon="plus"
                                 button-type="Primary"/>
-                    <form method="POST" enctype="multipart/form-data" class="mt-2" asp-page-handler="Import">
-                        <div>
-                            <input class="form-control form-control-sm" style="width:220px;display: inline-block;" type="file" name="excel"/>
-                            <abp-button button-type="Primary" style="display: inline-block;" type="Submit">Import from excel</abp-button>
-                        </div>
-                        
-                    </form>         
+                       
                 }
             </abp-column>
         </abp-row>
@@ -63,7 +64,7 @@
         <abp-row class="mb-3">
             <abp-column size-md="_6">
                 <abp-button button-type="Primary" abp-collapse-id="EmployeeCollapse">@L["TableFilter"] </abp-button>
-                </abp-column>
+            </abp-column>
 
             <abp-column size-md="_6" class="text-end">
                 <abp-dropdown >
@@ -139,6 +140,15 @@
             </form>
             <hr/>
         </abp-collapse-body>
+        <abp-row><abp-column size-md="_6" class="text-start">
+            <form method="POST" enctype="multipart/form-data" class="mt-2" asp-page-handler="Import">
+                <div>
+                    <input class="form-control form-control-sm" style="width:220px;display: inline-block;" type="file" name="excel"/>
+                    <abp-button button-type="Primary" style="display: inline-block;" type="Submit">Import from excel</abp-button>
+                </div>
+            </form>      
+        </abp-column></abp-row>
         <abp-table striped-rows="true" id="EmployeeTable" class="table-bordered nowrap"/>
     </abp-card-body>
 </abp-card>
+

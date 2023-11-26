@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using HRMapp.Employees.Dtos;
+using Microsoft.AspNetCore.Http;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -25,4 +26,5 @@ public interface IEmployeeAppService :
     Task<CVOfEmployeeDto> GetCVofEmployee(Guid departmentId);
     Task<string> UpdateDepartment(EmployeeInputUpdateOneFieldDto input);
     Task<int> EmployeeCountAsync();
+    Task<EmployeeDto> ImportEmployeeFromExcelAsync(IFormFile excel);
 }
