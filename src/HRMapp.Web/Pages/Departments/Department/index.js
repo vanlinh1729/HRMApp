@@ -329,7 +329,7 @@ $(function () {
             }, {
                 title: "Email", data: "email",
             },{
-                title: "EmployeePosition", data: "employeePosition",
+                title: l('EmployeePosition'), data: "employeePosition",
                 render: function (data, type, row) {
                     return data != null ? l('employeePosition:' + data) : "";
                 }

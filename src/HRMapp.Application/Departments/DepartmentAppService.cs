@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using HRMapp.Contacts;
 using HRMapp.Permissions;
@@ -169,6 +170,18 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
     {
         var department =  await _repository.InsertAsync(new Department(GuidGenerator.Create(), CurrentTenant.Id, input.Name, input.OwnerId,
             input.ParentId));
+        var otherdepartment = (await _repository.GetQueryableAsync()).Where(x => x.OwnerId == input.OwnerId).Where(x=>x.Id != department.Id).ToList();
+        foreach (var de in otherdepartment)
+        {
+            de.OwnerId = null;
+            await _repository.UpdateAsync(de);
+        }
+        if (input.OwnerId != null)
+        {
+            var chiefOfDepartment = await _ownerRepository.GetAsync(input.OwnerId.GetValueOrDefault());
+            chiefOfDepartment.DepartmentId = department.Id;
+            await _ownerRepository.UpdateAsync(chiefOfDepartment);
+        }
         List<Employee> employees = (await _ownerRepository.GetQueryableAsync())
             .Where(x => input.employeeId.Contains(x.Id)).ToList();        
         foreach (var em in employees)
@@ -206,6 +219,21 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
     public async Task<string> UpdateDepartmentWithManyEmployeeAsync(Guid departmentId,CreateDepartmentAndAddEmployee input)
     {
         var department = await _repository.GetAsync(departmentId);
+        var otherdepartment = (await _repository.GetQueryableAsync()).Where(x => x.OwnerId == input.OwnerId).Where(x=>x.Id != department.Id).ToList();
+        foreach (var de in otherdepartment)
+        {
+            de.OwnerId = null;
+            await _repository.UpdateAsync(de);
+        }
+        if (input.OwnerId != null)
+        {
+            var chiefOfDepartment = await _ownerRepository.GetAsync(input.OwnerId.GetValueOrDefault());
+            var oldChief = await _ownerRepository.GetAsync(department.OwnerId.GetValueOrDefault());
+            oldChief.EmployeePosition = EmployeePosition.Employee;
+            chiefOfDepartment.DepartmentId = department.Id;
+            await _ownerRepository.UpdateAsync(chiefOfDepartment);
+            await _ownerRepository.UpdateAsync(oldChief);
+        }
         if (department == null)
         {
             department.Name = input.Name;
@@ -213,6 +241,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
             department.ParentId = input.ParentId;
             await _repository.UpdateAsync(department);
         }
+        
   
         List<Employee> employeeinDepartment = (await _ownerRepository.GetQueryableAsync())
             .Where(x => x.DepartmentId== departmentId && !input.employeeId.Contains(x.Id)).ToList();

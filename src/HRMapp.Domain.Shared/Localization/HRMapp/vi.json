@@ -213,6 +213,7 @@
     "Qualification:2" :"Lý do xin nghỉ",
     "EmployeeStatus:0": "Online",
     "EmployeeStatus:1": "Offline",
+    "EmployeeStatus:1": "Out",
     "EmployeeActive:false": "Không hoạt động",
     "EmployeeActive:true": "Hoạt động",
     "ForEnterprise": "Doanh nghiệp đóng",
@@ -323,11 +324,15 @@
     "employeePosition:3" : "Phó phòng",
     "employeePosition:2" : "Trưởng phòng",
     "employeePosition:1" : "Phó giám đốc",
-    "employeePosition:0" : "Giám đốc"
-    
-    
-    
-    
+    "employeePosition:0" : "Giám đốc",
+    "Position" : "Chức vụ",
+    "EmployeePosition" : "Chức vụ",
+    "ChiefOfDepartment": "Trưởng phòng",
+    "CEO": "Giám đốc",
+    "DeputyDirector": "Phó giám đốc",
+    "DeputyChiefOfDepartment" :  "Phó phòng",
+    "ContactEducation" : "Trình độ",
+    "ContactLanguage" : "Ngôn ngữ"
     
   }
 } 

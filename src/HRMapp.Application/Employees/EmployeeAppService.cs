@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 using HRMapp.Contacts;
 using HRMapp.Departments;
 using HRMapp.Permissions;
 using HRMapp.Employees.Dtos;
 using HRMapp.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
+using Volo.Abp.Uow;
+
 namespace HRMapp.Employees;
 
 
@@ -266,12 +270,51 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
         return new EmployeeDto();
     }
 
-    /*
+    [UnitOfWork]
     public async Task<EmployeeDto> ImportEmployeeFromExcelAsync(IFormFile excel)
     {
-        
+        if (excel == null)
+        {
+            return new EmployeeDto();
+        }
+
+        using (var workbook = new XLWorkbook(excel.OpenReadStream()))
+        {
+            var worksheet = workbook.Worksheet("Sheet1");
+
+            var listEmployees = new List<Employee>();
+            var listContacts = new List<Contact>();
+            var count = 0;
+            foreach (var row in worksheet.Rows())
+            {
+                count += 1;
+                if (count > 2) //skip 2 row dautien .
+                {
+                    var name = row.Cell(1).Value.ToString();
+                    var othername = row.Cell(2).Value.ToString();
+                    var contactname = row.Cell(4).Value.ToString();
+                    var gender = row.Cell(5).Value.ToString() == "Nam" ? Gender.Male : Gender.Female;
+                    var birthday = DateTime.Parse(row.Cell(6).Value.ToString());
+                    var phoneNumber = row.Cell(7).Value.ToString();
+                    var active=StatusEmployee.Online;
+
+                    if (row.Cell(9).Value.ToString() == "Online") active = StatusEmployee.Online;
+                    else if (row.Cell(9).Value.ToString() == "Offline") active = StatusEmployee.Offline;
+                    else if (row.Cell(9).Value.ToString() == "Out") active = StatusEmployee.Out;
+                    var contact = new Contact(GuidGenerator.Create(), CurrentTenant.Id, contactname, gender, birthday,
+                        true, "", phoneNumber, "Việt Nam", "", "Tiếng Việt");
+                    listContacts.Add(contact);
+                    listEmployees.Add(new Employee(GuidGenerator.Create(), CurrentTenant.Id, name, othername, null,
+                        contact.Id, null, active, EmployeePosition.Employee));
+                }
+
+                await _contactRepository.InsertManyAsync(listContacts);
+                await _repository.InsertManyAsync(listEmployees);
+            }
+
+            return new EmployeeDto();
+        }
     }
-    */
 
     private static string NormalizeSorting(string sorting)
     {
