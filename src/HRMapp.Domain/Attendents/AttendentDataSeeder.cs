@@ -45,7 +45,7 @@ public class AttendentDataSeeder
 
     public async Task SeedAsync(DataSeedContext context)
     {
-        await AddAttendentSeeder(context);
+        // await AddAttendentSeeder(context);
         await AddAttendentLineSeeder(context);
         /*
         await AddAttendentForMonthSeeder(context);

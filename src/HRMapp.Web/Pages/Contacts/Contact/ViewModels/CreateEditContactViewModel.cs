@@ -25,5 +25,10 @@ public class CreateEditContactViewModel
     public string PhoneNumber { get; set; }
 
     [Display(Name = "ContactAddress")]
-    public string Address { get; set; }
+    public string Address { get; set; } 
+    [Display(Name = "ContactEducation")]
+    public string Education { get; set; } 
+    
+    [Display(Name = "ContactLanguage")]
+    public string Language { get; set; }
 }

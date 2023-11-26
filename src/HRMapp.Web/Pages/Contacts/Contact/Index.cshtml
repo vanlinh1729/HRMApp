@@ -94,6 +94,16 @@
                                 <input class="customcolumn" id="6" checked="true" type="checkbox">@L["ContactAddress"]</input>
 
                             </li>
+                            <li >
+
+                                <input class="customcolumn" id="7" checked="true" type="checkbox">@L["ContactEducation"]</input>
+
+                            </li> 
+                            <li >
+
+                                <input class="customcolumn" id="8" checked="true" type="checkbox">@L["ContactLanguage"]</input>
+
+                            </li>
                           
 
                         </ul>
@@ -108,6 +118,8 @@
                 <abp-input asp-for="@Model.ContactFilter.Address"></abp-input>
                 <abp-input asp-for="@Model.ContactFilter.Email"></abp-input>
                 <abp-input asp-for="@Model.ContactFilter.PhoneNumber"></abp-input>
+                <abp-input asp-for="@Model.ContactFilter.Education"></abp-input>
+                <abp-input asp-for="@Model.ContactFilter.Language"></abp-input>
             </form>
             <hr/>
         </abp-collapse-body>

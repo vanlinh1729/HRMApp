@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using HRMapp.Attendents;
@@ -7,12 +8,15 @@ using HRMapp.Attendents.Dtos;
 using HRMapp.Web.Pages.Attendents.Attendent.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 
 namespace HRMapp.Web.Pages.Attendents.Attendent;
 
 public class CreateOrEditModalModel : HRMappPageModel
 {
     private readonly IAttendentAppService _service;
+
+    public AllEmployeeInput AllEmployeeFilter { get; set; }
 
     public CreateOrEditModalModel(IAttendentAppService service)
     {
@@ -24,8 +28,10 @@ public class CreateOrEditModalModel : HRMappPageModel
     public Guid Id { get; set; }
 
     public List<SelectListItem> Employees { get; set; }
+    public List<SelectListItem> Departments { get; set; }
 
     [BindProperty] public CreateEditAttendentViewModel ViewModel { get; set; }
+    [BindProperty] public CreateManyAttendentViewModel ViewCreateModel { get; set; }
 
     public virtual async Task OnGetAsync()
     {
@@ -36,11 +42,14 @@ public class CreateOrEditModalModel : HRMappPageModel
         }
         else
         {
-            ViewModel = new CreateEditAttendentViewModel();
+            ViewCreateModel = new CreateManyAttendentViewModel();
         }
 
         var employees = await _service.GetListEmployeeAsync();
+        var departments = await _service.GetListDepartmentAsync();
         Employees = employees.Items.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
+            .ToList();
+        Departments = departments.Items.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
             .ToList();
     }
 
@@ -53,8 +62,8 @@ public class CreateOrEditModalModel : HRMappPageModel
         }
         else
         {
-            var dto = ObjectMapper.Map<CreateEditAttendentViewModel, CreateUpdateAttendentDto>(ViewModel);
-            await _service.CreateAsync(dto);
+            var dto = ObjectMapper.Map<CreateManyAttendentViewModel, CreateManyAttendentDto>(ViewCreateModel);
+            await _service.CreateManyAttendentAsync(dto);
         }
 
         return NoContent();
@@ -69,4 +78,15 @@ public class CreateOrEditModalModel : HRMappPageModel
 
         return true;
     }
+}
+
+public class AllEmployeeInput
+{
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "EmployeeName")]
+    public string EmployeeName { get; set; } 
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "DepartmentName")]
+    public string DepartmentName { get; set; }
 }

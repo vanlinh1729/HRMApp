@@ -105,6 +105,17 @@ $(function () {
                 title: l('ContactAddress'),
                 data: "address"
             },
+            {
+                width: "1%",
+                title: l('ContactEducation'),
+                data: "education"
+            }, 
+            {
+                width: "1%",
+                title: l('ContactLanguage'),
+                data: "language"
+            },
+            
             {    width: "1%",
                 title: l('Edit'),
                 className: "dt-center",

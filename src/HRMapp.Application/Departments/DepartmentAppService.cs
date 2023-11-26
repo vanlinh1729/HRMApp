@@ -150,7 +150,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
             join department in await _repository.GetQueryableAsync() on employee.DepartmentId equals department.Id into
                 emmployedepartment
             from departments in emmployedepartment.DefaultIfEmpty()
-            where departments.Id == departmentId && employee.Id != departments.OwnerId
+            where departments.Id == departmentId /*&& employee.Id != departments.OwnerId*/
             select new
             {
                 employee.Id,
@@ -175,9 +175,20 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         {
             em.DepartmentId = department.Id;
             await _ownerRepository.UpdateAsync(em);
-            var newDepartmentName = (await _repository.GetQueryableAsync()).Where(x=>x.Id == department.Id).First().Name;
-            var emHistory = new EmployeeHistory(GuidGenerator.Create(),CurrentTenant.Id,em.Id,DateTime.Now, DateTime.Now, "Điều chuyển phòng ban","TH Group", "Chuyển đến " +newDepartmentName);
-            await _employeeHistoryRepository.InsertAsync(emHistory);
+            var newDepartmentName = (await _repository.GetQueryableAsync())
+                .Where(x => x.Id == department.Id)
+                .FirstOrDefault();
+
+            if (newDepartmentName != null)
+            {
+                var departmentName = newDepartmentName.Name;
+                var emHistory = new EmployeeHistory(GuidGenerator.Create(),CurrentTenant.Id,em.Id,DateTime.Now, DateTime.Now, "Điều chuyển phòng ban","TH Group", "Chuyển đến " +departmentName);
+                await _employeeHistoryRepository.InsertAsync(emHistory);
+            }
+            else
+            {
+                
+            }
         }
             
 
@@ -190,6 +201,8 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         return await _repository.CountAsync();
     }
     [UnitOfWork]
+    [Authorize(HRMappPermissions.Department.Update)]
+
     public async Task<string> UpdateDepartmentWithManyEmployeeAsync(Guid departmentId,CreateDepartmentAndAddEmployee input)
     {
         var department = await _repository.GetAsync(departmentId);
@@ -282,11 +295,12 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
 
             from  owner in departmentowner.DefaultIfEmpty()
             */
-            where departments.Id == input.Id && departments.OwnerId != employee.Id
+            where departments.Id == input.Id/* && departments.OwnerId != employee.Id*/
             select new
             {
                 employee.Id,
                 EmployeeName = employee.Name,
+                EmployeePosition = employee.EmployeePosition,
                 contacts.Email,
                 contacts.PhoneNumber
             };
@@ -294,6 +308,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         {
             Id = x.Id,
             EmployeeName = x.EmployeeName,
+            EmployeePosition = x.EmployeePosition,
             Email = x.Email,
             PhoneNumber = x.PhoneNumber
         });
@@ -328,6 +343,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
             {
                 employee.Id,
                 EmployeeName = employee.Name,
+                EmployeePosition = employee.EmployeePosition,
                 contacts.Email,
                 contacts.PhoneNumber
             };
@@ -340,6 +356,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
                 Id = x.Id,
                 Email = x.Email,
                 EmployeeName = x.EmployeeName,
+                EmployeePosition = x.EmployeePosition,
                 PhoneNumber = x.PhoneNumber
             });
         var totalcount = iQueryable.Count();

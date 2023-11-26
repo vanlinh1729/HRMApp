@@ -317,7 +317,13 @@
     "ExportAllAttendentForMonthModal" : "Xuất tất cả chấm công theo tháng",
     "CreateAllAttendentForMonthInMonth" : "Xuất tất cả chấm công theo tháng",
     "ExportSalaryForMonth" : "Xuất tất cả bảng lương theo tháng",
-    "ExportSalaryForMonthForDepartment" : "Xuất bảng lương theo phòng ban"
+    "ExportSalaryForMonthForDepartment" : "Xuất bảng lương theo phòng ban",
+    "IndexOfRecord" : "STT",
+    "employeePosition:4" : "Nhân viên",
+    "employeePosition:3" : "Phó phòng",
+    "employeePosition:2" : "Trưởng phòng",
+    "employeePosition:1" : "Phó giám đốc",
+    "employeePosition:0" : "Giám đốc"
     
     
     

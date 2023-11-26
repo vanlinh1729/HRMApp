@@ -19,6 +19,7 @@ public class CVOfEmployeeDto
     public string DepartmentName { get; set; }
     public Guid? DepartmentId { get; set; }
     public StatusEmployee Status { get; set; }
+    public EmployeePosition EmployeePosition { get; set; }
     
     public  Gender? Gender { get; set; }
     public DateTime? BirthDay { get; set; }

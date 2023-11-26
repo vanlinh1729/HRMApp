@@ -328,7 +328,12 @@ $(function () {
                 title: l('PhoneNumber'), data: "phoneNumber",
             }, {
                 title: "Email", data: "email",
-            },]
+            },{
+                title: "EmployeePosition", data: "employeePosition",
+                render: function (data, type, row) {
+                    return data != null ? l('employeePosition:' + data) : "";
+                }
+            }]
 
 
         }));

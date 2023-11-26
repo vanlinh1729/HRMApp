@@ -47,5 +47,9 @@ public class EmployeeFilterInput
     [Display(Name = "EmployeeStatus")]
     public StatusEmployee? Status { get; set; }
     
+     [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "EmployeePosition")]
+    public EmployeePosition? EmployeePosition { get; set; }
+    
     
 }

@@ -9,13 +9,12 @@ var editModal = new abp.ModalManager(host_name + 'Attendents/Attendent/EditModal
 var viewModal = new abp.ModalManager(host_name + 'Attendents/Attendent/ViewModal');
 
 $(function () {
-
-
+    
     $("#AttendentFilter :input").change(function () {
         dataTable.ajax.reload();
     });
     $('#AttendentFilter div').addClass('col-sm-3').parent().addClass('row');
-
+    
 
     var getFilter = function () {
         var input = {};
@@ -105,7 +104,7 @@ $(function () {
         // }
 
 
-        for (let i = 0; i < list.length; i+=3) {
+       
             result.push({
                 width: "1%",
                 title: l('CheckIn'),
@@ -138,7 +137,6 @@ $(function () {
                     return row.attendentLines?.[3]?.['timeCheck'] ? moment(row.attendentLines?.[3]?.['timeCheck']).format("HH:mm:ss") : "";
                 }
             });
-        }
         result.push({
 
             width: "1%",
@@ -239,6 +237,7 @@ $(function () {
           ]
       }));*/
 
+   
     function GetDatatable(column) {
         let newcolumnnew = columnnew(column);
         dataTable = $('#AttendentTable').DataTable(abp.libs.datatables.normalizeConfiguration({
@@ -268,6 +267,72 @@ $(function () {
 
     }
 
+    createModal.onOpen(function () {
+        $.ajax({
+            url: '/api/app/department', // Đổi đường dẫn API của bạn tại đây
+            method: 'GET',
+            success: function (data) {
+                // Xóa các option cũ
+                $('#searchSelect').empty();
+
+                // Thêm option mới từ dữ liệu API
+                $('#searchSelect').append('<option value="">Tất cả</option>');
+                $.each(data.items, function (index, item) {
+                    $('#searchSelect').append('<option value="' + item.name + '">' + item.name + '</option>');
+                });
+                // Attach an event listener to handle changes in the dropdown
+                $('#searchSelect').on('change', function () {
+                    var selectedDepartmentName = $(this).val();
+                    // Update the DataTable with the new search filter
+                    allEmployee.column(1).search(selectedDepartmentName).draw();
+                });
+            },
+            error: function (error) {
+                console.log('Lỗi khi gọi API: ', error);
+            }
+        });
+        console.log('opened the modal...');
+        var l = abp.localization.getResource('HRMapp');
+        var departmentName = $('#searchSelect').val();
+        console.log('Department Name:', departmentName);
+        var allEmployee = $('#AllEmployeeTable').DataTable(abp.libs.datatables.normalizeConfiguration({
+            processing: true,
+            serverSide: false,
+            paging: true,
+            searching: true,//disable default searchbox
+            targets: 0,
+            autoWidth: true,
+            scrollCollapse: true,
+            order: [[0, "asc"]],
+            lengthMenu: [
+                [10, 25, 50, 9999999],
+                [10, 25, 50, 'All']
+            ],
+            ajax: abp.libs.datatables.createAjax(service.getAllEmployeeIntoAttendent, {departmentName:departmentName}),
+            columnDefs: [{
+                orderable: false,
+                title: l('EmployeeName'), data: "name",
+            }, 
+                {
+                orderable: false,
+                title: l('DepartmentName'), data: "departmentName"
+            }, 
+                {
+                    width: "1%",
+                    orderable: false,
+                    className: "dt-center",
+                    title: "Chọn", data: "id", render: function (data, type, row) {
+                        console.log(row)
+                        return "<a class='selectToAttendent' data-name='" + row.name + "'  data-id='" + row.id + "' style=\"text-decoration: none\"><i class=\"fa fa-check-circle\"></i></a>"
+                    }
+                }
+            ]
+
+
+        }));
+    });
+    
+    
     createModal.onResult(function () {
         dataTable.ajax.reload();
 
@@ -340,6 +405,34 @@ $(function () {
             });
     });
 
+    $(document).on('click', '.selectToAttendent', function (e) {
+        e.preventDefault();
+        var id = this.dataset.id;
+        var name = this.dataset.name;
+        var xmlString = `<tr id='${id}' >\n" +
+            "                                        <td> ${name} </td>\n
+            
+            " +
+            "                                        <td style=\"text-align: center\"><a class=\"deleteemployeebtn\" href=\"javascript:void(0);\" data-name=${name} data-id=${id}><i class=\"text-danger fa fa-trash\"></i></a></td>\n" +
+            "                                    </tr>`;
+        var elementClick = $(this);
+        var inputStr =`<input type="text" id="ViewCreateModel_employeeId+${id}" name="ViewCreateModel.employeeId" value="${id}" class="form-control form-control-sm" hidden="hidden">`;
+        elementClick.children().remove()
+        $("#EmployeeAbsent > tbody").append(xmlString);
+        $("#EmployeeAbsent").parent().append(inputStr);
+
+    });
+    $(document).on('click', '.deleteemployeebtn', function (e) {
+        e.preventDefault();
+        var id = this.dataset.id;
+        var name = this.dataset.name;
+        var element = document.getElementById(id)
+        var deletebutton = document.getElementById("ViewCreateModel_employeeId+"+id);
+        var selectStr = `<i class="fa fa-check-circle"></i>`;
+        element.remove();
+        $(`[data-id=${id}]`).append(selectStr);
+        deletebutton.remove();
+    });
 
     //end
 

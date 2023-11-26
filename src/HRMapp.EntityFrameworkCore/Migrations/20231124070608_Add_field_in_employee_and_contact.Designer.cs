@@ -4,6 +4,7 @@ using HRMapp.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace HRMapp.Migrations
 {
     [DbContext(typeof(HRMappDbContext))]
-    partial class HRMappDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231124070608_Add_field_in_employee_and_contact")]
+    partial class Addfieldinemployeeandcontact
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

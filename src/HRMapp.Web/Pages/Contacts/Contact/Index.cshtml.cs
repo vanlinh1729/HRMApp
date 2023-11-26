@@ -44,5 +44,13 @@ public class ContactFilterInput
 
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "ContactAddress")]
-    public string? Address { get; set; }
+    public string? Address { get; set; } 
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "ContactEducation")]
+    public string? Education { get; set; } 
+    
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "ContactLanguage")]
+    public string? Language { get; set; }
 }

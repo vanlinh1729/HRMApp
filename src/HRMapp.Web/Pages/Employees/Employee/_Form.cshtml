@@ -6,36 +6,40 @@
 @inject IHtmlLocalizer<HRMappResource> L
 
 @model HRMapp.Web.Pages.Employees.Employee.CreateOrEditModalModel
+@section scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+}
+@section styles 
+{
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
 <abp-input asp-for="ViewModel.Name"></abp-input>
 <abp-input asp-for="ViewModel.OtherName"></abp-input>
 <abp-select  asp-for="ViewModel.UserId" asp-items="@Model.Users" label="@L["User"].Value">
         <option value="">@L["NoOption"]</option>
 </abp-select>
-<abp-select asp-for="ViewModel.ContactId" class="auto-complete-select" 
+<abp-select asp-for="ViewModel.ContactId" class="form-select form-control auto-complete-select" 
             asp-items="Model.Contacts" 
             label="@L["Contact"].Value"
-        
-        data-autocomplete-api-url="/api/app/contact"
-        data-autocomplete-display-property="name"
-        data-autocomplete-value-property="id"
-        data-autocomplete-items-property="items"
-        data-autocomplete-filter-param-name="name"
-        data-autocomplete-allow-clear="true">
-    @if(Model.ViewModel.ContactId !=null && Model.ViewModel.ContactId != Guid.Empty){
-
+            data-autocomplete-api-url="/api/app/contact"
+            data-autocomplete-display-property="name"
+            data-autocomplete-value-property="id"
+            data-autocomplete-items-property="items"
+            data-autocomplete-filter-param-name="name"
+            data-autocomplete-allow-clear="true">
+    @if(Model.ViewModel.ContactId != null && Model.ViewModel.ContactId != Guid.Empty){
         <option value="@Model.ViewModel.ContactId" selected="selected">@Model.ViewModel.ContactName</option>
     }
-    else
-    {
+    else {
         <option value="" selected="selected">@L["NoOption"]</option>
-
     }
-    
 </abp-select>
 <abp-select  asp-for="ViewModel.DepartmentId" asp-items="@Model.Departments" label="@L["Department"].Value">
         <option value="" >@L["NoOption"]</option>
 </abp-select>
 <abp-select asp-for="ViewModel.Status"> </abp-select>
+<abp-select asp-for="ViewModel.EmployeePosition"> </abp-select>
 
 
 

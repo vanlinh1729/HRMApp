@@ -44,9 +44,14 @@
             {
                 <a abp-button="Primary" href="~/Account/Login"><i class="fa fa-sign-in"></i> @L["Login"]</a>
             }
+            
         </div>
 
-         @if (CurrentUser.IsAuthenticated)
+         @if (CurrentUser.IsAuthenticated && await Authorization.IsGrantedAsync(HRMappPermissions.Department.Default)
+              && await Authorization.IsGrantedAsync(HRMappPermissions.Contact.Default)
+              && await Authorization.IsGrantedAsync(HRMappPermissions.Contract.Default)
+              && await Authorization.IsGrantedAsync(HRMappPermissions.Employee.Default)
+             )
                    {
                       <div class="card ">
             <div class="card-body shadow p-2 mb-5 rounded">
