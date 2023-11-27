@@ -60,7 +60,7 @@ public class ContactDataSeeder
             var tenantId = context?.TenantId;
             List<string> ten_viet_nam = new List<string>
             {
-                "Đỗ Đức Hùng","Nguyễn Bình", "Trần Vũ Hoàn", "Nguyễn Văn Lĩnh", "Nguyễn Minh Tuấn", "Trần Quốc Vương",
+                "Đỗ Đức Hùng","Nhân viên test", "Trần Vũ Hoàn", "Nguyễn Văn Lĩnh", "Nguyễn Minh Tuấn", "Trần Quốc Vương",
                 "Nguyễn Thanh Hương", "Lê Văn Duy", "Phạm Thị Lan", "Hoàng Minh Tuấn", "Vũ Thị Mai",
                 "Nguyễn Đình Quyết", "Vũ Cao Lâm", "Đặng Văn Quang", "Trần Thị Diễm", "Nguyễn Hải Dương",
                 "Trần Thanh Tâm", "Lê Thị Thu", "Phạm Văn Hùng", "Hoàng Đức Huy", "Vũ Thị Thu Hà",
@@ -88,9 +88,9 @@ public class ContactDataSeeder
                 string phone = "0933146147"; // Sample phone number
 
                 Contact contact = new Contact(_guidGenerator.Create(), tenantId, name, Gender.Male, randomDate, true, email, phone, "Việt Nam", "Đại học", "Tiếng Việt, Tiếng Anh");
-                contacts.Add(contact);
+                await _contactRepository.InsertAsync(contact);
             }
-            await _contactRepository.InsertManyAsync(contacts);
+            
         }
         
         

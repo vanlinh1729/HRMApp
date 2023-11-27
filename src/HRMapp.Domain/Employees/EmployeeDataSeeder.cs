@@ -205,15 +205,15 @@ public class EmployeeDataSeeder
             employee.Add(employee_rd);
             employee.Add(employee_rd1);
             employee.Add(employee_rd2);
-            employee.Add(employee_rd4);
             employee.Add(employee_rd3);
+            employee.Add(employee_rd4);
 
 // For the Operations department
             employee.Add(employee_operations);
             employee.Add(employee_operations1);
             employee.Add(employee_operations2);
-            employee.Add(employee_operations4);
             employee.Add(employee_operations3);
+            employee.Add(employee_operations4);
 
 
             await _employeeRepository.InsertManyAsync(employee);

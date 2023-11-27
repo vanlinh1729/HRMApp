@@ -72,6 +72,10 @@ public class HRMappMenuContributor : IMenuContributor
      new ApplicationMenuItem(HRMappMenus.Contract, l["Menu:Contract"], "/Contracts/Contract",
          icon: "fa fa-folder-open", requiredPermissionName: HRMappPermissions.Contract.Default, order:8)
  );
+ context.Menu.AddItem(
+     new ApplicationMenuItem(HRMappMenus.BackupAndRestore, l["Menu:BackupAndRestore"], "/Backups/Backup",
+         icon: "fa fa-cog", requiredPermissionName: HRMappPermissions.Attendent.Default, order:9)
+ );
  
 
         if (MultiTenancyConsts.IsEnabled)

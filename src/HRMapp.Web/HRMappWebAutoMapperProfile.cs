@@ -19,7 +19,9 @@ using HRMapp.Web.Pages.Attendents.AttendentForMonth.ViewModels;
 using HRMapp.Employees.Dtos;
 using HRMapp.Web.Pages.Employees.EmployeeHistory.ViewModels;
 using AutoMapper;
+using HRMapp.Backups.Dtos;
 using HRMapp.Contacts;
+using HRMapp.Web.Pages.Backups.Backup;
 using HRMapp.Web.Pages.Departments.Department;
 using Volo.Abp.AutoMapper;
 
@@ -83,5 +85,6 @@ public class HRMappWebAutoMapperProfile : Profile
         CreateMap<CreateManySalaryViewModel , CreateManySalaryDto>();
         CreateMap<CreateManyAttendentForMonthViewModel , CreateManyAttendentForMonthDto>();
         CreateMap<CreateManyAttendentViewModel , CreateManyAttendentDto>();
+        CreateMap<BackupInputViewModel, BackupInputDto>();
     }
 }

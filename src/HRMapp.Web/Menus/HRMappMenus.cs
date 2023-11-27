@@ -17,4 +17,5 @@ public class HRMappMenus
     public const string AttendentLine = Prefix + ".AttendentLine";
     public const string AttendentForMonth = Prefix + ".AttendentForMonth";
     public const string EmployeeHistory = Prefix + ".EmployeeHistory";
+    public const string BackupAndRestore = Prefix + ".BackupAndRestore";
 }
