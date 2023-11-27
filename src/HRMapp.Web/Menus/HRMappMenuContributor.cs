@@ -74,7 +74,7 @@ public class HRMappMenuContributor : IMenuContributor
  );
  context.Menu.AddItem(
      new ApplicationMenuItem(HRMappMenus.BackupAndRestore, l["Menu:BackupAndRestore"], "/Backups/Backup",
-         icon: "fa fa-cog", requiredPermissionName: HRMappPermissions.Attendent.Default, order:9)
+         icon: "fa fa-cog", requiredPermissionName: HRMappPermissions.BackupAndRestorePermission, order:9)
  );
  
 
