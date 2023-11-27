@@ -180,6 +180,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
         {
             var chiefOfDepartment = await _ownerRepository.GetAsync(input.OwnerId.GetValueOrDefault());
             chiefOfDepartment.DepartmentId = department.Id;
+            chiefOfDepartment.EmployeePosition = EmployeePosition.ChiefOfDepartment;
             await _ownerRepository.UpdateAsync(chiefOfDepartment);
         }
         List<Employee> employees = (await _ownerRepository.GetQueryableAsync())
@@ -231,6 +232,7 @@ public class DepartmentAppService : CrudAppService<Department, DepartmentDto, Gu
             var oldChief = await _ownerRepository.GetAsync(department.OwnerId.GetValueOrDefault());
             oldChief.EmployeePosition = EmployeePosition.Employee;
             chiefOfDepartment.DepartmentId = department.Id;
+            chiefOfDepartment.EmployeePosition = EmployeePosition.ChiefOfDepartment;
             await _ownerRepository.UpdateAsync(chiefOfDepartment);
             await _ownerRepository.UpdateAsync(oldChief);
         }

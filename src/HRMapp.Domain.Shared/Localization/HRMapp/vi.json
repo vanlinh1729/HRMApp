@@ -332,7 +332,8 @@
     "DeputyDirector": "Phó giám đốc",
     "DeputyChiefOfDepartment" :  "Phó phòng",
     "ContactEducation" : "Trình độ",
-    "ContactLanguage" : "Ngôn ngữ"
+    "ContactLanguage" : "Ngôn ngữ",
+    "Menu:BackupAndRestore" : "Backup & Restore"
     
   }
 } 

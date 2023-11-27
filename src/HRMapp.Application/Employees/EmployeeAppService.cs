@@ -180,7 +180,7 @@ public class EmployeeAppService : CrudAppService<Employee, EmployeeDto, Guid, Em
     }
     public async Task<CVOfEmployeeDto> GetCVofEmployee(Guid employeeId)
     {
-        var employeehistory = (await _employeeHistoryRepository.GetListAsync()).Where(x => x.EmployeeId == employeeId).ToList();
+        var employeehistory = (await _employeeHistoryRepository.GetListAsync()).Where(x => x.EmployeeId == employeeId).OrderBy(x=>x.End).ToList();
         var queryable = await _repository.GetQueryableAsync();
         var query = from employee in queryable
             where employee.Id == employeeId

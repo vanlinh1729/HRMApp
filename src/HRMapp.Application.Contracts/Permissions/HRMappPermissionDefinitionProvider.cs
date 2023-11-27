@@ -11,7 +11,9 @@ public class HRMappPermissionDefinitionProvider : PermissionDefinitionProvider
         var myGroup = context.AddGroup(HRMappPermissions.GroupName);
         //Define your own permissions here. Example:
         //myGroup.AddPermission(HRMappPermissions.MyPermission1, L("Permission:MyPermission1"));
+        myGroup.AddPermission(HRMappPermissions.BackupAndRestorePermission, L("Permission:BackupAndRestorePermission"));
 
+        
         var employeePermission = myGroup.AddPermission(HRMappPermissions.Employee.Default, L("Permission:Employee"));
         employeePermission.AddChild(HRMappPermissions.Employee.Create, L("Permission:Create"));
         employeePermission.AddChild(HRMappPermissions.Employee.Update, L("Permission:Update"));
@@ -61,6 +63,7 @@ public class HRMappPermissionDefinitionProvider : PermissionDefinitionProvider
         employeeHistoryPermission.AddChild(HRMappPermissions.EmployeeHistory.Create, L("Permission:Create"));
         employeeHistoryPermission.AddChild(HRMappPermissions.EmployeeHistory.Update, L("Permission:Update"));
         employeeHistoryPermission.AddChild(HRMappPermissions.EmployeeHistory.Delete, L("Permission:Delete"));
+        
     }
 
     private static LocalizableString L(string name)

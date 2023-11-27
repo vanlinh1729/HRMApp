@@ -6,6 +6,7 @@ public static class HRMappPermissions
 
     //Add your own permission names. Example:
     //public const string MyPermission1 = GroupName + ".MyPermission1";
+    public const string BackupAndRestorePermission = GroupName + ".BackupAndRestorePermission";
     public class Employee
     {
         public const string Default = GroupName + ".Employee";

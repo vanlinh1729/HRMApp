@@ -2,6 +2,9 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using Autofac;
+using HRMapp.Backups;
+using HRMapp.Backups.Backup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
@@ -63,6 +66,9 @@ public class HRMappWebModule : AbpModule
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
         IWebHostEnvironment hostingEnvironment = context.Services.GetHostingEnvironment();
+
+        var builder = new ContainerBuilder();
+        builder.RegisterType<BackupAppService>().As<IBackupAppService>().InstancePerDependency();
 
         context.Services.PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
         {
