@@ -96,7 +96,8 @@ public class AttendentAppService : CrudAppService<Attendent, AttendentDto, Guid,
                 .WhereIf(!input.EmployeeName.IsNullOrWhiteSpace(), x => x.EmployeeName.ToLower().Contains(input.EmployeeName.ToLower()))
                 .WhereIf(input.MissingIn != null, x => x.MissingIn == input.MissingIn)
                 .WhereIf(input.MissingOut != null, x => x.MissingOut == input.MissingOut)
-                .OrderBy(x=>NormalizeSorting(input.Sorting))
+                .OrderBy(x=>x.Date)
+                .ThenBy(x=>NormalizeSorting(input.Sorting))
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount);
         var queryResult = await AsyncExecuter.ToListAsync(query);
