@@ -333,7 +333,8 @@
     "DeputyChiefOfDepartment" :  "Phó phòng",
     "ContactEducation" : "Trình độ",
     "ContactLanguage" : "Ngôn ngữ",
-    "Menu:BackupAndRestore" : "Backup & Restore"
+    "Menu:BackupAndRestore" : "Backup & Restore",
+    "CreateAllAttendentForMonthForDepartmentButton" : "Xuất bảng công tháng theo phòng ban"
     
   }
 } 

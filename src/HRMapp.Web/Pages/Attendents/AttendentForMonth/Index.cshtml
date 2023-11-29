@@ -43,6 +43,11 @@
             <abp-column size-md="_6" class="text-end">
 			    @if (await Authorization.IsGrantedAsync(HRMappPermissions.AttendentForMonth.Create))
                 {
+                    <abp-button id="CreateAllAttendentForMonthForDepartmentButton"
+                                text="@L["CreateAllAttendentForMonthForDepartmentButton"].Value"
+                                icon="plus"
+                                button-type="Primary" /> 
+                    
                     <abp-button id="CreateAllAttendentForMonthInMonthButton"
                                 text="@L["CreateAllAttendentForMonthInMonth"].Value"
                                 icon="plus"

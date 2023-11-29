@@ -1,6 +1,6 @@
 $(function () {
 
-    var date;
+    var date,dateD, departmentName;
     $("#AttendentForMonthFilter :input").on('input', function () {
         dataTable.ajax.reload();
     });
@@ -30,7 +30,9 @@ $(function () {
     var editModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/EditModal');
     var viewModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/ViewModal');
     var exportAll = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/ExportAllAttendentForMonthModal');
+    var exportAllForDepartment = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/ExportAllAttendentForMonthForDepartmentModal');
     var viewAllModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/ViewAllAttendentForMonthModal');
+    var viewAllForDepartmentModal = new abp.ModalManager(host_name + 'Attendents/AttendentForMonth/ViewAllAttendentForMonthForDepartmentModal');
 
     var dataTable = $('#AttendentForMonthTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -97,8 +99,35 @@ $(function () {
             }
         ]
     }));
+
     
+    function fillModalWithData(apiData) {
+        generateTableBody(apiData) ;
+
+
+        if (apiData.length >0) 
+        {
+            $("#AttendentMonth").text("Chấm công tháng "+moment(apiData[0].attendentLines[0].timeCheck).format("MM-YYYY"));
+        } 
+        else 
+        {
+            $("#AttendentMonth").text("Không có dữ liệu cho tháng này");
+        }
+    }
     
+    function fillModalWithDatas(apiData) {
+        generateTableBodys(apiData) ;
+
+
+        if (apiData.length >0) 
+        {
+            $("#AttendentMonthDepartment").text("Chấm công tháng "+moment(apiData[0].attendentLines[0].timeCheck).format("MM-YYYY"));
+        } 
+        else 
+        {
+            $("#AttendentMonthDepartment").text("Không có dữ liệu cho tháng này");
+        }
+    }
     $(document).on('click', '.edit-button', function (e) {
         editModal.open({id: this.dataset.id});
     });
@@ -138,35 +167,131 @@ $(function () {
         date = $("#ViewMonthModel_Month").val();
         // Gọi AJAX để lấy dữ liệu từ server
         viewAllModal.open();
-        
+
+    });
+    exportAllForDepartment.onResult(function (e) {
+        e.preventDefault();
+        console.log("abc");
+        dateD = $("#ViewMonthAndDepartmentModel_Month").val();
+        departmentName = $("#ViewMonthAndDepartmentModel_DepartmentName").val();
+        // Gọi AJAX để lấy dữ liệu từ server
+        viewAllForDepartmentModal.open();
 
     });
 
-    function fillModalWithData(data) {
-        $('#viewAttendentforMonthBody').empty(); // Xóa dữ liệu cũ trong bảng
+    function generateTableBody(data) {
+        const table = $("#attendentForMonthDetailTable");
 
-        // Duyệt qua danh sách đối tượng và thêm dữ liệu vào bảng trong modal
-        for (var i = 0; i < data.listAttendentForMonth.length; i++) {
-            var item = data.listAttendentForMonth[i];
-            var departmentNames = item.departmentName != null ? item.departmentName : ''
-            var month = moment(item.month).format("MM-YYYY")
-            var row = '<tr>' +
-                '<td>' + item.employeeName + '</td>' +
-                '<td>' + departmentNames + '</td>' +
-                '<td>' + month + '</td>' +
-                '<td>' + item.count + '</td>' +
-                '</tr>';
+        // Find the maximum dayInMonth from all entries
+        const maxDays = Math.max(...data.flatMap(entry => entry.dayCheckDtos.map(dayCheck => dayCheck.dayInMonth)));
 
-            $('#viewAttendentforMonthBody').append(row);
-        }
+        // Create header row
+        const headers = ["Tên Nhân Viên", "Tên Phòng Ban", "Chức vụ", ...Array.from({ length: maxDays }, (_, i) => i + 1),"Tổng cộng","Nghỉ có phép", "Nghỉ không lương", "Nghỉ lễ"]; // Dynamic days
+        const headerRow = $("<tr></tr>");
 
-        // Cập nhật thông tin về tháng lương trong phần tử có ID là #SalaryMonth (ví dụ: lấy thông tin từ phần tử đầu tiên trong danh sách)
-        if (data.listAttendentForMonth.length > 0) {
-            $("#AttendentMonth").text("Chấm công tháng "+moment(data.listAttendentForMonth[0].month).format("MM-YYYY"));
-        } else {
-            // Nếu không có dữ liệu, có thể cập nhật thông báo hoặc giá trị mặc định
-            $("#AttendentMonth").text("Không có dữ liệu cho tháng này");
-        }
+        headers.forEach(headerText => {
+            const th = $("<th></th>").text(headerText);
+            headerRow.append(th);
+        });
+
+        table.append(headerRow);
+
+        // Create data rows
+        data.forEach(entry => {
+            const row = $("<tr></tr>");
+
+            // Add employee name and department name
+            const cellEmployeeName = $("<td></td>").text(entry.employeeName);
+            row.append(cellEmployeeName);
+
+            const cellDepartmentName = $("<td></td>").text(entry.departmentName);
+            row.append(cellDepartmentName);
+ 
+            const cellEmployeePosition = $("<td></td>").text(l('employeePosition:' + entry.employeePosition));
+            row.append(cellEmployeePosition);
+
+            // Add attendance data
+            const attendanceData = Array.from({ length: maxDays }, (_, i) => i + 1).map(day => {
+                const dayCheck = entry.dayCheckDtos.find(dayCheck => dayCheck.dayInMonth === day);
+                return dayCheck ? dayCheck.totalInDay : 0;
+            });
+
+            attendanceData.forEach(totalInDay => {
+                const cell = $("<td></td>").text(totalInDay);
+
+                // Customize the cell based on attendance status (e.g., apply styling)
+                row.append(cell);
+            });
+            const cellTotal = $("<td></td>").text(entry.countAtt);
+            row.append(cellTotal);
+            const timeoff1 = $("<td></td>").text(" ");
+            row.append(timeoff1);
+            const timeoff2 = $("<td></td>").text(" ");
+            row.append(timeoff2);
+            const timeoff3 = $("<td></td>").text(" ");
+            row.append(timeoff3);
+
+
+            table.append(row);
+        });
+    }
+    
+function generateTableBodys(data) {
+        const table = $("#attendentForMonthDetailForDepartmentTable");
+
+        // Find the maximum dayInMonth from all entries
+        const maxDays = Math.max(...data.flatMap(entry => entry.dayCheckDtos.map(dayCheck => dayCheck.dayInMonth)));
+
+        // Create header row
+        const headers = ["Tên Nhân Viên", "Tên Phòng Ban", "Chức vụ", ...Array.from({ length: maxDays }, (_, i) => i + 1),"Tổng cộng","Nghỉ có phép", "Nghỉ không lương", "Nghỉ lễ"]; // Dynamic days
+        const headerRow = $("<tr></tr>");
+
+        headers.forEach(headerText => {
+            const th = $("<th></th>").text(headerText);
+            headerRow.append(th);
+        });
+
+        table.append(headerRow);
+
+        // Create data rows
+        data.forEach(entry => {
+            const row = $("<tr></tr>");
+
+            // Add employee name and department name
+            const cellEmployeeName = $("<td></td>").text(entry.employeeName);
+            row.append(cellEmployeeName);
+
+            const cellDepartmentName = $("<td></td>").text(entry.departmentName);
+            row.append(cellDepartmentName);
+ 
+            const cellEmployeePosition = $("<td></td>").text(l('employeePosition:' + entry.employeePosition));
+            row.append(cellEmployeePosition);
+
+            // Add attendance data
+            const attendanceData = Array.from({ length: maxDays }, (_, i) => i + 1).map(day => {
+                const dayCheck = entry.dayCheckDtos.find(dayCheck => dayCheck.dayInMonth === day);
+                return dayCheck ? dayCheck.totalInDay : 0;
+            });
+
+            attendanceData.forEach(totalInDay => {
+                const cell = $("<td></td>").text(totalInDay);
+
+                // Customize the cell based on attendance status (e.g., apply styling)
+                row.append(cell);
+            });
+            const cellTotal = $("<td></td>").text(entry.countAtt);
+            row.append(cellTotal);
+
+            const timeoff1 = $("<td></td>").text(" ");
+            row.append(timeoff1);
+            const timeoff2 = $("<td></td>").text(" ");
+            row.append(timeoff2);
+            const timeoff3 = $("<td></td>").text(" ");
+            row.append(timeoff3);
+            
+
+            table.append(row);
+        });
     }
 
     $('#NewAttendentForMonthButton').click(function (e) {
@@ -180,6 +305,10 @@ $(function () {
     $('#CreateAllAttendentForMonthInMonthButton').click(function (e) {
         e.preventDefault();
         exportAll.open();
+    }); 
+    $('#CreateAllAttendentForMonthForDepartmentButton').click(function (e) {
+        e.preventDefault();
+        exportAllForDepartment.open();
     });
 
     $(document).on('click','.ViewAttendentForMonthBtn', function (e) {
@@ -205,9 +334,9 @@ $(function () {
     });
     viewAllModal.onOpen(function () {
         $.ajax({
-            url: '/api/app/attendent-for-month/many-attendent-for-month',
+            url:'/api/app/attendent-for-month/attendent-for-month-detail',
             method: 'GET',
-            data: {  Month: date  },
+            data: {  Date: date  },
             success:  function(data) {
                 console.log("Received data:", data);
 
@@ -226,12 +355,50 @@ $(function () {
         $('#exportAttendentForMonthPdfButton').on('click', function () {
             var element = $(".modal-body").html();
             console.log("danhannut");
+            const {width,height} = document.body.getBoundingClientRect();
             var opt = {
                 margin: 10,
+                onePage:true,
                 filename: 'ChamCongThang'+jQuery.now()+'.pdf',
                 image: {type: 'jpeg', quality: 1},
-                html2canvas: {scale: 2},
-                jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'}
+                html2canvas: {scale: 1},
+                jsPDF: {unit: 'mm', format: 'a2', orientation: 'landscape'}
+            };
+            html2pdf().set(opt).from(element).save();
+        });
+    });
+    
+    viewAllForDepartmentModal.onOpen(function () {
+        $.ajax({
+            url:'/api/app/attendent-for-month/attendent-for-month-for-department-detail',
+            method: 'GET',
+            data: {  Date: dateD, DepartmentName : departmentName  },
+            success:  function(data) {
+                console.log("Received data:", data);
+
+                if (data) {
+                    console.log("Data is truthy. Filling modal...");
+                    fillModalWithDatas(data);
+                } else {
+                    console.log("Data is falsy. Cannot fill modal.");
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+        console.log("ab123c da mo modal");
+        $('#exportAttendentForMonthForDepartmentPdfButton').on('click', function () {
+            var element = $(".modal-body").html();
+            console.log("danhannut");
+            const {width,height} = document.body.getBoundingClientRect();
+            var opt = {
+                margin: 10,
+                onePage:true,
+                filename: 'ChamCongThang'+jQuery.now()+'.pdf',
+                image: {type: 'jpeg', quality: 1},
+                html2canvas: {scale: 1},
+                jsPDF: {unit: 'mm', format: 'a2', orientation: 'landscape'}
             };
             html2pdf().set(opt).from(element).save();
         });

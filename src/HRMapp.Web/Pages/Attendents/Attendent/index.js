@@ -29,19 +29,21 @@ $(function () {
     };
 
 
-    async function ColumnAttendentLine() {
+    /*async function ColumnAttendentLine() {
         await fetch(abp.appPath + "api/app/shift")
             .then((response) => response.json())
             .then((data) => {
-                    /*console.log(data);*/
-                    /* data.items.forEach(addcolumn)*/
-                    /*  console.log(Column);*/
+                    /!*console.log(data);*!/
+                    /!* data.items.forEach(addcolumn)*!/
+                    /!*  console.log(Column);*!/
                     GetDatatable(data.items);
                 }
             );
     }
 
-    ColumnAttendentLine();
+    ColumnAttendentLine();*/
+    GetDatatable(4);
+
 
 
     function columnnew(list) {
@@ -76,68 +78,39 @@ $(function () {
                 data: "missingOut"
             }*/
         ];
-        // for (const item in list) {
-        //     result.push({
-        //
-        //         width: "1%",
-        //         title: l('CheckIn'),
-        //         /*
-        //                          data: "detail["+'['+list[item].code+']'+']',
-        //         */
-        //         orderable: false,
-        //         render: function (data, type, row) {
-        //             return row.attendentLines?.[item]?.['timeCheck'] ? moment(row.attendentLines?.[item]?.['timeCheck']).format("HH:mm:ss") : "";
-        //         }
-        //     });
-        //     result.push({
-        //         width: "1%",
-        //         title: l('CheckOut'),
-        //         /*
-        //                          data: "detail["+'['+list[item].code+']'+']',
-        //         */
-        //         orderable: false,
-        //         render: function (data, type, row) {
-        //             return row.attendentLines?.[1 + item]?.['timeCheck'] ? moment(row.attendentLines?.[1 + item]?.['timeCheck']).format("HH:mm:ss") : "";
-        //
-        //         }
-        //     });
-        // }
-
-
-       
             result.push({
                 width: "1%",
                 title: l('CheckIn'),
                 orderable: false,
                 render: function (data, type, row) {
-                    return row.attendentLines?.[0]?.['timeCheck'] ? moment(row.attendentLines?.[0]?.['timeCheck']).format("HH:mm:ss") : "";
+                    return row.attendentLines[0] != undefined ? moment(row.attendentLines[0]?.['timeCheck']).format("HH:mm:ss") : "";
                 }
             });
-            result.push({
+         result.push({
                 width: "1%",
                 title: l('CheckOut'),
                 orderable: false,
                 render: function (data, type, row) {
-                    return row.attendentLines?.[1]?.['timeCheck'] ? moment(row.attendentLines?.[1]?.['timeCheck']).format("HH:mm:ss") : "";
+                    return row.attendentLines[1] != undefined  ? moment(row.attendentLines[1]?.['timeCheck']).format("HH:mm:ss") : "";
                 }
             });
-            result.push({
+         result.push({
                 width: "1%",
                 title: l('CheckIn'),
                 orderable: false,
                 render: function (data, type, row) {
-                    return row.attendentLines?.[2]?.['timeCheck'] ? moment(row.attendentLines?.[2]?.['timeCheck']).format("HH:mm:ss") : "";
+                    return row.attendentLines[2] != undefined  ? moment(row.attendentLines[2]?.['timeCheck']).format("HH:mm:ss") : "";
                 }
             });
-            result.push({
+         result.push({
                 width: "1%",
                 title: l('CheckOut'),
                 orderable: false,
                 render: function (data, type, row) {
-                    return row.attendentLines?.[3]?.['timeCheck'] ? moment(row.attendentLines?.[3]?.['timeCheck']).format("HH:mm:ss") : "";
+                    return row.attendentLines[3] != undefined  ? moment(row.attendentLines[3]?.['timeCheck']).format("HH:mm:ss") : "";
                 }
             });
-        result.push({
+         result.push({
 
             width: "1%",
             title: l('Edit'),
@@ -147,7 +120,7 @@ $(function () {
                 return abp.auth.isGranted('HRMapp.Attendent.Update') ? ` <a data-id="${row.id}" class="edit-button" href="#" > <i  class="fa fa-edit"></i> </a>` : "";
             }
         });
-        result.push({
+         result.push({
             width: "1%",
             title: l('Delete'),
             orderable: false,
@@ -160,86 +133,9 @@ $(function () {
         return result;
     }
 
-    /*  var dataTable = $('#AttendentTable').DataTable(abp.libs.datatables.normalizeConfiguration({
-          processing: true,
-          serverSide: true,
-          paging: true,
-          searching: false,//disable default searchbox
-          autoWidth: false,
-          scrollCollapse: true,
-          order: [[0, "asc"]],
-          ajax: abp.libs.datatables.createAjax(service.getList,getFilter),
-          columnDefs: [
-              {
-                  rowAction: {
-                      items:
-                          [
-                              {
-                                  text: l('Edit'),
-                                  visible: abp.auth.isGranted('HRMapp.Attendent.Update'),
-                                  action: function (data) {
-                                      editModal.open({ id: data.record.id });
-                                  }
-                              },
-                              {
-                                  text: l('Delete'),
-                                  visible: abp.auth.isGranted('HRMapp.Attendent.Delete'),
-                                  confirmMessage: function (data) {
-                                      return l('AttendentDeletionConfirmationMessage', data.record.id);
-                                  },
-                                  action: function (data) {
-                                      service.delete(data.record.id)
-                                          .then(function () {
-                                              abp.notify.info(l('SuccessfullyDeleted'));
-                                              dataTable.ajax.reload();
-                                          });
-                                  }
-                              }
-                          ]
-                  }
-              },
-  
-  
-              {
-                  title: l('Date'),
-                  data: "date",
-                  "render": function (data, type, full, meta) {
-                      return moment(data).format("DD-MM-YYYY");
-                  }
-                  
-              },
-  
-  
-              {
-                  title: l('EmployeeName'),
-                  data: "employeeName"
-              },
-  
-  
-              {
-                  title: l('MissingIn'),
-                  data: "missingIn"
-              },
-  
-  
-              {
-                  title: l('MissingOut'),
-                  data: "missingOut"
-              }/!*,
-              {
-                  title: l('timeMissingIn'),
-                  data: "timeMissingIn"
-              },
-              {
-                  title: l('timeMissingOut'),
-                  data: "timeMissingOut"
-              }*!/
-          ]
-      }));*/
-
    
-    function GetDatatable(column) {
-        let newcolumnnew = columnnew(column);
+     function GetDatatable(column) {
+        let newcolumnnew =  columnnew(column);
         dataTable = $('#AttendentTable').DataTable(abp.libs.datatables.normalizeConfiguration({
             processing: true,
             serverSide: true,

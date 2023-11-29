@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Autofac;
+using Hangfire;
 using HRMapp.Backups;
 using HRMapp.Backups.Backup;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,7 @@ using HRMapp.EntityFrameworkCore;
 using HRMapp.Localization;
 using HRMapp.MultiTenancy;
 using HRMapp.Web.Menus;
+using HRMapp.Web.Pages.Backups.Backup;
 using Microsoft.OpenApi.Models;
 using OpenIddict.Validation.AspNetCore;
 using Volo.Abp;
@@ -32,6 +34,8 @@ using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Bundling;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.BackgroundWorkers;
+using Volo.Abp.BackgroundWorkers.Hangfire;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity.Web;
 using Volo.Abp.Localization;
@@ -59,7 +63,8 @@ namespace HRMapp.Web;
     typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
     typeof(AbpTenantManagementWebModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpSwashbuckleModule)
+    typeof(AbpSwashbuckleModule),
+    typeof(AbpBackgroundWorkersHangfireModule)
     )]
 public class HRMappWebModule : AbpModule
 {
@@ -139,8 +144,17 @@ public class HRMappWebModule : AbpModule
         ConfigureNavigationServices();
         ConfigureAutoApiControllers();
         ConfigureSwaggerServices(context.Services);
+        ConfigureHangfire(context, configuration);
+
     }
 
+    private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
+    {
+        context.Services.AddHangfire(config =>
+        {
+            config.UseSqlServerStorage(configuration.GetConnectionString("Default"));
+        });
+    }
     private void ConfigureAuthentication(ServiceConfigurationContext context)
     {
         context.Services.ForwardIdentityAuthenticationForBearer(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
@@ -240,6 +254,7 @@ public class HRMappWebModule : AbpModule
             app.UseErrorPage();
         }
 
+        context.AddBackgroundWorkerAsync<ScheduleBackup>();
         app.UseCorrelationId();
         app.UseStaticFiles();
         app.UseRouting();
@@ -260,7 +275,9 @@ public class HRMappWebModule : AbpModule
         });
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
+        app.UseHangfireDashboard(); 
         app.UseConfiguredEndpoints();
+        
     }
     
     private X509Certificate2 GetSigningCertificate(IWebHostEnvironment hostingEnv,

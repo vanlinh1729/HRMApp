@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.104.0-preview2" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.29" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.12" />
@@ -58,6 +59,7 @@
     <ProjectReference Include="..\HRMapp.HttpApi\HRMapp.HttpApi.csproj" />
     <ProjectReference Include="..\HRMapp.EntityFrameworkCore\HRMapp.EntityFrameworkCore.csproj" />
     <PackageReference Include="Volo.Abp.Autofac" Version="7.4.0" />
+    <PackageReference Include="Volo.Abp.BackgroundWorkers.Hangfire" Version="7.0.0" />
     <PackageReference Include="Volo.Abp.Swashbuckle" Version="7.4.0" />
     <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="7.4.0" />
     <PackageReference Include="Volo.Abp.Identity.Web" Version="7.4.0" />
